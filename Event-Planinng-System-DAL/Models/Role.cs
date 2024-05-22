@@ -14,6 +14,7 @@ namespace Event_Planinng_System_DAL.Models
 
         [StringLength(50, MinimumLength =3)]
         public RoleType Name { get; set; }
+        public bool IsDeleted { get; set; }
         public virtual List<UserRole> UserRoles { get; set; } = new List<UserRole>();
     }
 
