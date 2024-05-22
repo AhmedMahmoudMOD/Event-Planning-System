@@ -18,6 +18,6 @@ namespace Event_Planinng_System_DAL.Models
         public EmailType Type { get; set; }
         [ForeignKey("EventNavigation")]
         public int EventId { get; set; }
-        public Event EventEmailsNavigation { get; set; }  
+        public virtual Event EventEmailsNavigation { get; set; }  
     }
 }

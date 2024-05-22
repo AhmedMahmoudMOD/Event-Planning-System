@@ -1,4 +1,5 @@
 ﻿using Event_Planinng_System_DAL.Enums;
+using Event_Planinng_System_DAL.Model_Validations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,10 +10,9 @@ using System.Threading.Tasks;
 
 namespace Event_Planinng_System_DAL.Models
 {
-    public class Event
+    public class Event : InheritIdAndIsDeleted
     {
-        [Key]
-        public int Id { get; set; }
+
         [ForeignKey("CreatorNavigation")]
         public int CreatorId { get; set; }
         [StringLength(50, MinimumLength =3)]
@@ -22,19 +22,21 @@ namespace Event_Planinng_System_DAL.Models
         [StringLength(500, MinimumLength =3)]
         public string Location { get; set; }
         [Range(0, int.MaxValue)]
-        public int AttendanceNumber { get; set; }
+        public int? AttendanceNumber { get; set; }
         [StringLength(5000, MinimumLength =3)]
         public string? GoogleMapsLocation { get; set; }
         [Range(0, int.MaxValue)]
-        public int Budget { get; set; }
+        public int? Budget { get; set; }
         public EventType EventType { get; set; }
+        [FutureDate]
         public DateTime EventDate { get; set; }
-        public bool IsDeleted { get; set; }
         public DateOnly DateOfCreation { get; set;}
-        public User CreatorNavigation { get; set; }
+        public bool IsDeleted { get; set; }
+
+        public virtual User CreatorNavigation { get; set; }
         public virtual List<Invite> PeopleInvitesNavigation { get; set; } = new List<Invite>();
         public virtual List<ToDoList> ToDoListsNavigation { get; set; } = new List<ToDoList>();   
-        public virtual List<Emails> EventEmailsNavigation { get; set; } = new List<Emails>();   
-
+        public virtual List<Emails> EventEmailsNavigation { get; set; } = new List<Emails>();
+        public virtual List<EventImages> EventImagesNavigation { get; set; } = new List<EventImages>();
     }
 }

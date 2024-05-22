@@ -10,7 +10,7 @@ namespace Event_Planinng_System_DAL.Models
 {
     public class ToDoList
     {
-        public DateTime DeadLineTime { get; set; }
+        public DateOnly? DeadLineTime { get; set; }
         [StringLength(50, MinimumLength = 3)]
         public string Title { get; set; }
         [Range(0, 10000000000)]
@@ -19,6 +19,6 @@ namespace Event_Planinng_System_DAL.Models
         public string Description { get; set; }
         [ForeignKey("EventNavigation")]
         public int EventId { get; set; }    
-        public Event EventNavigation { get; set; }
+        public virtual Event EventNavigation { get; set; }
     }
 }

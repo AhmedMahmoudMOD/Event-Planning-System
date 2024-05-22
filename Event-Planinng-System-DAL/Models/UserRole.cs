@@ -13,7 +13,7 @@ namespace Event_Planinng_System_DAL.Models
         public int UserId { get; set; }
         [ForeignKey("RoleNavigation")]
         public int RoleId { get; set; }
-        public User UserNavigation { get; set; }
-        public Role RoleNavigation { get; set; }
+        public virtual User UserNavigation { get; set; }
+        public virtual Role RoleNavigation { get; set; }
     }
 }

@@ -12,6 +12,6 @@ namespace Event_Planinng_System_DAL.Models
         [ForeignKey("EventNavigation")]
         public int EventId { get; set; }
         public string EventImage { get; set; }
-        public Event EventNavigation { get; set; }
+        public virtual Event EventNavigation { get; set; }
     }
 }
