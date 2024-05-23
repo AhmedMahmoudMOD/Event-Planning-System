@@ -8,7 +8,7 @@ namespace Event_Planning_System.MappingProfiles
 	{
 		public MappingProfile()
 		{
-			CreateMap<Event, EventDTO>();
+			CreateMap<Event, EventDTO>().ReverseMap();
 		}
 	}
 }
