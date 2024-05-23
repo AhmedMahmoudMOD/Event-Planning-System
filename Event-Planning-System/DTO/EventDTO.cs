@@ -22,6 +22,5 @@ namespace Event_Planning_System.DTO
 		public int? Budget { get; set; }
 		public EventType EventType { get; set; }
 		public DateTime EventDate { get; set; }
-		public DateOnly DateOfCreation { get; set; }
 	}
 }
