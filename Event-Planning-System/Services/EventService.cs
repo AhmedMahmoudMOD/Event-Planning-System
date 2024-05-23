@@ -18,7 +18,11 @@ namespace Event_Planning_System.Services
 		public async Task<bool> CreateEvent(EventDTO newEventDTO)
 		{
 			Event newEvent = mapper.Map<Event>(newEventDTO);
-
+			Console.WriteLine();
+			Console.WriteLine();
+			Console.WriteLine(newEvent.EventDate+"saaaaaaaaaaaa");
+			Console.WriteLine();
+			Console.WriteLine();
 			if (newEvent == null || newEvent.EventDate <= DateTime.Today)
 				return false;
 			newEvent.DateOfCreation = DateOnly.FromDateTime(DateTime.Today);

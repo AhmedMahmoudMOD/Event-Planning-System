@@ -21,6 +21,6 @@ namespace Event_Planning_System.DTO
 		[Range(0, int.MaxValue)]
 		public int? Budget { get; set; }
 		public EventType EventType { get; set; }
-		public DateTime EventDate { get; set; }
+		public string EventDate { get; set; }
 	}
 }
