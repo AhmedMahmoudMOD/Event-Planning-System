@@ -1,5 +1,7 @@
-﻿using Event_Planinng_System_DAL.Models;
+﻿using AutoMapper;
+using Event_Planinng_System_DAL.Models;
 using Event_Planinng_System_DAL.Unit_Of_Work;
+using Event_Planning_System.DTO;
 using Event_Planning_System.IServices;
 using System.Security.Claims;
 namespace Event_Planning_System.Services
@@ -7,20 +9,38 @@ namespace Event_Planning_System.Services
 	public class EventService : IEventService
 	{
 		UnitOfWork unitOfWork;
-		public EventService(UnitOfWork _unitOfWork)
+		private readonly IMapper mapper;
+		public EventService(UnitOfWork _unitOfWork, IMapper _mapper)
 		{
 			unitOfWork = _unitOfWork;
+			mapper = _mapper;
 		}
-		public bool CreateEvent(Event newEvent)
+		public async Task<bool> CreateEvent(EventDTO newEventDTO)
 		{
+			Event newEvent = mapper.Map<Event>(newEventDTO);
+
 			if (newEvent == null || newEvent.EventDate <= DateTime.Today)
 				return false;
 			newEvent.DateOfCreation = DateOnly.FromDateTime(DateTime.Today);
 			newEvent.CreatorId = 1;
 			//newEvent.CreatorId = int.Parse(ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value);
-			unitOfWork.EventRepo.Add(newEvent);
+			await unitOfWork.EventRepo.Add(newEvent);
 			unitOfWork.save();
 			return true;
+		}
+
+		public bool DeleteEvent(EventDTO delEventDTO) // need get by id in generic Repo
+		{
+			Event delEvent = mapper.Map<Event>(delEventDTO);
+			// Cancellation mail sent to all guests (Will search)
+			try
+			{
+				// SendCancellationMail Function for the event.
+				delEvent.IsDeleted = true;
+				unitOfWork.save();
+				return true;
+			}
+			catch { return false; }
 		}
 	}
 }
