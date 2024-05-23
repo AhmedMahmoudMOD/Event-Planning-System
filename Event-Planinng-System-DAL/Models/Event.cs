@@ -31,7 +31,6 @@ namespace Event_Planinng_System_DAL.Models
         [FutureDate]
         public DateTime EventDate { get; set; }
         public DateOnly DateOfCreation { get; set;}
-        public bool IsDeleted { get; set; }
 
         public virtual User CreatorNavigation { get; set; }
         public virtual List<Invite> PeopleInvitesNavigation { get; set; } = new List<Invite>();
