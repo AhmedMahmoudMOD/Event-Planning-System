@@ -1,4 +1,5 @@
 ﻿using Event_Planinng_System_DAL.Enums;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace Event_Planinng_System_DAL.Models
 {
-    public class Role : InheritIdAndIsDeleted
+    public class Role : IdentityRole<int>
     {
-
-        [StringLength(50, MinimumLength =3)]
-        public RoleType Name { get; set; }
-        public virtual List<UserRole> UserRoles { get; set; } = new List<UserRole>();
+        public bool IsDeleted { get; set; }
+        //[StringLength(50, MinimumLength =3)]
+        //public RoleType Name { get; set; }
+        //public virtual List<UserRole> UserRoles { get; set; } = new List<UserRole>();
     }
 
 }

@@ -16,6 +16,8 @@ namespace Event_Planning_System
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
                 throw new InvalidOperationException("No connection string was found");
 
+            builder.Services.AddIdentity<User , Role>().AddEntityFrameworkStores<dbContext>();
+
             builder.Services.AddDbContext<dbContext>(optionBuiler =>
             {
                 optionBuiler.UseLazyLoadingProxies().UseSqlServer(connectionString , b => b.MigrationsAssembly("Event-Planning-System"));

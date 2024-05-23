@@ -1,5 +1,6 @@
 ﻿using Event_Planinng_System_DAL.Models;
 using Event_Planinng_System_DAL.Repos;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +11,10 @@ namespace Event_Planinng_System_DAL.Unit_Of_Work
 {
     public class UnitOfWork
     {
-        GenericRepoForId<User> userRepository;
+        UserRepo userRepository;
         GenericRepoForId<Attendance> attendanceRepository;
         GenericRepoForId<Event> eventRepo;
-        GenericRepoForId<Role> roleRepo;
+        //GenericRepoForId<Role> roleRepo;
 
         GenericRepo<Comments> commentsRepo;
         GenericRepo<Emails> emailRepo;
@@ -23,14 +24,16 @@ namespace Event_Planinng_System_DAL.Unit_Of_Work
         GenericRepo<UserRole> userrroleRepo;
 
         private readonly dbContext db;
-        public UnitOfWork(dbContext _db)
+        private readonly UserManager<User> userManager;
+        public UnitOfWork(dbContext _db , UserManager<User> _user)
         {
             db = _db;
+            userManager = _user;
         }
 
-        public GenericRepoForId<User> UserRepo
+        public UserRepo UserRepo
         {
-            get => userRepository ??= new GenericRepoForId<User>(db);              
+            get => userRepository ??= new UserRepo(userManager, db);
         }
         public GenericRepoForId<Attendance> AttendanceRepo
         {
@@ -56,10 +59,10 @@ namespace Event_Planinng_System_DAL.Unit_Of_Work
         {
             get => inviteRepo ??= new GenericRepo<Invite>(db);
         }
-        public GenericRepoForId<Role> RoleRepo
-        {
-            get => roleRepo ??= new GenericRepoForId<Role>(db);
-        }
+        //public GenericRepoForId<Role> RoleRepo
+        //{
+        //    get => roleRepo ??= new GenericRepoForId<Role>(db);
+        //}
         public GenericRepo<ToDoList> ToDoListRepo
         {
             get => todolistRepo ??= new GenericRepo<ToDoList>(db);

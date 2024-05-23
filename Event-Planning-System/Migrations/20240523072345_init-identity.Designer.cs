@@ -4,6 +4,7 @@ using Event_Planinng_System_DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Event_Planning_System.Migrations
 {
     [DbContext(typeof(dbContext))]
-    partial class dbContextModelSnapshot : ModelSnapshot
+    [Migration("20240523072345_init-identity")]
+    partial class initidentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -194,9 +197,6 @@ namespace Event_Planning_System.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Name")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -278,9 +278,6 @@ namespace Event_Planning_System.Migrations
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<string>("LName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -345,6 +342,21 @@ namespace Event_Planning_System.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Event_Planinng_System_DAL.Models.UserRole", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("UserRole");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -532,6 +544,25 @@ namespace Event_Planning_System.Migrations
                     b.Navigation("EventNavigation");
                 });
 
+            modelBuilder.Entity("Event_Planinng_System_DAL.Models.UserRole", b =>
+                {
+                    b.HasOne("Event_Planinng_System_DAL.Models.Role", "RoleNavigation")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Event_Planinng_System_DAL.Models.User", "UserNavigation")
+                        .WithMany("UserRoleNavigation")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RoleNavigation");
+
+                    b.Navigation("UserNavigation");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("Event_Planinng_System_DAL.Models.Role", null)
@@ -599,11 +630,18 @@ namespace Event_Planning_System.Migrations
                     b.Navigation("ToDoListsNavigation");
                 });
 
+            modelBuilder.Entity("Event_Planinng_System_DAL.Models.Role", b =>
+                {
+                    b.Navigation("UserRoles");
+                });
+
             modelBuilder.Entity("Event_Planinng_System_DAL.Models.User", b =>
                 {
                     b.Navigation("CommentsNavigation");
 
                     b.Navigation("CreateEventNavigation");
+
+                    b.Navigation("UserRoleNavigation");
                 });
 #pragma warning restore 612, 618
         }
