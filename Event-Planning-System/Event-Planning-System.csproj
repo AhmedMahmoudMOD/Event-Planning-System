@@ -35,11 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DTO\" />
-    <Folder Include="DTO\" />
     <Folder Include="Helpers\" />
-    <Folder Include="Services\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>
