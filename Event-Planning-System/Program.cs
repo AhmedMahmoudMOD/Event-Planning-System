@@ -22,6 +22,7 @@ namespace Event_Planning_System
             {
                 optionBuiler.UseLazyLoadingProxies().UseSqlServer(connectionString , b => b.MigrationsAssembly("Event-Planning-System"));
             });
+            builder.Services.AddAutoMapper(typeof(Program));
 
             builder.Services.AddScoped<UnitOfWork>();
             // Add services to the container.
