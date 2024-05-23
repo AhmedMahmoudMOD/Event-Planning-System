@@ -22,9 +22,9 @@ namespace Event_Planning_System.Controllers
 			return BadRequest();
 		}
 		[HttpDelete]
-		public IActionResult DeleteEvent(EventDTO delEventDTO)
+		public async Task<IActionResult> DeleteEvent(int id)
 		{
-			if (eventService.DeleteEvent(delEventDTO))
+			if (await eventService.DeleteEventSoft(id))
 				return Created();
 			return BadRequest();
 		}

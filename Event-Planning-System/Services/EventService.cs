@@ -29,14 +29,25 @@ namespace Event_Planning_System.Services
 			return true;
 		}
 
-		public bool DeleteEvent(EventDTO delEventDTO) // need get by id in generic Repo
+		public async Task<bool> DeleteEventSoft(int id)
 		{
-			Event delEvent = mapper.Map<Event>(delEventDTO);
 			// Cancellation mail sent to all guests (Will search)
 			try
 			{
+				Event delEvent = await unitOfWork.EventRepo.FindById(id);
 				// SendCancellationMail Function for the event.
 				delEvent.IsDeleted = true;
+				unitOfWork.save();
+				return true;
+			}
+			catch { return false; }
+		}
+		public async Task<bool> DeleteEventHard(int id)
+		{
+			try
+			{
+				Event delEvent = await unitOfWork.EventRepo.FindById(id);
+				await unitOfWork.EventRepo.Delete(delEvent);
 				unitOfWork.save();
 				return true;
 			}
