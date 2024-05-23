@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,23 +8,23 @@ using System.Threading.Tasks;
 
 namespace Event_Planinng_System_DAL.Models
 {
-    public class dbContext : DbContext
+    public class dbContext : IdentityDbContext<User , Role ,int>
     {
         public dbContext()
         {
         }
         public dbContext(DbContextOptions<dbContext> options) : base(options) { }
 
-        public virtual DbSet<User> Users { get; set; }
+        //public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Attendance> Attendances { get; set; }
         public virtual DbSet<Comments> Comments { get; set; }
         public virtual DbSet<Emails> Emails { get; set; }
         public virtual DbSet<Event> Events { get; set; }
         public virtual DbSet<EventImages> EventsImages { get; set; }
         public virtual DbSet<Invite> Invites { get; set; }
-        public virtual DbSet<Role> Roles { get; set; }
+        //public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<ToDoList> ToDoLists { get; set; }
-        public virtual DbSet<UserRole> UserRoles { get; set; }
+        //public virtual DbSet<UserRole> UserRoles { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -51,8 +52,8 @@ namespace Event_Planinng_System_DAL.Models
             //Emails
             modelBuilder.Entity<Emails>(entity =>
             {
-                entity.HasKey(e => new { e.type, e.EventId });
-                entity.Property(e => e.type).HasConversion<string>();
+                entity.HasKey(e => new { e.Type, e.EventId });
+                entity.Property(e => e.Type).HasConversion<string>();
             });
 
             //events
@@ -74,10 +75,10 @@ namespace Event_Planinng_System_DAL.Models
             });
 
             //role
-            modelBuilder.Entity<Role>(entity =>
-            {
-                entity.Property(e => e.Name).HasConversion<string>();
-            });
+            //modelBuilder.Entity<Role>(entity =>
+            //{
+            //    entity.Property(e => e.Name).HasConversion<string>();
+            //});
 
             //to do list
             modelBuilder.Entity<ToDoList>(entity =>
@@ -86,10 +87,10 @@ namespace Event_Planinng_System_DAL.Models
             });
 
             //userRole 
-            modelBuilder.Entity<UserRole>(entity =>
-            {
-                entity.HasKey(e => new { e.UserId, e.RoleId });
-            });
+            //modelBuilder.Entity<UserRole>(entity =>
+            //{
+            //    entity.HasKey(e => new { e.UserId, e.RoleId });
+            //});
 
 
             base.OnModelCreating(modelBuilder); 
