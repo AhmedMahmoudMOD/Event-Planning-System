@@ -28,6 +28,9 @@
   <ItemGroup>
     <Folder Include="DTO\" />
     <Folder Include="Helper\" />
+    <Folder Include="DTO\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="Services\" />
     <Folder Include="Services\" />
   </ItemGroup>
 
