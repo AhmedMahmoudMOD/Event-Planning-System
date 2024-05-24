@@ -19,7 +19,6 @@ namespace Event_Planinng_System_DAL.Unit_Of_Work
         GenericRepo<Comments> commentsRepo;
         GenericRepo<Emails> emailRepo;
         GenericRepo<EventImages> eventimagesRepo;
-        GenericRepo<Invite> inviteRepo;
         GenericRepo<ToDoList> todolistRepo;
         GenericRepo<UserRole> userrroleRepo;
 
@@ -55,10 +54,7 @@ namespace Event_Planinng_System_DAL.Unit_Of_Work
         {
             get => eventimagesRepo ??= new GenericRepo<EventImages>(db);
         }
-        public GenericRepo<Invite> InviteRepo
-        {
-            get => inviteRepo ??= new GenericRepo<Invite>(db);
-        }
+
         //public GenericRepoForId<Role> RoleRepo
         //{
         //    get => roleRepo ??= new GenericRepoForId<Role>(db);

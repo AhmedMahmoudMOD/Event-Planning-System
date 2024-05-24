@@ -12,6 +12,8 @@ namespace Event_Planinng_System_DAL.Models
         [EmailAddress(ErrorMessage = "invalid email message")]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
-        public virtual List<Invite> EventInviteNavigation { get; set; } = new List<Invite>();
+        public bool IsSent { get; set; }
+
+        public virtual Event EventNavigation { get; set; }
     }
 }
