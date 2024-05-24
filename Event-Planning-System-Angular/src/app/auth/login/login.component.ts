@@ -36,7 +36,7 @@ export class LoginComponent {
     let user : UserLogin = {email:'',password:''};
     user.email = this.emailControl.value;
     user.password = this.passwordControl.value;
-    this.accountService.login(user);
+    // this.accountService.login(user);
   }
 
 

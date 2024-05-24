@@ -46,8 +46,14 @@ namespace Event_Planinng_System_DAL.Repos
                 throw new ArgumentNullException("model");
             }
          
-            var result =await UserManager.CreateAsync(model , password);
-            return result;
+            var crresult =await UserManager.CreateAsync(model , password);
+
+            IdentityResult addresult = new IdentityResult();
+            if (crresult.Succeeded)
+            {
+                addresult =  await AddUserToRoles(model);
+            }
+            return addresult;
         }
 
         public async Task<User?> FindById (int id)
@@ -71,9 +77,9 @@ namespace Event_Planinng_System_DAL.Repos
             return await UserManager.GetRolesAsync(model) as List<string>;
         }
 
-        public async Task AddUserToRoles(User model)
+        public async Task<IdentityResult> AddUserToRoles(User model)
         {
-            await UserManager.AddToRolesAsync(model, new List<string> { "Planner" , "User" });
+           return await UserManager.AddToRolesAsync(model, new List<string> { "Planner" , "User" });
         }
     }
 }

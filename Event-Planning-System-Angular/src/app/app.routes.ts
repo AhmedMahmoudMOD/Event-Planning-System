@@ -9,5 +9,5 @@ export const routes: Routes = [
     { path: 'auth/login', component: LoginComponent },
     { path: 'auth/register' , component: RegisterComponent},
     {path:'addevent',component:AddEventComponent},
-    { path: 'auth/emailconfirm', component: EmailconfirmComponent }
+    { path: 'auth/confirmemail', component: EmailconfirmComponent }
 ];

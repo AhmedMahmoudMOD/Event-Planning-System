@@ -34,7 +34,6 @@ namespace Event_Planning_System
 			builder.Services.AddScoped<UnitOfWork>();
 			builder.Services.AddScoped<IEventService, EventService>();
             builder.Services.AddScoped<Iregestration, Register>();
-        
 
 			builder.Services.AddCors(Services =>
 			{
@@ -47,11 +46,8 @@ namespace Event_Planning_System
 			});
 
 
-			builder.Services.AddControllers();
-
 
             builder.Services.AddControllers();
-			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options => {
                 options.MapType<DateOnly>(() => new OpenApiSchema
@@ -78,9 +74,10 @@ namespace Event_Planning_System
 			}
 			app.UseCors("CorsPolicy");
 			app.UseAuthorization();
+			app.UseCors();
 
 
-			app.MapControllers();
+            app.MapControllers();
 
 			app.Run();
 		}

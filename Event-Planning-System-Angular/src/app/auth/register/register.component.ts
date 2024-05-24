@@ -6,7 +6,9 @@ import { RouterModule } from '@angular/router';
 import { AccountService } from '../../shared/services/account.service';
 import { UserRegister } from '../../shared/models/userRegister.model';
 import { passwordMatchValidator } from '../../shared/validators/passwordmatch.validator';
-
+import { UserAuthResponse } from '../../shared/models/userAuthRespones.model';
+import { Router } from '@angular/router';
+import {format} from 'date-fns';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -54,7 +56,7 @@ export class RegisterComponent {
   cityControl = this.registerForm.controls['city'];
   regionControl = this.registerForm.controls['region'];
 
-  constructor(private accountService:AccountService){
+  constructor(private accountService:AccountService,private router:Router) { 
     document.body.style.background = 'linear-gradient(to right, #f0f2f0, #000c40)';
   }
 
@@ -64,6 +66,7 @@ export class RegisterComponent {
 
   reg(){
     if(this.registerForm.valid){
+      let formattedDate = format(this.dobControl.value,'yyyy-MM-dd');
       let user : UserRegister = {
         FName: this.firstNameControl.value,
         LName: this.lastNameControl.value,
@@ -71,14 +74,27 @@ export class RegisterComponent {
         Password: this.passwordControl.value,
         ConfirmPassword: this.confirmPasswordControl.value,
         PhoneNumber: this.phoneNumberControl.value,
-        DateOfBirth: this.dobControl.value,
+        DateOfBirth: formattedDate,
         Image: this.imageControl.value,
         PostalCode: this.postalCodeControl.value,
         Street: this.streetControl.value,
         City: this.cityControl.value,
         Region: this.regionControl.value
       }
-      console.log(user);
+      this.accountService.register(user).subscribe((res:UserAuthResponse)=>{
+        console.log(res);
+        if(res.succeeded){
+          console.log('User registered successfully');
+          this.router.navigate(['auth/confirmemail']);
+        }
+        else{
+          console.log('User registration failed');
+          console.log(res.errors);
+        }
+      },(error)=>{
+        console.log('An error occured');
+        console.log(error);
+      })
     }
 
     

@@ -15,4 +15,7 @@ export class EventService  {
     addEvent(event: AddEvent): Observable<AddEvent> {
       return this.httpclient.post<AddEvent>(`${environment.apiUrl}/api/Event`, event);
     }
+    deleteEvent(id: number): Observable<any> {
+      return this.httpclient.delete<any>(`${environment.apiUrl}/api/Event/${id}`);
+    }
 }
