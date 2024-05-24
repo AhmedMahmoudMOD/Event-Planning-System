@@ -6,7 +6,7 @@ export interface UserRegister {
     Password: string;
     ConfirmPassword: string;
     PhoneNumber: string;
-    DateOfBirth: Date;
+    DateOfBirth: string;
     Image: string;
     PostalCode: string;
     Street: string;

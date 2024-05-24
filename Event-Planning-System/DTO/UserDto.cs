@@ -5,9 +5,8 @@ namespace Event_Planning_System.DTO
 {
     public class UserDto
     {
-        public string username { get; set; }
         [Required]
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$", ErrorMessage ="Envaild Password")]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$", ErrorMessage ="Invaild Password")]
         public string  Password { get; set; }
         [Required]
 
@@ -23,6 +22,10 @@ namespace Event_Planning_System.DTO
 
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Last name must be between 3 and 50 characters.")]
         public string LName { get; set; }
+
+        [Required]
+        [RegularExpression(@"(01)[0125][0-9]{8}$", ErrorMessage = "Phone number must be a vaild phone number")]
+        public string PhoneNumber { get; set; }
 
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Street must be between 3 and 50 characters.")]
         public string? Street { get; set; }

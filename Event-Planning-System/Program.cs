@@ -33,10 +33,14 @@ namespace Event_Planning_System
 			builder.Services.AddScoped<UnitOfWork>();
 			builder.Services.AddScoped<IEventService, EventService>();
             builder.Services.AddScoped<Iregestration, Register>();
-        
 
-            // Add services to the container.
 
+			// Add services to the container.
+			builder.Services.AddCors(options => 
+			options.AddDefaultPolicy(
+				builder => 
+				builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader())
+			);
             builder.Services.AddControllers();
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			builder.Services.AddEndpointsApiExplorer();
@@ -65,9 +69,10 @@ namespace Event_Planning_System
 			}
 
 			app.UseAuthorization();
+			app.UseCors();
 
 
-			app.MapControllers();
+            app.MapControllers();
 
 			app.Run();
 		}

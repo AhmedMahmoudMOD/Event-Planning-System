@@ -22,14 +22,10 @@ namespace Event_Planning_System.Controllers
             }
 
             var result = await _iregestration.adduser(userDto);
+
             if (result.Succeeded)
             {
-                return Ok(result.Succeeded);
-            }
-
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(error.Code, error.Description);
+                return Ok(result);
             }
 
             return BadRequest(result.Errors);
