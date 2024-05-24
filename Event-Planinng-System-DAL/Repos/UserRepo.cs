@@ -46,7 +46,7 @@ namespace Event_Planinng_System_DAL.Repos
                 throw new ArgumentNullException("model");
             }
          
-      var result =await UserManager.CreateAsync(model , password);
+            var result =await UserManager.CreateAsync(model , password);
             return result;
         }
 
