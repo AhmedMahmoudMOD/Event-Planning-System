@@ -1,6 +1,7 @@
 using Event_Planinng_System_DAL.Models;
 using Event_Planinng_System_DAL.Repos;
 using Event_Planinng_System_DAL.Unit_Of_Work;
+using Event_Planning_System.Helpers;
 using Event_Planning_System.IServices;
 using Event_Planning_System.Services;
 using Microsoft.AspNetCore.Identity;
@@ -28,10 +29,17 @@ namespace Event_Planning_System
 				optionBuiler.UseLazyLoadingProxies().UseSqlServer
 				(connectionString ,b => b.MigrationsAssembly("Event-Planning-System"));
 			});
+
+			//add dependency injection
 			builder.Services.AddAutoMapper(typeof(Program));
 
 			builder.Services.AddScoped<UnitOfWork>();
 			builder.Services.AddScoped<IEventService, EventService>();
+			builder.Services.Configure<AzureStorage>(builder.Configuration.GetSection("AzureStorage"));
+            builder.Services.AddScoped<IBlobServices, BlobService>();
+            // Add services to the container.
+
+            builder.Services.AddControllers();
             builder.Services.AddScoped<Iregestration, Register>();
 
 
