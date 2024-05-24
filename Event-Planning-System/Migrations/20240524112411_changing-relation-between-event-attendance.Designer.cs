@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Event_Planning_System.Migrations
 {
     [DbContext(typeof(dbContext))]
-    [Migration("20240523073254_Edit-identity")]
-    partial class Editidentity
+    [Migration("20240524112411_changing-relation-between-event-attendance")]
+    partial class changingrelationbetweeneventattendance
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,10 +40,18 @@ namespace Event_Planning_System.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("EventNavigationId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsSent")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("EventNavigationId");
 
                     b.ToTable("Attendances");
                 });
@@ -167,24 +175,6 @@ namespace Event_Planning_System.Migrations
                     b.ToTable("EventsImages");
                 });
 
-            modelBuilder.Entity("Event_Planinng_System_DAL.Models.Invite", b =>
-                {
-                    b.Property<int>("AttendantId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EventId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsSent")
-                        .HasColumnType("bit");
-
-                    b.HasKey("AttendantId", "EventId");
-
-                    b.HasIndex("EventId");
-
-                    b.ToTable("Invites");
-                });
-
             modelBuilder.Entity("Event_Planinng_System_DAL.Models.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -196,6 +186,9 @@ namespace Event_Planning_System.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
@@ -277,6 +270,9 @@ namespace Event_Planning_System.Migrations
 
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LName")
                         .IsRequired()
@@ -447,10 +443,21 @@ namespace Event_Planning_System.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Event_Planinng_System_DAL.Models.Attendance", b =>
+                {
+                    b.HasOne("Event_Planinng_System_DAL.Models.Event", "EventNavigation")
+                        .WithMany("AttendanceNavigation")
+                        .HasForeignKey("EventNavigationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("EventNavigation");
+                });
+
             modelBuilder.Entity("Event_Planinng_System_DAL.Models.Comments", b =>
                 {
                     b.HasOne("Event_Planinng_System_DAL.Models.Event", "EventNavigation")
-                        .WithMany()
+                        .WithMany("CommentsNavigation")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -495,25 +502,6 @@ namespace Event_Planning_System.Migrations
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("EventNavigation");
-                });
-
-            modelBuilder.Entity("Event_Planinng_System_DAL.Models.Invite", b =>
-                {
-                    b.HasOne("Event_Planinng_System_DAL.Models.Attendance", "AttendaceNavigation")
-                        .WithMany("EventInviteNavigation")
-                        .HasForeignKey("AttendantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Event_Planinng_System_DAL.Models.Event", "EventNavigation")
-                        .WithMany("PeopleInvitesNavigation")
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AttendaceNavigation");
 
                     b.Navigation("EventNavigation");
                 });
@@ -580,18 +568,15 @@ namespace Event_Planning_System.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Event_Planinng_System_DAL.Models.Attendance", b =>
-                {
-                    b.Navigation("EventInviteNavigation");
-                });
-
             modelBuilder.Entity("Event_Planinng_System_DAL.Models.Event", b =>
                 {
+                    b.Navigation("AttendanceNavigation");
+
+                    b.Navigation("CommentsNavigation");
+
                     b.Navigation("EventEmailsNavigation");
 
                     b.Navigation("EventImagesNavigation");
-
-                    b.Navigation("PeopleInvitesNavigation");
 
                     b.Navigation("ToDoListsNavigation");
                 });

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Event_Planinng_System_DAL.Model_Validations
 {
-    internal class PastDateAttribute  : ValidationAttribute
+    public class PastDateAttribute  : ValidationAttribute
     {
         public PastDateAttribute()
         {

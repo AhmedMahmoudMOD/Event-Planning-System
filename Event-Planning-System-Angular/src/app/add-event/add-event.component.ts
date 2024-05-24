@@ -13,6 +13,7 @@ import { HttpClient } from '@angular/common/http';
 import { eventTypes } from '../shared/models/eventTypes';
 import { DropdownModule } from 'primeng/dropdown';
 import { DatePipe } from '@angular/common';
+
 @Component({
   selector: 'app-add-event',
   standalone: true,
@@ -35,16 +36,19 @@ export class AddEventComponent implements OnInit {
   display: boolean = false;
   addEventForm: FormGroup = new FormGroup({});
   submitted: boolean = false;
-  Types : eventTypes[] = [ {id: 1, name: 'Wedding'}, {id: 2, name: 'Birthday'}, {id: 3, name: 'Corporate'}, {id: 4, name: 'Social'}, {id: 6, name: 'Other'}];
-type: any;
-
+  Types : eventTypes[] = [ 
+    {id: 1, name: 'Wedding'}, 
+    {id: 2, name: 'Birthday'}, 
+    {id: 3, name: 'Corporate'}, 
+    {id: 4, name: 'Social'}, 
+    {id: 6, name: 'Other'}
+  ];
 
   constructor(
     private fb: FormBuilder,
-    private eventService : EventService,
-    private httpclient : HttpClient,
-    private router : Router
-
+    private eventService: EventService,
+    private httpclient: HttpClient,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -77,14 +81,14 @@ type: any;
       console.log('Form is invalid:', this.addEventForm.errors);
       return;
     }
-  
-    // Log the form data before sending
+
+    // Ensure eventType is a number
     const event = this.addEventForm.value;
-    console.log('Form Data:', event);
+    event.eventType = Number(event.eventType);
+    console.log(event);
   
     this.eventService.addEvent(event).subscribe({
       next: (response: any) => {
-        console.log(event.value);
         console.log("Event added successfully:", response);
         this.hideAddModal();
       },
@@ -96,5 +100,4 @@ type: any;
       }
     });
   }
-  
 }

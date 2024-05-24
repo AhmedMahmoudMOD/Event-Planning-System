@@ -1,14 +1,15 @@
 export interface UserRegister {
 
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-    confirmPassword: string;
-    phoneNumber: string;
-    dob: Date;
-    image: string;
-    street: string;
-    city: string;
-    region: string;
+    FName: string;
+    LName: string;
+    Email: string;
+    Password: string;
+    ConfirmPassword: string;
+    PhoneNumber: string;
+    DateOfBirth: Date;
+    Image: string;
+    PostalCode: string;
+    Street: string;
+    City: string;
+    Region: string;
 }

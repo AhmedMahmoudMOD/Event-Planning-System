@@ -91,7 +91,7 @@
         <label for="eventType">Event Type</label>
         <select formControlName="eventType" class="form-select" name="Types" id="Type" required>
           <option value="" >Select Event Type</option>
-          <option *ngFor="let event of Types" [value]="event.id">{{event.name}}</option>
+          <option *ngFor="let event of Types" [value]="event.id | number">{{event.name}}</option>
           </select>
         </div>
         <div *ngIf="addEventForm.get('eventType')?.invalid && addEventForm.get('eventType')?.touched" class="p-error">
