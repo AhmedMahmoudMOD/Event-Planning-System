@@ -17,17 +17,18 @@ namespace Event_Planning_System.Services
 		}
 		public async Task<bool> CreateEvent(EventDTO newEventDTO)
 		{
-			Event newEvent = mapper.Map<Event>(newEventDTO);
-			Console.WriteLine();
-			Console.WriteLine();
-			Console.WriteLine(newEvent.EventDate+"saaaaaaaaaaaa");
-			Console.WriteLine();
-			Console.WriteLine();
+			Event newEvent;
+			try { newEvent = mapper.Map<Event>(newEventDTO); }
+			catch { return false; }
+
 			if (newEvent == null || newEvent.EventDate <= DateTime.Today)
 				return false;
+			
 			newEvent.DateOfCreation = DateOnly.FromDateTime(DateTime.Today);
 			newEvent.CreatorId = 1;
+			
 			//newEvent.CreatorId = int.Parse(ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value);
+			
 			await unitOfWork.EventRepo.Add(newEvent);
 			unitOfWork.save();
 			return true;
