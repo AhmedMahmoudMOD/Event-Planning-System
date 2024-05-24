@@ -33,9 +33,10 @@ namespace Event_Planinng_System_DAL.Models
         public DateOnly DateOfCreation { get; set;}
 
         public virtual User CreatorNavigation { get; set; }
-        public virtual List<Invite> PeopleInvitesNavigation { get; set; } = new List<Invite>();
+        public virtual List<Comments> CommentsNavigation { get; set; } = new List<Comments>();
         public virtual List<ToDoList> ToDoListsNavigation { get; set; } = new List<ToDoList>();   
         public virtual List<Emails> EventEmailsNavigation { get; set; } = new List<Emails>();
         public virtual List<EventImages> EventImagesNavigation { get; set; } = new List<EventImages>();
+        public virtual List<Attendance> AttendanceNavigation { get; set; } = new List<Attendance>(); 
     }
 }
