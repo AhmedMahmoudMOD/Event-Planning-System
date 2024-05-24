@@ -61,10 +61,11 @@ export class RegisterComponent {
   }
 
   selectImage(event:FileSelectEvent){
-    this.registerForm.patchValue({image: event.currentFiles[0].name});
+    this.registerForm.patchValue({image: event.currentFiles[0]});
   }
 
   reg(){
+    
     if(this.registerForm.valid){
       let formattedDate = format(this.dobControl.value,'yyyy-MM-dd');
       let user : UserRegister = {
@@ -81,6 +82,7 @@ export class RegisterComponent {
         City: this.cityControl.value,
         Region: this.regionControl.value
       }
+      console.log(user);
       this.accountService.register(user).subscribe((res:UserAuthResponse)=>{
         console.log(res);
         if(res.succeeded){

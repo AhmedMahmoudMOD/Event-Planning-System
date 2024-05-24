@@ -16,8 +16,25 @@ export class AccountService {
   }
 
   register(user:UserRegister){
-    return this.http.post<UserAuthResponse>(this.baseUrl + 'Rigster',user);
+    const formData = new FormData();
+    formData.append('FName',user.FName);
+    formData.append('LName',user.LName);
+    formData.append('Email',user.Email);
+    formData.append('Password',user.Password);
+    formData.append('ConfirmPassword',user.ConfirmPassword);
+    formData.append('PhoneNumber',user.PhoneNumber);
+    formData.append('DateOfBirth',user.DateOfBirth);
+    formData.append('PostalCode',user.PostalCode);
+    formData.append('Street',user.Street);
+    formData.append('City',user.City);
+    formData.append('Region',user.Region);
+    formData.append('Image',user.Image);
+    return this.http.post<UserAuthResponse>(this.baseUrl + 'Rigster',formData,{
+    });
   }
+
+  // fix missing content type boundary missing issue 
+
 
   logout(){
     this.isLoggedIn = false;
