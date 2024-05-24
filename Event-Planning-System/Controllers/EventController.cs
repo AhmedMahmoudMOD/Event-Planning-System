@@ -17,9 +17,14 @@ namespace Event_Planning_System.Controllers
 		[HttpPost]
 		public async Task<IActionResult> CreateEvent(EventDTO newEventDTO)
 		{
-			if (await eventService.CreateEvent(newEventDTO))
-				return Created();
-			return BadRequest();
+			if (ModelState.IsValid)
+			{
+				if (await eventService.CreateEvent(newEventDTO))
+					return Created();
+				else
+					return BadRequest("Failed to create event. Invalid data or event date is in the past.");
+			}
+			return BadRequest(ModelState);
 		}
 		[HttpDelete]
 		public async Task<IActionResult> DeleteEvent(int id)
