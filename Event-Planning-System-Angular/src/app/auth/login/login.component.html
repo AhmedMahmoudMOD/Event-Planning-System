@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-center align-content-center" style="height: 90vh;">
     <div class="d-flex justify-content-center align-items-center">
         <form [formGroup]="loginForm" (ngSubmit)="login()">
-            <p-card header="Login" [style]="{width:'400px', backgroundColor:'lightgrey'}"> 
+            <p-card header="Login" [style]="{width:'400px'}"> 
                 <div class="mt-2">
                 <p-floatLabel>
                     <input id="email" type="text" class="w-100"  pInputText  name="email" formControlName="email">
@@ -22,7 +22,7 @@
                     <div *ngIf="passwordControl.errors?.['required']">Password is Required</div>
                 </small>
             </div>
-                <button pButton label="Login" class="p-button-success w-100 mt-2" [disabled]="loginForm.invalid"></button>
+                <button pButton label="Login"  type="submit" icon="pi pi-arrow-right" iconPos="right" class="p-button-success w-100 mt-2" [style]="{borderRadius: '6px'}" [disabled]="loginForm.invalid"></button>
             </p-card>
         </form>
     </div>

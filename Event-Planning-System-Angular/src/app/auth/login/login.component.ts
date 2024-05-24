@@ -28,6 +28,7 @@ export class LoginComponent {
   passwordControl = this.loginForm.controls['password'];
 
   constructor(private accountService:AccountService){
+    document.body.style.background = 'linear-gradient(to right, #f0f2f0, #000c40)';
 
   }
 

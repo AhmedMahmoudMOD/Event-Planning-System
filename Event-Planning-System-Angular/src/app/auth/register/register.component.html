@@ -54,6 +54,9 @@
                     <small *ngIf="confirmPasswordControl.invalid && (confirmPasswordControl.dirty||confirmPasswordControl.touched)" class="block p-error">
                         <div *ngIf="confirmPasswordControl.errors?.['required']">Confirm Password is Required</div>
                     </small>
+                    <small class="block p-error">
+                        <div *ngIf="registerForm.errors?.['passwordMismatch']&&passwordControl.valid&&confirmPasswordControl.valid">Passwords must match</div>
+                    </small>
                 </div>
             </div>
             <div class="row mt-4">
