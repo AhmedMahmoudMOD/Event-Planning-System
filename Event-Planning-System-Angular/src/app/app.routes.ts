@@ -7,5 +7,5 @@ import { EmailconfirmComponent } from './auth/emailconfirm/emailconfirm.componen
 export const routes: Routes = [
     { path: 'auth/login', component: LoginComponent },
     { path: 'auth/register' , component: RegisterComponent},
-    { path: 'auth/emailconfirm', component: EmailconfirmComponent }
+    { path: 'auth/confirmemail', component: EmailconfirmComponent }
 ];

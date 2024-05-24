@@ -1,28 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UserLogin } from '../models/userLogin.model';
+import { UserRegister } from '../models/userRegister.model';
+import { UserAuthResponse } from '../models/userAuthRespones.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
-  baseUrl = 'https://localhost:5001/api/';
+  baseUrl = 'http://localhost:5006/api/';
   isLoggedIn : boolean = false;
 
   constructor(private http:HttpClient) { 
 
   }
 
-  login(user:UserLogin){
-    this.http.post(this.baseUrl + 'account/login',user).subscribe({next: (response:any) => {
-      console.log(response);
-      if(response){
-        this.isLoggedIn = true;
-        localStorage.setItem('token',response);
-      }
-    },error: (error:any) => {
-      console.log(error);
-    }})
+  register(user:UserRegister){
+    return this.http.post<UserAuthResponse>(this.baseUrl + 'Rigster',user);
   }
 
   logout(){
