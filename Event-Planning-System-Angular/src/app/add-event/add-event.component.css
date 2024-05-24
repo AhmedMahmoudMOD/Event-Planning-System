@@ -1,0 +1,14 @@
+:host ::ng-deep .add-event-dialog {
+  width: 50vw !important;
+  max-width: 600px;
+}
+
+:host ::ng-deep .p-field {
+  margin-bottom: 15px;
+}
+
+:host ::ng-deep .p-dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}

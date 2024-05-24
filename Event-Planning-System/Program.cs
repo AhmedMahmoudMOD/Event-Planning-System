@@ -2,7 +2,9 @@ using Event_Planinng_System_DAL.Models;
 using Event_Planinng_System_DAL.Unit_Of_Work;
 using Event_Planning_System.IServices;
 using Event_Planning_System.Services;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace Event_Planning_System
 {
@@ -12,8 +14,7 @@ namespace Event_Planning_System
 		{
 			var builder = WebApplication.CreateBuilder(args);
 
-
-			//adding data base depency injection
+			
 
 			var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
 				throw new InvalidOperationException("No connection string was found");
@@ -29,6 +30,17 @@ namespace Event_Planning_System
 			builder.Services.AddScoped<UnitOfWork>();
 			builder.Services.AddScoped<IEventService, EventService>();
 			// Add services to the container.
+
+			builder.Services.AddCors(Services =>
+			{
+				Services.AddPolicy("CorsPolicy", builder =>
+				{
+					builder.AllowAnyOrigin()
+					.AllowAnyMethod()
+					.AllowAnyHeader();
+				});
+			});
+
 
 			builder.Services.AddControllers();
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -51,7 +63,7 @@ namespace Event_Planning_System
 				app.UseSwagger();
 				app.UseSwaggerUI();
 			}
-
+			app.UseCors("CorsPolicy");
 			app.UseAuthorization();
 
 
