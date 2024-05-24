@@ -33,6 +33,7 @@ namespace Event_Planning_System
 			builder.Services.AddScoped<UnitOfWork>();
 			builder.Services.AddScoped<IEventService, EventService>();
             builder.Services.AddScoped<Iregestration, Register>();
+			builder.Services.AddScoped<IProfileService, Profile>();
 
 
 			// Add services to the container.
