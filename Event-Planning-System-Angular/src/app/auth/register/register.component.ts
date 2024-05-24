@@ -52,7 +52,7 @@ export class RegisterComponent {
   regionControl = this.registerForm.controls['region'];
 
   constructor(private accountService:AccountService){
-
+    document.body.style.backgroundColor = '#f0f0f0';
   }
 
   selectImage(event:FileSelectEvent){
