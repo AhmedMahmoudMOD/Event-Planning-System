@@ -1,8 +1,11 @@
 using Event_Planinng_System_DAL.Models;
+using Event_Planinng_System_DAL.Repos;
 using Event_Planinng_System_DAL.Unit_Of_Work;
 using Event_Planning_System.IServices;
 using Event_Planning_System.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 namespace Event_Planning_System
 {
@@ -29,12 +32,21 @@ namespace Event_Planning_System
 
 			builder.Services.AddScoped<UnitOfWork>();
 			builder.Services.AddScoped<IEventService, EventService>();
-			// Add services to the container.
+            builder.Services.AddScoped<Iregestration, Register>();
+        
 
-			builder.Services.AddControllers();
+            // Add services to the container.
+
+            builder.Services.AddControllers();
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			builder.Services.AddEndpointsApiExplorer();
-			builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(options => {
+                options.MapType<DateOnly>(() => new OpenApiSchema
+                {
+                    Type = "string",
+                    Format = "date"
+                });
+            });
 
 
 
@@ -43,8 +55,7 @@ namespace Event_Planning_System
 
 
 
-
-			var app = builder.Build();
+            var app = builder.Build();
 
 			// Configure the HTTP request pipeline.
 			if (app.Environment.IsDevelopment())

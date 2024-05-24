@@ -39,13 +39,15 @@ namespace Event_Planinng_System_DAL.Repos
         }
 
 
-        public async Task Add (User model , string password)
+        public async Task<IdentityResult> Add (User model , string password)
         {
             if (model == null)
-            {
+            {   
                 throw new ArgumentNullException("model");
             }
-           await UserManager.CreateAsync(model , password);
+         
+            var result =await UserManager.CreateAsync(model , password);
+            return result;
         }
 
         public async Task<User?> FindById (int id)
