@@ -4,6 +4,7 @@ export interface UserRegister {
     LName: string;
     Email: string;
     Password: string;
+    ConfirmPassword: string;
     PhoneNumber: string;
     DateOfBirth: Date;
     Image: string;

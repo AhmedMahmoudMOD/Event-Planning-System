@@ -1,12 +1,12 @@
 <div class="d-flex justify-content-center align-content-center mt-3 mb-3">
     <div class="d-flex justify-content-center align-items-center">
         <form [formGroup]="registerForm" (ngSubmit)="reg()">
-            <p-card header="Register" [style]="{width:'600px', backgroundColor:'lightgrey'}"> 
+            <p-card header="Sign Up" subheader="Welcome to EPP 🎉" [style]="{width:'600px'}"> 
                 <div class="row">
                 <div class="col">
                     <p-floatLabel>
                         <input id="fname" type="text" class="w-100"  pInputText  name="fname" formControlName="firstName">
-                        <label for="fname">First Name</label>
+                        <label for="fname">First Name<span class="text-danger"> *</span></label>
                     </p-floatLabel>
                     <small *ngIf="firstNameControl.invalid && (firstNameControl.dirty||firstNameControl.touched)" class="block p-error mb-3">
                         <div *ngIf="firstNameControl.errors?.['required']">First Name is Required</div>
@@ -16,7 +16,7 @@
                 <div class="col">
                     <p-floatLabel>
                         <input id="lname" type="text" class="w-100"  pInputText  name="lname" formControlName="lastName">
-                        <label for="lastName">Last Name</label>
+                        <label for="lastName">Last Name<span class="text-danger"> *</span></label>
                     </p-floatLabel>
                     <small *ngIf="lastNameControl.invalid && (lastNameControl.dirty||lastNameControl.touched)" class="block p-error mb-3">
                         <div *ngIf="lastNameControl.errors?.['required']">Last Name is Required</div>
@@ -27,7 +27,7 @@
             <div class="mt-4">
                 <p-floatLabel>
                     <input id="email" type="text" class="w-100"  pInputText  name="email" formControlName="email">
-                    <label for="email">Email</label>
+                    <label for="email">Email<span class="text-danger"> *</span></label>
                 </p-floatLabel>
                 
                 <small *ngIf="emailControl.invalid && (emailControl.dirty||emailControl.touched)" class="block p-error mb-3">
@@ -39,7 +39,7 @@
             <div class="col">
                 <p-floatLabel>
                     <input id="password" type="password" class="w-100"  pInputText name="password" formControlName="password">
-                    <label for="password">Password</label>
+                    <label for="password">Password<span class="text-danger"> *</span></label>
                 </p-floatLabel>
                 <small *ngIf="passwordControl.invalid && (passwordControl.dirty||passwordControl.touched)" class="block p-error">
                     <div *ngIf="passwordControl.errors?.['required']">Password is Required</div>
@@ -49,10 +49,13 @@
                 <div class="col">
                     <p-floatLabel>
                         <input id="confirmPassword" type="password" class="w-100" pInputText name="confirmPassword" formControlName="confirmPassword">
-                        <label for="confirmPassword">Confirm Password</label>
+                        <label for="confirmPassword">Confirm Password<span class="text-danger"> *</span></label>
                     </p-floatLabel>
                     <small *ngIf="confirmPasswordControl.invalid && (confirmPasswordControl.dirty||confirmPasswordControl.touched)" class="block p-error">
                         <div *ngIf="confirmPasswordControl.errors?.['required']">Confirm Password is Required</div>
+                    </small>
+                    <small class="block p-error">
+                        <div *ngIf="registerForm.errors?.['passwordMismatch']&&passwordControl.valid&&confirmPasswordControl.valid">Passwords must match</div>
                     </small>
                 </div>
             </div>
@@ -60,7 +63,7 @@
                 <div class="col">
                     <p-floatLabel>
                         <input id="phone" type="text" class="w-100" pInputText name="phone" formControlName="phoneNumber">
-                        <label for="phone">Phone Number</label>
+                        <label for="phone">Phone Number<span class="text-danger"> *</span></label>
                     </p-floatLabel>
                     <small *ngIf="phoneNumberControl.invalid && (phoneNumberControl.dirty||phoneNumberControl.touched)" class="block p-error">
                         <div *ngIf="phoneNumberControl.errors?.['required']">Phone is Required</div>
@@ -70,7 +73,7 @@
                 <div class="col">
                     <p-floatLabel>
                         <p-calendar formControlName="dob" id="dob" class="p-fluid" name="dob" dateFormat="dd/mm/yy" showOnFocus="true" showButtonBar="true"/>
-                        <label for="dob">Date of Birth</label>
+                        <label for="dob">Date of Birth<span class="text-danger"> *</span></label>
                     </p-floatLabel>
                     <small *ngIf="dobControl.invalid && (dobControl.dirty||dobControl.touched)" class="block p-error">
                         <div *ngIf="dobControl.errors?.['required']">Date of Birth is Required</div>
@@ -125,7 +128,7 @@
             accept="image/*" 
             maxFileSize="1000000" 
              (onSelect)="selectImage($event)"/>
-                <button pButton label="Register" type="submit" class="p-button-success w-100 mt-2" [style]="{borderRadius: '6px'}"  [disabled]="registerForm.invalid"></button>
+                <button pButton label="Register" type="submit" icon="pi pi-arrow-right" iconPos="right" class="p-button-success w-100 mt-2" [style]="{borderRadius: '6px'}"  [disabled]="registerForm.invalid"></button>
                 <!-- <p-button label="Register"   class="p-fluid" styleClass="p-button-success w-100  mt-3"  [disabled]="registerForm.invalid"></p-button> -->
             </p-card>
         </form>

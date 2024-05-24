@@ -5,6 +5,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AccountService } from '../../shared/services/account.service';
 import { UserRegister } from '../../shared/models/userRegister.model';
+import { passwordMatchValidator } from '../../shared/validators/passwordmatch.validator';
 
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -36,7 +37,9 @@ export class RegisterComponent {
     street : new FormControl ('',[Validators.minLength(3),Validators.maxLength(50)]),
     city : new FormControl ('',[Validators.minLength(3),Validators.maxLength(50)]),
     region : new FormControl ('',[])
-  })
+  }
+   ,{validators:passwordMatchValidator}
+)
 
   firstNameControl = this.registerForm.controls['firstName'];
   lastNameControl = this.registerForm.controls['lastName'];
@@ -52,7 +55,7 @@ export class RegisterComponent {
   regionControl = this.registerForm.controls['region'];
 
   constructor(private accountService:AccountService){
-
+    document.body.style.background = 'linear-gradient(to right, #f0f2f0, #000c40)';
   }
 
   selectImage(event:FileSelectEvent){
@@ -66,6 +69,7 @@ export class RegisterComponent {
         LName: this.lastNameControl.value,
         Email: this.emailControl.value,
         Password: this.passwordControl.value,
+        ConfirmPassword: this.confirmPasswordControl.value,
         PhoneNumber: this.phoneNumberControl.value,
         DateOfBirth: this.dobControl.value,
         Image: this.imageControl.value,
