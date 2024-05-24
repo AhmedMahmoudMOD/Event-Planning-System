@@ -1,7 +1,9 @@
 using Event_Planinng_System_DAL.Models;
+using Event_Planinng_System_DAL.Repos;
 using Event_Planinng_System_DAL.Unit_Of_Work;
 using Event_Planning_System.IServices;
 using Event_Planning_System.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -30,6 +32,7 @@ namespace Event_Planning_System
 			builder.Services.AddScoped<UnitOfWork>();
 			builder.Services.AddScoped<IEventService, EventService>();
             builder.Services.AddScoped<Iregestration, Register>();
+        
 
             // Add services to the container.
 

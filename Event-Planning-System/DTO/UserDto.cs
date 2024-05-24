@@ -1,10 +1,20 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Event_Planinng_System_DAL.Model_Validations;
+using Event_Planinng_System_DAL.Models;
 namespace Event_Planning_System.DTO
 {
     public class UserDto
     {
-        public int MyProperty { get; set; }
+        public string username { get; set; }
+        [Required]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$", ErrorMessage ="Envaild Password")]
+        public string  Password { get; set; }
+        [Required]
+
+        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        public string ConfirmPassword { get; set; }
+        [EmailAddress]
+        public string Email { get; set; }
 
         [Required]
 

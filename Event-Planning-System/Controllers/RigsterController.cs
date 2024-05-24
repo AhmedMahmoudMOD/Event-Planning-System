@@ -14,10 +14,28 @@ namespace Event_Planning_System.Controllers
           this._iregestration = iregestration;
         }
         [HttpPost]
-        public async Task<ActionResult> AddUser([FromBody] UserDto userDto, [FromQuery] string password)
+        public async Task<ActionResult> AddUser([FromBody] UserDto userDto)
         {
-            await _iregestration.AddUserAsync(userDto, password);
-            return Ok();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _iregestration.adduser(userDto);
+            if (result.Succeeded)
+            {
+                return Ok(result.Succeeded);
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(error.Code, error.Description);
+            }
+
+            return BadRequest(result.Errors);
+
         }
     }
-}
+    }
+
+
