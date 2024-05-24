@@ -43,8 +43,7 @@ namespace Event_Planning_System.DTO
 
         public DateOnly DateOfBirth { get; set; }
 
-
-        public string? Image { get; set; }
+        public IFormFile? Image { get; set; }
 
 
     }
