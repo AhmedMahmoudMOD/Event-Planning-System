@@ -52,14 +52,17 @@ namespace Event_Planning_System
             builder.Services.AddControllers();
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			builder.Services.AddEndpointsApiExplorer();
+
+			//swagger gen
             builder.Services.AddSwaggerGen(options => {
                 options.MapType<DateOnly>(() => new OpenApiSchema
                 {
                     Type = "string",
                     Format = "date"
                 });
+				options.OperationFilter<FileUploadOperationFilter>();
             });
-
+			
 
 
 
@@ -72,8 +75,9 @@ namespace Event_Planning_System
 			// Configure the HTTP request pipeline.
 			if (app.Environment.IsDevelopment())
 			{
+				app.UseDeveloperExceptionPage();
 				app.UseSwagger();
-				app.UseSwaggerUI();
+				app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Abdellatief was here"));
 			}
 
 			app.UseAuthorization();
