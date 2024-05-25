@@ -1,6 +1,7 @@
 using Event_Planinng_System_DAL.Models;
 using Event_Planinng_System_DAL.Repos;
 using Event_Planinng_System_DAL.Unit_Of_Work;
+using Event_Planning_System.DTO.Mail;
 using Event_Planning_System.Helpers;
 using Event_Planning_System.IServices;
 using Event_Planning_System.Services;
@@ -12,7 +13,7 @@ using Microsoft.OpenApi.Models;
 
 namespace Event_Planning_System
 {
-	public class Program
+    public class Program
 	{
 		public static void Main(string[] args)
 		{
@@ -37,7 +38,9 @@ namespace Event_Planning_System
 			builder.Services.AddScoped<UnitOfWork>();
 			builder.Services.AddScoped<IEventService, EventService>();
 			builder.Services.Configure<AzureStorage>(builder.Configuration.GetSection("AzureStorage"));
+			builder.Services.Configure<MailInfoDto>(builder.Configuration.GetSection("MailInfo"));
             builder.Services.AddScoped<IBlobServices, BlobService>();
+            builder.Services.AddScoped<ISendEmailService, SendEmailService>();
             // Add services to the container.
 
             builder.Services.AddControllers();
@@ -67,6 +70,7 @@ namespace Event_Planning_System
                     Format = "date"
                 });
 				options.OperationFilter<FileUploadOperationFilter>();
+				options.EnableAnnotations();
             });
 			
 
