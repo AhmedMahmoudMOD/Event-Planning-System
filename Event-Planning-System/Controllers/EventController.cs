@@ -66,28 +66,27 @@ namespace Event_Planning_System.Controllers
 				return Ok();
 			return BadRequest($"{email} is not invited to the Event with id {eventId} or th Event id is incorrect");
 		}
-	}
-  
-  // paginataion endpoint
 
-		[HttpGet("page")]
-		public async Task<IActionResult> GetWithPagination(int pageNumber=1, int pageSize=3, string? searchTerm=null)
+        // paginataion endpoint
+
+        [HttpGet("page")]
+        public async Task<IActionResult> GetWithPagination(int pageNumber = 1, int pageSize = 3, string? searchTerm = null)
         {
             var events = await eventService.GetWithPagination(pageNumber, pageSize, searchTerm);
             if (events == null)
                 return NotFound();
 
-			var data = new
-			{
-				events.CurrentPage,
-				events.TotalPages,
-				events.TotalCount,
-				events.HasPrevious,
-				events.HasNext,
-				events
-			};
+            var data = new
+            {
+                events.CurrentPage,
+                events.TotalPages,
+                events.TotalCount,
+                events.HasPrevious,
+                events.HasNext,
+                events
+            };
             return Ok(data);
         }
-
     }
+  
 }
