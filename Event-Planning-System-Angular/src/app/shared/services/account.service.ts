@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { UserLogin } from '../models/userLogin.model';
 import { UserRegister } from '../models/userRegister.model';
 import { UserAuthResponse } from '../models/userAuthRespones.model';
+import { ConfirmEmail } from '../models/confirmemail.model';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +34,10 @@ export class AccountService {
     });
   }
 
-  // fix missing content type boundary missing issue 
+  confirmEmail(model:ConfirmEmail){
+    return this.http.post(this.baseUrl + 'auth/emailconfirm',model);
+  }
+
 
 
   logout(){

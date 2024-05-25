@@ -96,7 +96,7 @@ namespace Event_Planinng_System_DAL.Repos
                 var encoddemailtoken = Encoding.UTF8.GetBytes(emailtoken);
                 var validemailtoken = WebEncoders.Base64UrlEncode(encoddemailtoken);
 
-                var url = $"http://localhost:5006/Api/Auth/ConfirmEmail?email={model.Email}&token={validemailtoken}";
+                var url = $"http://localhost:4200/auth/validateemail?email={model.Email}&token={validemailtoken}";
 
                 return url;
 

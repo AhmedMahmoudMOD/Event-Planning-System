@@ -19,7 +19,7 @@ namespace Event_Planning_System.Controllers
 
         [HttpPost]
         [Route("emailconfirm")]
-        public async Task<IActionResult> EmailConfirm([FromQuery] ConfirmEmailDto confirmEmailDto)
+        public async Task<IActionResult> EmailConfirm([FromBody] ConfirmEmailDto confirmEmailDto)
         {
             var user = await  authService.GetUserByEmail(confirmEmailDto.Email);
             if (user == null)
