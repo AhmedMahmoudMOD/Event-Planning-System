@@ -5,13 +5,9 @@ using Event_Planning_System.DTO.Mail;
 using Event_Planning_System.Helpers;
 using Event_Planning_System.IServices;
 using Event_Planning_System.Services;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -46,13 +42,13 @@ namespace Event_Planning_System
 			builder.Services.Configure<MailInfoDto>(builder.Configuration.GetSection("MailInfo"));
             builder.Services.AddScoped<IBlobServices, BlobService>();
             builder.Services.AddScoped<ISendEmailService, SendEmailService>();
+            builder.Services.AddScoped<Iregestration, Register>();
+            builder.Services.AddScoped<IaccountServices, AccountServices>();
             // Add services to the container.
 
             builder.Services.AddControllers();
-            builder.Services.AddScoped<Iregestration, Register>();
-                        builder.Services.AddScoped<IaccountServices, AccountServices>();
+           
 
-            //            // Configure JWT Authentication
 			builder.Services.AddScoped<IProfileService, Profile>();
 
 			builder.Services.AddCors(Services =>
@@ -130,15 +126,6 @@ namespace Event_Planning_System
 				options.OperationFilter<FileUploadOperationFilter>();
 				options.EnableAnnotations();
             });
-			
-
-
-
-
-
-
-
-
 
 
             var app = builder.Build();
@@ -152,7 +139,6 @@ namespace Event_Planning_System
 			}
 			app.UseCors("CorsPolicy");
 			app.UseAuthorization();
-			app.UseCors();
 
 
             app.MapControllers();
