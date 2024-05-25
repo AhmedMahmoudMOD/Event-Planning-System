@@ -20,10 +20,10 @@ namespace Event_Planning_System.Services
         {
             try{
                 var message = new MimeMessage();
-                message.From.Add(new MailboxAddress(sendmail.SenderName ?? mailInfo.SenderName
-                    , sendmail.SenderEmail ?? mailInfo.SenderEmail));
+                message.From.Add(new MailboxAddress(sendmail.Sender.Name ?? mailInfo.SenderName
+                    , sendmail.Sender.Email ?? mailInfo.SenderEmail));
 
-                message.To.Add(new MailboxAddress(sendmail.recipientName, sendmail.recipientEmailAddress));
+                message.To.Add(new MailboxAddress(sendmail.Recipient.Name, sendmail.Recipient.Email));
                 message.Subject = sendmail.Subject;
                 message.Body = new TextPart("plain") { Text = sendmail.Body };
 
@@ -39,16 +39,8 @@ namespace Event_Planning_System.Services
                 var EmailDetails = new EmailDetailsDto
                 {
                     IsSend = true,
-                    From = new EmailAdressDto
-                    {
-                        Name = sendmail.SenderName ?? "Invitation To Event",
-                        Email = sendmail.SenderEmail ?? "abdellatiefhamed00@gmail.com"
-                    },
-                    To = new EmailAdressDto
-                    {
-                        Name = sendmail.recipientName ?? "",
-                        Email = sendmail.recipientEmailAddress
-                    },
+                    From = sendmail.Sender,
+                    To = sendmail.Recipient,
                     Subject = sendmail.Subject,
                     Body = sendmail.Body,
                 };
