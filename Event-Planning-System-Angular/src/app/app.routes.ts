@@ -12,4 +12,5 @@ export const routes: Routes = [
     {path:'addevent',component:AddEventComponent},
     { path: 'auth/confirmemail', component: EmailconfirmComponent },
     {path: 'events', component: EventListComponent},
+    { path: '', redirectTo: '/addevent', pathMatch: 'full' }
 ];

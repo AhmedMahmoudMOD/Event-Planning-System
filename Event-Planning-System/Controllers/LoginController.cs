@@ -24,6 +24,10 @@ namespace Event_Planning_System.Controllers
         public async Task<IActionResult> Login([FromBody] LoginDto model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
+            if(user.EmailConfirmed == false)
+            {
+                return Forbid();
+            }
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
                 var token = await _accountservices.GenerateToken(user);

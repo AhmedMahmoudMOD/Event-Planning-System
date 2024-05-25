@@ -7,6 +7,7 @@ namespace Event_Planning_System.DTO
 
 
         [Required]
+        [EmailAddress]
         public string Email { get; set; }
 
         [Required]
