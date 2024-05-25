@@ -25,7 +25,7 @@ namespace Event_Planning_System.Services
 
                 message.To.Add(new MailboxAddress(sendmail.Recipient.Name, sendmail.Recipient.Email));
                 message.Subject = sendmail.Subject;
-                message.Body = new TextPart("plain") { Text = sendmail.Body };
+                message.Body = new TextPart("html") { Text = sendmail.Body };
 
                 using (var client = new SmtpClient())
                 {

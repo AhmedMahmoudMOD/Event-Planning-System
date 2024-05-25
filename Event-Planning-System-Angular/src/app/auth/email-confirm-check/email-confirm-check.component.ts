@@ -15,7 +15,9 @@ import { CardModule } from 'primeng/card';
 export class EmailConfirmCheckComponent implements OnInit{
   isSuccessful = true;
 
-  constructor(private accountService: AccountService, private router: Router,private ActivatedRoute:ActivatedRoute) { }
+  constructor(private accountService: AccountService, private router: Router,private ActivatedRoute:ActivatedRoute) { 
+    document.body.style.background = 'linear-gradient(to right, #f0f2f0, #000c40)';
+  }
 
   ngOnInit(): void {
     if  (this.accountService.isLoggedIn){
@@ -28,10 +30,10 @@ export class EmailConfirmCheckComponent implements OnInit{
         };
         this.accountService.confirmEmail(connfirmEmail).subscribe(
           res => {
-            this.router.navigate(['auth/login']);
+            // this.router.navigate(['auth/login']);
           },
           err => {
-            this.isSuccessful = false;
+            // this.isSuccessful = false;
             console.log(err);
         }
       )});

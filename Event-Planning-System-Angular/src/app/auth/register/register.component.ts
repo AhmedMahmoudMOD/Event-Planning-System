@@ -8,7 +8,7 @@ import { UserRegister } from '../../shared/models/userRegister.model';
 import { passwordMatchValidator } from '../../shared/validators/passwordmatch.validator';
 import { UserAuthResponse } from '../../shared/models/userAuthRespones.model';
 import { Router } from '@angular/router';
-import {format} from 'date-fns';
+import {format, set} from 'date-fns';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -90,7 +90,9 @@ export class RegisterComponent {
         console.log(res);
         if(res.succeeded){
           this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Sign Up is Successful' });
-          this.router.navigate(['auth/confirmemail']);
+          setTimeout(() => { 
+            this.router.navigate(['auth/confirmemail']);
+          }, 6000);
         }
         else{
           this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Sign Up has failed' });
