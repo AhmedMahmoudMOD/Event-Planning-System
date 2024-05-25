@@ -1,0 +1,33 @@
+@if(isSuccessful){
+    <div class="d-flex justify-content-center align-content-center" style="height: 90vh;">
+        <div class="d-flex justify-content-center align-items-center">
+            <p-card>
+                <div class="mb-3">
+                <img src="../../../assets/images/checkmark.png" class="img-fluid" style="height: 80px;">
+                </div>
+                <h3>
+                    Your Email has been Confirmed
+                </h3>
+                <p class="m-3">
+                    You are almost there!, you can login now to access your account.
+                </p>
+                <p class="m-2">
+                   <a [routerLink]="['auth/login']">Login</a>
+                </p>
+            </p-card>
+        </div>
+    </div>
+}@else{
+    <div class="d-flex justify-content-center align-content-center" style="height: 90vh;">
+        <div class="d-flex justify-content-center align-items-center">
+            <p-card>
+                <div class="mb-3">
+                <img src="../../../assets/images/emailicon.png" class="img-fluid" style="height: 80px;">
+                </div>
+                <h3>
+                    Something went wrong.
+                </h3>
+            </p-card>
+        </div>
+    </div>
+}

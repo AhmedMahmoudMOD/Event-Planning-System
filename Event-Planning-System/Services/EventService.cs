@@ -89,8 +89,11 @@ namespace Event_Planning_System.Services
 			var guest = (await unitOfWork.AttendanceRepo.GetAll()).FirstOrDefault(att => att.EventNavigation.Id == eventId && att.Email == userEmail);
 			if (guest == null)
 				return false;
-			return false;
-		}
+
+            //return guest.IsDeleted;
+            return false;
+        }
+
 		// Add guest to the event
 		public async Task<bool> AddGuest(int eventId, AttendanceDTO newAttendanceDTO)
 		{

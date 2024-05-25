@@ -25,7 +25,7 @@ namespace Event_Planning_System
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
                 throw new InvalidOperationException("No connection string was found");
 
-            builder.Services.AddIdentity<User, Role>().AddEntityFrameworkStores<dbContext>();
+			builder.Services.AddIdentity<User, Role>().AddEntityFrameworkStores<dbContext>().AddDefaultTokenProviders();
 
 			builder.Services.AddDbContext<dbContext>(optionBuiler =>
 			{
@@ -42,6 +42,9 @@ namespace Event_Planning_System
 			builder.Services.Configure<MailInfoDto>(builder.Configuration.GetSection("MailInfo"));
             builder.Services.AddScoped<IBlobServices, BlobService>();
             builder.Services.AddScoped<ISendEmailService, SendEmailService>();
+
+			     builder.Services.AddScoped<IAuthService, AuthService>();
+ 
             builder.Services.AddScoped<Iregestration, Register>();
             builder.Services.AddScoped<IaccountServices, AccountServices>();
             // Add services to the container.

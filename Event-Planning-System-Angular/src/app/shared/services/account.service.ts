@@ -3,9 +3,11 @@ import { Injectable } from '@angular/core';
 import { UserLogin } from '../models/userLogin.model';
 import { UserRegister } from '../models/userRegister.model';
 import { UserAuthResponse } from '../models/userAuthRespones.model';
+import { ConfirmEmail } from '../models/confirmemail.model';
 import { jwtTokenRes } from '../models/jwtTokenRes.model';
 import * as jwtDecode from 'jwt-decode';
 import { Router } from '@angular/router';
+
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +36,11 @@ export class AccountService {
     formData.append('Image',user.Image);
     return this.http.post<UserAuthResponse>(this.baseUrl + 'Rigster',formData,{
     });
+  }
+
+
+  confirmEmail(model:ConfirmEmail){
+    return this.http.post(this.baseUrl + 'auth/emailconfirm',model);
   }
 
   login(user:UserLogin){
