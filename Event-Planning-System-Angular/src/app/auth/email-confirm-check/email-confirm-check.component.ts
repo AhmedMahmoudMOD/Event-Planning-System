@@ -1,13 +1,14 @@
 import { Component , OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AccountService } from '../../shared/services/account.service';
 import { ConfirmEmail } from '../../shared/models/confirmemail.model';
 import { CommonModule } from '@angular/common';
+import { CardModule } from 'primeng/card';
 
 @Component({
   selector: 'app-email-confirm-check',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,CardModule,RouterModule],
   templateUrl: './email-confirm-check.component.html',
   styleUrl: './email-confirm-check.component.css'
 })
@@ -25,10 +26,9 @@ export class EmailConfirmCheckComponent implements OnInit{
           email: params['email'],
           token: params['token']
         };
-        console.log(connfirmEmail);
         this.accountService.confirmEmail(connfirmEmail).subscribe(
           res => {
-            this.router.navigate(['/auth/login']);
+            this.router.navigate(['auth/login']);
           },
           err => {
             this.isSuccessful = false;
