@@ -2,6 +2,7 @@
 using Event_Planinng_System_DAL.Models;
 using Event_Planinng_System_DAL.Unit_Of_Work;
 using Event_Planning_System.DTO;
+using Event_Planning_System.Helpers;
 using Event_Planning_System.IServices;
 using System.Security.Claims;
 namespace Event_Planning_System.Services
@@ -58,5 +59,21 @@ namespace Event_Planning_System.Services
 			}
 			catch { return false; }
 		}
-	}
+
+		public async Task<PaginatedList<EventDTO>> GetWithPagination(int pageNumber, int pageSize, string? search)
+        {
+            IQueryable<Event> query = unitOfWork.EventRepo.GetAllQuery();
+
+			if (!string.IsNullOrEmpty(search))
+			{
+				query = query.Where(e => e.Name.Contains(search) || e.Description.Contains(search) || e.Location.Contains(search));
+			}
+
+            var eventsList =  await PaginatedList<Event>.ToPagedList(query, pageNumber, pageSize);
+
+			var eventDTOList = mapper.Map<PaginatedList<EventDTO>>(eventsList);
+
+            return eventDTOList;
+        }
+    }
 }

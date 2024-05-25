@@ -20,6 +20,11 @@ namespace Event_Planinng_System_DAL.Repos
             return await db.Set<TEntity>().ToListAsync();
         }
 
+        public IQueryable<TEntity> GetAllQuery() {
+
+            return db.Set<TEntity>();
+        }
+
         public async Task Add(TEntity entity)
         {
             await db.Set<TEntity>().AddAsync(entity);

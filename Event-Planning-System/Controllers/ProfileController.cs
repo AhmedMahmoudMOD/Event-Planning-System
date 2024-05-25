@@ -99,8 +99,8 @@ namespace Event_Planning_System.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetAllWithPaging(int pageNum = 1 , int pageSize=3) {
-            var profiles = await profileService.GetAllUsersWithPagination(pageNum, pageSize);
+        public async Task<ActionResult> GetAllWithPaging(int pageNum = 1 , int pageSize=3,string? searchTerm=null) {
+            var profiles = await profileService.GetAllUsersWithPagination(pageNum, pageSize,searchTerm);
             if (profiles != null)
             {
                 var data = new

@@ -34,5 +34,24 @@ namespace Event_Planning_System.Controllers
 			return BadRequest();
 		}
 
-	}
+		[HttpGet("page")]
+		public async Task<IActionResult> GetWithPagination(int pageNumber=1, int pageSize=3, string? searchTerm=null)
+        {
+            var events = await eventService.GetWithPagination(pageNumber, pageSize, searchTerm);
+            if (events == null)
+                return NotFound();
+
+			var data = new
+			{
+				events.CurrentPage,
+				events.TotalPages,
+				events.TotalCount,
+				events.HasPrevious,
+				events.HasNext,
+				events
+			};
+            return Ok(data);
+        }
+
+    }
 }

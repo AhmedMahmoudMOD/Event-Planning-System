@@ -144,12 +144,15 @@ namespace Event_Planning_System.Services
             return profileDTO;
         }
 
-        public async Task<PaginatedList<ProfileDTO>> GetAllUsersWithPagination(int pageNumber, int pageSiz){
-            var users = unitOfWork.UserRepo.GetAllQuery();
+        public async Task<PaginatedList<ProfileDTO>> GetAllUsersWithPagination(int pageNumber, int pageSize,string? searchTerm){
+            var query = unitOfWork.UserRepo.GetAllQuery();
 
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(u => u.FName.Contains(searchTerm) || u.LName.Contains(searchTerm) || u.Email.Contains(searchTerm));
+            }
 
-
-           var userList =  await PaginatedList<User>.ToPagedList(users, pageNumber, pageSiz);
+            var userList =  await PaginatedList<User>.ToPagedList(query, pageNumber, pageSize);
 
             var profileList = mapper.Map<PaginatedList<ProfileDTO>>(userList);
 

@@ -11,6 +11,6 @@ namespace Event_Planning_System.IServices
         Task<ProfileDTO> EditProfile(int id, ProfileDTO profileDTO);
         Task<ProfileDTO> DeleteProfile(int id);
 
-        Task<PaginatedList<ProfileDTO>> GetAllUsersWithPagination(int pageNumber, int pageSiz);
+        Task<PaginatedList<ProfileDTO>> GetAllUsersWithPagination(int pageNumber, int pageSize,string? searchTeam);
     }
 }
