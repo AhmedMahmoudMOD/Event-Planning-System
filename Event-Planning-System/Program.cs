@@ -64,6 +64,7 @@ namespace Event_Planning_System
                     Format = "date"
                 });
 				options.OperationFilter<FileUploadOperationFilter>();
+				options.EnableAnnotations();
             });
 			
 
