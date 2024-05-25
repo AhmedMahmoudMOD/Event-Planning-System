@@ -29,6 +29,7 @@ export class LoginComponent {
   });
 
   error : boolean = false;
+  errorMessage : string = '';
   
   
 
@@ -55,9 +56,13 @@ export class LoginComponent {
     },(error)=>{
       if(error.status == 401){
         this.error = true;
+        this.errorMessage = 'Invalid Email or Password';
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Login Failed' });
+      } else if(error.status == 403){
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Login Failed' });
+        this.errorMessage = 'Please verify your email address before logging in';
       } else{
-        console.log(error);
+          console.log(error)
       }
 
     })

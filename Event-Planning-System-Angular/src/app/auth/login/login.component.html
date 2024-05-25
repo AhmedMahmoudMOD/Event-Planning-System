@@ -23,7 +23,7 @@
                 </small>
             </div>
             <small *ngIf="error" class="block p-error">
-                <div> Invalid Email or Password</div>
+                <div> {{errorMessage}} </div>
             </small>
                 <button pButton label="Login"  type="submit" icon="pi pi-arrow-right" iconPos="right" class="p-button-success w-100 mt-2" [style]="{borderRadius: '6px'}" [disabled]="loginForm.invalid"></button>
                 <div class="mt-3">
