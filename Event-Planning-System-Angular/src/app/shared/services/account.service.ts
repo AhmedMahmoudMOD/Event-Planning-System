@@ -3,6 +3,9 @@ import { Injectable } from '@angular/core';
 import { UserLogin } from '../models/userLogin.model';
 import { UserRegister } from '../models/userRegister.model';
 import { UserAuthResponse } from '../models/userAuthRespones.model';
+import { jwtTokenRes } from '../models/jwtTokenRes.model';
+import * as jwtDecode from 'jwt-decode';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +14,7 @@ export class AccountService {
   baseUrl = 'http://localhost:5006/api/';
   isLoggedIn : boolean = false;
 
-  constructor(private http:HttpClient) { 
+  constructor(private http:HttpClient,private router : Router) { 
 
   }
 
@@ -33,7 +36,9 @@ export class AccountService {
     });
   }
 
-  // fix missing content type boundary missing issue 
+  login(user:UserLogin){
+    return this.http.post<jwtTokenRes>(this.baseUrl + 'login/login',user,{observe:'response'});
+  }
 
 
   logout(){
