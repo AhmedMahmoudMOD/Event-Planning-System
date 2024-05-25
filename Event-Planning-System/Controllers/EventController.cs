@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Event_Planning_System.DTO;
 using AutoMapper;
+using Event_Planinng_System_DAL.Models;
+using System.Text.RegularExpressions;
+using Event_Planinng_System_DAL.Enums;
 
 namespace Event_Planning_System.Controllers
 {
@@ -33,6 +36,39 @@ namespace Event_Planning_System.Controllers
 				return Created();
 			return BadRequest();
 		}
+		[HttpGet("Attendance")]
+		public async Task<IActionResult> GetAttendance(int id)
+		{
+			var guests = await eventService.GetAllGuests(id);
+			if (guests != null)
+				return Ok(guests);
+			return NotFound();
+		}
+		[HttpPost("Attendance")]
+		public async Task<IActionResult> AddAttendace(int eventId, List<AttendanceDTO> newAttendancesDTO)
+		{
+			if (ModelState.IsValid)
+			{
+				if (await eventService.AddGuests(eventId, newAttendancesDTO))
+					return Created();
+				else
+					return BadRequest("Failed to add guest. Invalid data or event does not exist, or Email was added before");
+			}
+			return BadRequest(ModelState);
+		}
+		[HttpDelete("Attendance")]
+		public async Task<IActionResult> DeleteAttendee(int eventId, string email)
+		{
+			try { var addr = new System.Net.Mail.MailAddress(email); }
+			catch { return BadRequest("Invalid email address"); }
+
+			if (await eventService.DeleteGuest(eventId, email))
+				return Ok();
+			return BadRequest($"{email} is not invited to the Event with id {eventId} or th Event id is incorrect");
+		}
+	}
+  
+  // paginataion endpoint
 
 		[HttpGet("page")]
 		public async Task<IActionResult> GetWithPagination(int pageNumber=1, int pageSize=3, string? searchTerm=null)

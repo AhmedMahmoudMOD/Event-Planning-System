@@ -9,12 +9,14 @@ namespace Event_Planning_System.MappingProfiles
 	{
 		public MappingProfile()
 		{
-			CreateMap<Event, EventDTO>();
-			CreateMap<User, UserDto>().ReverseMap().ForMember(dist => dist.UserName, opt => opt.MapFrom(src => src.Email)).ForMember(dist=>dist.Image,opt=>opt.Ignore());
+			CreateMap<User, UserDto>().ReverseMap().ForMember(dist => dist.UserName, opt => opt.MapFrom(src => src.Email)).ForMember(dist => dist.Image, opt => opt.Ignore());
 			CreateMap<Event, EventDTO>().ForMember(dest => dest.EventDate, opt => opt.MapFrom(src => src.EventDate.ToString("yyyy-MM-dd'T'HH:mm"))).ReverseMap();
+			CreateMap<Attendance, AttendanceDTO>().ReverseMap();
+
 			CreateMap<User, ProfileDTO>().ReverseMap();
 
-            CreateMap(typeof(PaginatedList<>), typeof(PaginatedList<>)).ConvertUsing(typeof(CustomPaginatedListMapper<,>));
-        }
+       CreateMap(typeof(PaginatedList<>), typeof(PaginatedList<>)).ConvertUsing(typeof(CustomPaginatedListMapper<,>));
+     }
+
 	}
 }

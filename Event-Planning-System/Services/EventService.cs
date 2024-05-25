@@ -16,6 +16,7 @@ namespace Event_Planning_System.Services
 			unitOfWork = _unitOfWork;
 			mapper = _mapper;
 		}
+		// Create new event
 		public async Task<bool> CreateEvent(EventDTO newEventDTO)
 		{
 			Event newEvent;
@@ -24,17 +25,17 @@ namespace Event_Planning_System.Services
 
 			if (newEvent == null || newEvent.EventDate <= DateTime.Today)
 				return false;
-			
+
 			newEvent.DateOfCreation = DateOnly.FromDateTime(DateTime.Today);
+
+			// ============= CreatorId should be the id of the logged in user ============= //
 			newEvent.CreatorId = 1;
-			
-			//newEvent.CreatorId = int.Parse(ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value);
-			
+
 			await unitOfWork.EventRepo.Add(newEvent);
 			unitOfWork.save();
 			return true;
 		}
-
+		// Soft delete event 
 		public async Task<bool> DeleteEventSoft(int id)
 		{
 			// Cancellation mail sent to all guests (Will search)
@@ -48,6 +49,7 @@ namespace Event_Planning_System.Services
 			}
 			catch { return false; }
 		}
+		// Delete event From DB
 		public async Task<bool> DeleteEventHard(int id)
 		{
 			try
@@ -59,6 +61,88 @@ namespace Event_Planning_System.Services
 			}
 			catch { return false; }
 		}
+		//---------------------------------------------------------------------------------------------//
+		// ------------------------------------------- Guests ----------------------------------------//
+		//-------------------------------------------------------------------------------------------//
+
+		// Get all guests of the event either mail is sent or not
+		public async Task<IEnumerable<AttendanceDTO>?> GetAllGuests(int id)
+		{
+			try
+			{
+				if (await unitOfWork.EventRepo.FindById(id) == null)
+					return null;
+				var guests = (await unitOfWork.AttendanceRepo.GetAll()).Where(a => a.EventNavigation.Id == id);
+				return mapper.Map<IEnumerable<AttendanceDTO>>(guests);
+            }
+			catch { return null; }
+		}
+		// Check if guest already exists in the event
+		public async Task<bool> CheckIfGuestExists(int eventId, string email)
+		{
+			var guests = await unitOfWork.AttendanceRepo.GetAll();
+			return guests.Any(g => g.EventNavigation.Id == eventId && g.Email == email);
+		}
+		// Check if guest is deleted from the event
+		public async Task<bool> CheckIfGuestisDeleted(int eventId, string userEmail)
+		{
+			var guest = (await unitOfWork.AttendanceRepo.GetAll()).FirstOrDefault(att => att.EventNavigation.Id == eventId && att.Email == userEmail);
+			if (guest == null)
+				return false;
+			return guest.IsDeleted;
+		}
+		// Add guest to the event
+		public async Task<bool> AddGuest(int eventId, AttendanceDTO newAttendanceDTO)
+		{
+			Attendance newAttendance;
+			try
+			{
+				newAttendance = mapper.Map<Attendance>(newAttendanceDTO);
+				newAttendance.EventNavigation = await unitOfWork.EventRepo.FindById(eventId);
+			}
+			catch { return false; }
+
+			if (await CheckIfGuestExists(eventId, newAttendance.Email)) // Check if guest already exists
+			{
+				if (await CheckIfGuestisDeleted(eventId, newAttendance.Email)) // Check if guest is deleted
+				{
+					var guest = (await unitOfWork.AttendanceRepo.GetAll()).FirstOrDefault(g => g.EventNavigation.Id == eventId && g.Email == newAttendance.Email);
+					guest.IsDeleted = false; // If guest is deleted, then un delete the guest
+					unitOfWork.save();
+					return true;
+				}
+				return false;
+			}
+			await unitOfWork.AttendanceRepo.Add(newAttendance);
+			unitOfWork.save();
+			return true;
+		}
+		// Add multiple guests to the event
+		public async Task<bool> AddGuests(int eventId, List<AttendanceDTO> newAttendancesDTO)
+		{
+			if (newAttendancesDTO == null)
+				return false;
+			foreach (AttendanceDTO guest in newAttendancesDTO)
+				if (!await AddGuest(eventId, guest))
+					return false;
+			return true;
+		}
+		// Delete guest from the event
+		public async Task<bool> DeleteGuest(int eventId, string email)
+		{
+			try
+			{
+				var guest = (await unitOfWork.AttendanceRepo.GetAll()).FirstOrDefault(g => g.EventNavigation.Id == eventId && g.Email == email);
+				if (guest == null)
+					return false;
+				guest.IsDeleted = true;
+				unitOfWork.save();
+				return true;
+			}
+			catch { return false; }
+		}
+    
+    // pagination function
 
 		public async Task<PaginatedList<EventDTO>> GetWithPagination(int pageNumber, int pageSize, string? search)
         {
@@ -76,4 +160,5 @@ namespace Event_Planning_System.Services
             return eventDTOList;
         }
     }
+
 }
