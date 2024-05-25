@@ -42,6 +42,7 @@ namespace Event_Planning_System
 
             builder.Services.AddControllers();
             builder.Services.AddScoped<Iregestration, Register>();
+			builder.Services.AddScoped<IProfileService, Profile>();
 
 			builder.Services.AddCors(Services =>
 			{
