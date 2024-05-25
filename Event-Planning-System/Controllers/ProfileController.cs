@@ -2,6 +2,7 @@
 using Event_Planinng_System_DAL.Repos;
 using Event_Planinng_System_DAL.Unit_Of_Work;
 using Event_Planning_System.DTO;
+using Event_Planning_System.Helpers;
 using Event_Planning_System.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -96,6 +97,29 @@ namespace Event_Planning_System.Controllers
 
             return NoContent();
         }
+
+        [HttpGet]
+        public async Task<ActionResult> GetAllWithPaging(int pageNum = 1 , int pageSize=3) {
+            var profiles = await profileService.GetAllUsersWithPagination(pageNum, pageSize);
+            if (profiles != null)
+            {
+                var data = new
+                {
+                    profiles.CurrentPage,
+                    profiles.TotalPages,
+                    profiles.TotalCount,
+                    profiles.HasNext,
+                    profiles.HasPrevious,
+                    profiles
+                };
+
+                return Ok(data);
+            }
+                 
+
+            return BadRequest();
+        }
+        
 
 
 

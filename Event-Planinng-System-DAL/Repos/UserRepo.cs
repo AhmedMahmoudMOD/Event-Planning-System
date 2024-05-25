@@ -28,6 +28,11 @@ namespace Event_Planinng_System_DAL.Repos
             return await db.Users.ToListAsync();
         }
 
+        public IQueryable<User> GetAllQuery()
+        {
+            return db.Users;
+        }
+
         public async Task Edit(User model)
         {
             if (model == null)

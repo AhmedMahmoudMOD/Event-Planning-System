@@ -22,10 +22,10 @@ namespace Event_Planinng_System_DAL.Models
         public virtual DbSet<EventImages> EventsImages { get; set; }
         public virtual DbSet<ToDoList> ToDoLists { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    base.OnConfiguring(optionsBuilder);
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

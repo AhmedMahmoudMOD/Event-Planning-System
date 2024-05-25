@@ -70,7 +70,7 @@ namespace Event_Planinng_System_DAL.Unit_Of_Work
 
         public void save()
         {
-            db.SaveChanges();
+            db.SaveChangesAsync();
         }
     }
 }
