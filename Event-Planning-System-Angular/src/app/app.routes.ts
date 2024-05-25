@@ -16,4 +16,6 @@ export const routes: Routes = [
 
     
     { path: 'auth/validateemail', component: EmailConfirmCheckComponent },
+
+    { path: '', redirectTo: '/addevent', pathMatch: 'full' }
 ];

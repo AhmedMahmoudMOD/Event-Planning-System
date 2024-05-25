@@ -4,6 +4,10 @@ import { UserLogin } from '../models/userLogin.model';
 import { UserRegister } from '../models/userRegister.model';
 import { UserAuthResponse } from '../models/userAuthRespones.model';
 import { ConfirmEmail } from '../models/confirmemail.model';
+import { jwtTokenRes } from '../models/jwtTokenRes.model';
+import * as jwtDecode from 'jwt-decode';
+import { Router } from '@angular/router';
+
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +16,7 @@ export class AccountService {
   baseUrl = 'http://localhost:5006/api/';
   isLoggedIn : boolean = false;
 
-  constructor(private http:HttpClient) { 
+  constructor(private http:HttpClient,private router : Router) { 
 
   }
 
@@ -34,10 +38,14 @@ export class AccountService {
     });
   }
 
+
   confirmEmail(model:ConfirmEmail){
     return this.http.post(this.baseUrl + 'auth/emailconfirm',model);
   }
 
+  login(user:UserLogin){
+    return this.http.post<jwtTokenRes>(this.baseUrl + 'login/login',user,{observe:'response'});
+  }
 
 
   logout(){
