@@ -1,4 +1,5 @@
 ﻿using Event_Planning_System.DTO;
+using Event_Planning_System.Helpers;
 using Event_Planning_System.Services;
 
 namespace Event_Planning_System.IServices
@@ -9,5 +10,7 @@ namespace Event_Planning_System.IServices
         Task<ProfileDTO> GetProfileByEmail(string email);
         Task<ProfileDTO> EditProfile(int id, ProfileDTO profileDTO);
         Task<ProfileDTO> DeleteProfile(int id);
+
+        Task<PaginatedList<ProfileDTO>> GetAllUsersWithPagination(int pageNumber, int pageSize,string? searchTeam);
     }
 }

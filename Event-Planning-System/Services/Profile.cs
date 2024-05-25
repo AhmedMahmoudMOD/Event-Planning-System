@@ -2,6 +2,7 @@
 using Event_Planinng_System_DAL.Models;
 using Event_Planinng_System_DAL.Unit_Of_Work;
 using Event_Planning_System.DTO;
+using Event_Planning_System.Helpers;
 using Event_Planning_System.IServices;
 using Microsoft.AspNetCore.Identity;
 
@@ -27,19 +28,21 @@ namespace Event_Planning_System.Services
             }
             else
             {
-                ProfileDTO profileDTO = new ProfileDTO
-                {
-                    FName = user.FName,
-                    LName = user.LName,
-                    Email = user.Email,
-                    PhoneNumber = user.PhoneNumber,
-                    Street = user.Street,
-                    City = user.City,
-                    Region = user.Region,
-                    PostalCode = user.PostalCode,
-                    DateOfBirth = user.DateOfBirth,
-                    Image = user.Image
-                };
+                //ProfileDTO profileDTO = new ProfileDTO
+                //{
+                //    FName = user.FName,
+                //    LName = user.LName,
+                //    Email = user.Email,
+                //    PhoneNumber = user.PhoneNumber,
+                //    Street = user.Street,
+                //    City = user.City,
+                //    Region = user.Region,
+                //    PostalCode = user.PostalCode,
+                //    DateOfBirth = user.DateOfBirth,
+                //    Image = user.Image
+                //};
+
+                var profileDTO = mapper.Map<ProfileDTO>(user);
                 return profileDTO;
             }
         }
@@ -52,8 +55,8 @@ namespace Event_Planning_System.Services
             {
                 return null;
             }
-            else 
-            {                 
+            else
+            {
                 ProfileDTO profileDTO = new ProfileDTO
                 {
                     FName = user.FName,
@@ -82,7 +85,7 @@ namespace Event_Planning_System.Services
             User user = await unitOfWork.UserRepo.FindById(id);
             if (user == null)
             {
-                return null; 
+                return null;
             }
             user.FName = profileDTO.FName;
             user.LName = profileDTO.LName;
@@ -141,7 +144,20 @@ namespace Event_Planning_System.Services
             return profileDTO;
         }
 
+        public async Task<PaginatedList<ProfileDTO>> GetAllUsersWithPagination(int pageNumber, int pageSize,string? searchTerm){
+            var query = unitOfWork.UserRepo.GetAllQuery();
 
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(u => u.FName.Contains(searchTerm) || u.LName.Contains(searchTerm) || u.Email.Contains(searchTerm));
+            }
 
+            var userList =  await PaginatedList<User>.ToPagedList(query, pageNumber, pageSize);
+
+            var profileList = mapper.Map<PaginatedList<ProfileDTO>>(userList);
+
+            return profileList;
+
+        }
     }
 }
