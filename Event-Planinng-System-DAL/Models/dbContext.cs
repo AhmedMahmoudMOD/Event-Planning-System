@@ -35,6 +35,11 @@ namespace Event_Planinng_System_DAL.Models
                 entity.HasIndex(e=>e.Email).IsUnique();
             });
 
+            //Attendance 
+            modelBuilder.Entity<Attendance>(entity =>
+            {
+                entity.HasKey(e=>new {e.Email , e.EventId});
+            });
             //comments
             modelBuilder.Entity<Comments>(entity =>
             {
@@ -69,6 +74,8 @@ namespace Event_Planinng_System_DAL.Models
             {
                 entity.HasKey(e => new { e.Title, e.EventId });                
             });
+
+            
 
 
             base.OnModelCreating(modelBuilder); 
