@@ -19,7 +19,7 @@ namespace Event_Planning_System.Controllers
             Mailer = _m;
         }
         [HttpPost]
-        [SwaggerOperation(Summary = "Send an email", Description = "Send an email with the specified details.")]
+        [SwaggerOperation(Summary = "Send an email", Description = "Send an email with the specified details." )]
         [SwaggerResponse(200, "Email sent successfully", typeof(EmailDetailsDto))]
         [SwaggerResponse(400, "Invalid input data or error during email sending")]
         public IActionResult Send([FromBody]SendEmailDto sendemail)
