@@ -12,7 +12,7 @@ namespace Event_Planning_System.Services
 	{
 		UnitOfWork unitOfWork;
 		private readonly IMapper mapper;
-		ISendEmailService emailService;
+		readonly ISendEmailService emailService;
 		public EventService(UnitOfWork _unitOfWork, IMapper _mapper, ISendEmailService _emailService)
 		{
 			unitOfWork = _unitOfWork;
@@ -20,30 +20,35 @@ namespace Event_Planning_System.Services
 			emailService = _emailService;
 		}
 
-//		public async Task<bool> SendInvitationMail(int EventId, List<AttendanceDTO> emailAdressDtos)
-//		{
-//			try
-//			{
-//				var AttendanceList = mapper.Map<List<Attendance>>(emailAdressDtos);
-//				Event myEvent =
-//				var emailAdresses = (await unitOfWork.AttendanceRepo.GetAll()).Where(a => a.EventId == EventId && a.IsSent == false);
-//				if (emailAdresses == null || emailAdresses.Count() == 0 || AttendanceList == null || AttendanceList.Count() == 0)
-//					return false;
-//				foreach (var attendee in AttendanceList)
-//				{
-//					var email = new SendEmailDto
-//					{
-//						Sender = new EmailAdressDto { Email = "kingabdo391@gmail.com", Name = "EPP" },
-//						Recipient = new EmailAdressDto { Email = attendee.Email, Name = "" },
-//						Subject = "Invitaion mail",
-//						Body = $"Please confirm your email by clicking on the link below <br> <a href='{emailurl}'>Click here</a>"
-//					};
-//				}
+		public async Task<bool> SendInvitationMail(int EventId)
+		{
+			try
+			{
+				//var AttendanceList = mapper.Map<List<Attendance>>(emailAdressDtos);
+				Event myEvent = await unitOfWork.EventRepo.FindById(EventId);
+				var allAttendees = (await unitOfWork.AttendanceRepo.GetAll());
+				var emailAdresses = allAttendees.Where(a => a.EventId == EventId && a.IsSent == false).ToList();
 
-//				var emailresult = sendEmailService.SendEmail(email);
-//)			}
-//			catch { return false; }
-//		}
+				if (emailAdresses == null || !emailAdresses.Any())
+					return false;
+
+				foreach (var attendee in emailAdresses)
+				{
+					var email = new SendEmailDto
+					{
+						Sender = new EmailAdressDto { Email = "kingabdo391@gmail.com", Name = "EPP" },
+						Recipient = new EmailAdressDto { Email = attendee.Email, Name = "his name" },
+						Subject = "Invitaion mail",
+						Body = $"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\r\n        <tr>\r\n            <td align=\"center\" style=\"padding: 10px 0 30px 0;\">\r\n                <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\">\r\n                    <tr>\r\n                        <td align=\"center\" bgcolor=\"#70bbd9\" style=\"padding: 40px 0 30px 0;\">\r\n                            <h1 style=\"color: white;\">You're Invited!</h1>\r\n                        </td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td bgcolor=\"#ffffff\" style=\"padding: 40px 30px 40px 30px;\">\r\n                            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\r\n                                <tr>\r\n                                    <td>\r\n <p>We are excited to invite you to our upcoming event. Please find the details below:</p>\r\n                                        <p><strong>Event:</strong> {myEvent.Name}</p>\r\n                                        <p><strong>Date:</strong> {myEvent.EventDate.Date}</p>\r\n                                        <p><strong>Time:</strong> {myEvent.EventDate.TimeOfDay}</p>\r\n                                        <p><strong>Location:</strong> {myEvent.Location}, {myEvent.GoogleMapsLocation}</p>\r\n                                        <p>We hope you can join us for this special occasion.</p>\r\n                                        <p>Looking forward to seeing you there!</p>\r\n                                        <p>Best regards,</p>\r\n                                        <p>Event Planning System</p>\r\n                                        <p></p>\r\n                                    </td>\r\n                                </tr>\r\n                                <tr>\r\n                                    <td align=\"center\" style=\"padding: 20px 0 30px 0;\">\r\n                                        <p></p>\r\n                                    </td>\r\n                                </tr>\r\n                            </table>\r\n                        </td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td bgcolor=\"#70bbd9\" style=\"padding: 30px 30px 30px 30px;\">\r\n                            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\r\n                                <tr>\r\n                                    <td align=\"center\" style=\"color: white;\">\r\n                                        <p>&copy; 2024 Event Planning Company. All rights reserved.</p>\r\n                                    </td>\r\n                                </tr>\r\n                            </table>\r\n                        </td>\r\n                    </tr>\r\n                </table>\r\n            </td>\r\n        </tr>\r\n    </table>"
+					};
+					var emailresult = emailService.SendEmail(email);
+					attendee.IsSent = true;
+					unitOfWork.save();
+				}
+				return true;
+			}
+			catch { return false; }
+		}
 
 		// Get Event by its ID 
 		public async Task<EventDTO?> GetEventById(int id)
@@ -164,6 +169,7 @@ namespace Event_Planning_System.Services
 			foreach (AttendanceDTO guest in newAttendancesDTO)
 				if (!await AddGuest(eventId, guest))
 					return false;
+			await SendInvitationMail(eventId);
 			return true;
 		}
 		// Delete guest from the event

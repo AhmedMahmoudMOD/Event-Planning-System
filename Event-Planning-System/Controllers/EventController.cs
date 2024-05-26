@@ -97,7 +97,7 @@ namespace Event_Planning_System.Controllers
 		}
 		// add Attendance to event
 		[SwaggerOperation(Summary = "Add list of attendees", Description = "Add new list of attendees to the Event.")]
-		[SwaggerResponse(200, "Attendance was added successfully", typeof(EventDTO))]
+		[SwaggerResponse(200, "Attendance was added successfully")]
 		[HttpPost("Attendance")]
 		public async Task<IActionResult> AddAttendace(int eventId, List<AttendanceDTO> newAttendancesDTO)
 		{

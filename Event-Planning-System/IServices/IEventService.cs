@@ -15,6 +15,7 @@ namespace Event_Planning_System.IServices
 		public Task<bool> CheckIfGuestExists(int eventId, string email);
 		public Task<bool> AddGuest(int eventId, AttendanceDTO newAttendanceDTO);
 		public Task<bool> AddGuests(int eventId, List<AttendanceDTO> newAttendance);
+		public Task<bool> SendInvitationMail(int EventId);
 		public Task<bool> DeleteGuest(int eventId, string email);
 
 		Task<PaginatedList<EventDTO>> GetWithPagination(int pageNumber, int pageSize, string? search);
