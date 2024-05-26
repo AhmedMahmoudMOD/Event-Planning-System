@@ -14,8 +14,6 @@ namespace Event_Planning_System.Controllers
           this._iregestration = iregestration;
         }
         [HttpPost]
-        // how to change request type to multipart/form-data?
-
         public async Task<ActionResult> AddUser([FromForm] UserDto userDto)
         {
             if (!ModelState.IsValid)

@@ -8,19 +8,22 @@ import { UserRegister } from '../../shared/models/userRegister.model';
 import { passwordMatchValidator } from '../../shared/validators/passwordmatch.validator';
 import { UserAuthResponse } from '../../shared/models/userAuthRespones.model';
 import { Router } from '@angular/router';
-import {format} from 'date-fns';
+import {format, set} from 'date-fns';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { CalendarModule } from 'primeng/calendar';
 import { FileSelectEvent, FileUploadModule } from 'primeng/fileupload';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, InputTextModule, ButtonModule, FloatLabelModule, CardModule, CalendarModule, FileUploadModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, InputTextModule, ButtonModule, FloatLabelModule, CardModule, CalendarModule, FileUploadModule,ToastModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
+  providers:[MessageService]
 })
 export class RegisterComponent {
   registerForm : FormGroup = new FormGroup({
@@ -56,7 +59,7 @@ export class RegisterComponent {
   cityControl = this.registerForm.controls['city'];
   regionControl = this.registerForm.controls['region'];
 
-  constructor(private accountService:AccountService,private router:Router) { 
+  constructor(private accountService:AccountService,private router:Router,private messageService:MessageService) { 
     document.body.style.background = 'linear-gradient(to right, #f0f2f0, #000c40)';
   }
 
@@ -86,16 +89,16 @@ export class RegisterComponent {
       this.accountService.register(user).subscribe((res:UserAuthResponse)=>{
         console.log(res);
         if(res.succeeded){
-          console.log('User registered successfully');
-          this.router.navigate(['auth/confirmemail']);
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Sign Up is Successful' });
+          setTimeout(() => { 
+            this.router.navigate(['auth/confirmemail']);
+          }, 6000);
         }
         else{
-          console.log('User registration failed');
-          console.log(res.errors);
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Sign Up has failed' });
         }
       },(error)=>{
-        console.log('An error occured');
-        console.log(error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
       })
     }
 

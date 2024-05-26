@@ -89,8 +89,11 @@ namespace Event_Planning_System.Services
 			var guest = (await unitOfWork.AttendanceRepo.GetAll()).FirstOrDefault(att => att.EventNavigation.Id == eventId && att.Email == userEmail);
 			if (guest == null)
 				return false;
-			return guest.IsDeleted;
-		}
+
+            //return guest.IsDeleted;
+            return false;
+        }
+
 		// Add guest to the event
 		public async Task<bool> AddGuest(int eventId, AttendanceDTO newAttendanceDTO)
 		{
@@ -107,7 +110,7 @@ namespace Event_Planning_System.Services
 				if (await CheckIfGuestisDeleted(eventId, newAttendance.Email)) // Check if guest is deleted
 				{
 					var guest = (await unitOfWork.AttendanceRepo.GetAll()).FirstOrDefault(g => g.EventNavigation.Id == eventId && g.Email == newAttendance.Email);
-					guest.IsDeleted = false; // If guest is deleted, then un delete the guest
+					//guest.IsDeleted = false; // If guest is deleted, then un delete the guest
 					unitOfWork.save();
 					return true;
 				}
@@ -135,7 +138,7 @@ namespace Event_Planning_System.Services
 				var guest = (await unitOfWork.AttendanceRepo.GetAll()).FirstOrDefault(g => g.EventNavigation.Id == eventId && g.Email == email);
 				if (guest == null)
 					return false;
-				guest.IsDeleted = true;
+				//guest.IsDeleted = true;
 				unitOfWork.save();
 				return true;
 			}

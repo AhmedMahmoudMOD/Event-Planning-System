@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { set } from 'date-fns';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 
@@ -9,10 +11,16 @@ import { CardModule } from 'primeng/card';
   templateUrl: './emailconfirm.component.html',
   styleUrl: './emailconfirm.component.css'
 })
-export class EmailconfirmComponent {
+export class EmailconfirmComponent implements OnInit {
 
-  constructor() { 
+  constructor(private router:Router) { 
     document.body.style.background = 'linear-gradient(to right, #f0f2f0, #000c40)';
+  }
+
+  ngOnInit(): void {
+   setTimeout(() => {
+    this.router.navigate(['auth/login']);
+   }, 5000);
   }
 
 }

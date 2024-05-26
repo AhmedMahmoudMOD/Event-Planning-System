@@ -12,10 +12,10 @@ namespace Event_Planinng_System_DAL.Unit_Of_Work
     public class UnitOfWork
     {
         UserRepo userRepository;
-        GenericRepoForId<Attendance> attendanceRepository;
         GenericRepoForId<Event> eventRepo;
         //GenericRepoForId<Role> roleRepo;
 
+        GenericRepo<Attendance> attendanceRepository;
         GenericRepo<Comments> commentsRepo;
         GenericRepo<Emails> emailRepo;
         GenericRepo<EventImages> eventimagesRepo;
@@ -34,9 +34,9 @@ namespace Event_Planinng_System_DAL.Unit_Of_Work
         {
             get => userRepository ??= new UserRepo(userManager, db);
         }
-        public GenericRepoForId<Attendance> AttendanceRepo
+        public GenericRepo<Attendance> AttendanceRepo
         {
-            get => attendanceRepository ??= new GenericRepoForId<Attendance>(db);
+            get => attendanceRepository ??= new GenericRepo<Attendance>(db);
         }
         public GenericRepo<Comments> CommentsRepo
         {
