@@ -52,5 +52,9 @@ export class AccountService {
     this.isLoggedIn = false;
   }
 
+  forgotPassword(email:string){
+    return this.http.post(this.baseUrl + `auth/forgotpassword?email=${email}`,{},{observe:'response'});
+  }
+
 
 }

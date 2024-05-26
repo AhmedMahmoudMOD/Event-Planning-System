@@ -26,26 +26,26 @@ namespace Event_Planning_System.Controllers
             var user = await  authService.GetUserByEmail(confirmEmailDto.Email);
             if (user == null)
             {
-                return BadRequest("User not found");
+                return BadRequest(new JsonResult("User not found"));
             }
             var result = await authService.ValidateEmailToken(user,confirmEmailDto.Token);
             if (result.Succeeded)
             {
-                return Ok("Email confirmed");
+                return Ok(new JsonResult("Email confirmed"));
             }
-            return BadRequest("Email not confirmed");
+            return BadRequest(new JsonResult("Email not confirmed"));
         }
 
         [HttpPost]
-        [Route("forgetpassword")]
-        public async Task<IActionResult> ForgetPassword(string email)
+        [Route("forgotpassword")]
+        public async Task<IActionResult> ForgetPassword([FromQuery]string email)
         {
              var result = await authService.SendPasswordResetEmail(email);
             if (result.IsSend)
             {
-                return Ok("Email sent");//200
+                return Ok(new JsonResult("Email sent"));//200
             }
-            return BadRequest("Email not sent");//400
+            return BadRequest(new JsonResult("Email sent"));//400
         }
 
         [HttpPost]
@@ -54,16 +54,16 @@ namespace Event_Planning_System.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest("Invalid data");
+                return BadRequest(new JsonResult("Invalid data"));
             }
             else
             {
                var result = await authService.ResetPassword(resetPasswordDto);
                 if (result.Succeeded)
                 {
-                    return Ok("Password reset");
+                    return Ok(new JsonResult("Password reset"));
                 }
-                return BadRequest("Password not reset");
+                return BadRequest(new JsonResult("Password not reset"));
             }
         }
     }

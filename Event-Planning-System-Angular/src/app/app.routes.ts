@@ -5,6 +5,7 @@ import { AddEventComponent } from './add-event/add-event.component';
 import { EmailconfirmComponent } from './auth/emailconfirm/emailconfirm.component';
 import { EventListComponent } from './events/event-list/event-list.component';
 import { EmailConfirmCheckComponent } from './auth/email-confirm-check/email-confirm-check.component';
+import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 
 
 export const routes: Routes = [
@@ -12,6 +13,7 @@ export const routes: Routes = [
     { path: 'auth/register' , component: RegisterComponent},
     {path:'addevent',component:AddEventComponent},
     { path: 'auth/confirmemail', component: EmailconfirmComponent },
+    {path: 'auth/forgotpassword', component: ForgotPasswordComponent},
     {path: 'events', component: EventListComponent},
 
     
