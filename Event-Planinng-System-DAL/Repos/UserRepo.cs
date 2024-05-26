@@ -114,5 +114,21 @@ namespace Event_Planinng_System_DAL.Repos
             return result;
 
         }
+
+        public async Task<string> ForgetPasswordAsync(User user)
+        {
+           
+            var token = await UserManager.GeneratePasswordResetTokenAsync(user);
+            var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+            string url = $"http://localhost:5006/api/auth/resetpassword?email={user.Email}&token={encodedToken}";
+            return url;
+        }
+
+        public async Task<IdentityResult> ResetPasswordAsync(User user, string token, string password)
+        {
+            var validEncodedToken = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(token));
+            var result = await UserManager.ResetPasswordAsync(user, validEncodedToken, password);
+            return result;
+        }
     }
 }
