@@ -5,7 +5,6 @@ import { UserRegister } from '../models/userRegister.model';
 import { UserAuthResponse } from '../models/userAuthRespones.model';
 import { ConfirmEmail } from '../models/confirmemail.model';
 import { jwtTokenRes } from '../models/jwtTokenRes.model';
-import * as jwtDecode from 'jwt-decode';
 import { Router } from '@angular/router';
 
 
