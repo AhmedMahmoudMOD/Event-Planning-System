@@ -33,9 +33,9 @@ namespace Event_Planning_System
 
 			//add dependency injection
 			builder.Services.AddAutoMapper(typeof(Program));
-
 			builder.Services.AddScoped<UnitOfWork>();
 			builder.Services.AddScoped<IEventService, EventService>();
+			builder.Services.AddScoped<IToDoListService, ToDoListService>();
 			builder.Services.Configure<AzureStorage>(builder.Configuration.GetSection("AzureStorage"));
             builder.Services.AddScoped<IBlobServices, BlobService>();
             // Add services to the container.
