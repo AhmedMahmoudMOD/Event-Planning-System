@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using Event_Planinng_System_DAL.Enums;
 using Event_Planinng_System_DAL.Models;
 using Event_Planinng_System_DAL.Unit_Of_Work;
 using Event_Planning_System.DTO;
 using Event_Planning_System.DTO.Mail;
 using Event_Planning_System.Helpers;
 using Event_Planning_System.IServices;
+using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 namespace Event_Planning_System.Services
 {
@@ -20,14 +22,34 @@ namespace Event_Planning_System.Services
 			emailService = _emailService;
 		}
 
-		public async Task<bool> SendInvitationMail(int EventId)
+		public async Task<bool> SendEventMail(int EventId, EmailType type)
 		{
 			try
 			{
 				//var AttendanceList = mapper.Map<List<Attendance>>(emailAdressDtos);
 				Event myEvent = await unitOfWork.EventRepo.FindById(EventId);
 				var allAttendees = (await unitOfWork.AttendanceRepo.GetAll());
-				var emailAdresses = allAttendees.Where(a => a.EventId == EventId && a.IsSent == false).ToList();
+				List<Attendance> emailAdresses;
+				string mailbody = "";
+
+
+				if (type == EmailType.Invite && myEvent.IsDeleted == false)
+				{
+					emailAdresses = allAttendees.Where(a => a.EventId == EventId && a.IsSent == false).ToList();
+					mailbody = $"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\r\n        <tr>\r\n            <td align=\"center\" style=\"padding: 10px 0 30px 0;\">\r\n                <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\">\r\n                    <tr>\r\n                        <td align=\"center\" bgcolor=\"#70bbd9\" style=\"padding: 40px 0 30px 0;\">\r\n                            <h1 style=\"color: white;\">You're Invited!</h1>\r\n                        </td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td bgcolor=\"#ffffff\" style=\"padding: 40px 30px 40px 30px;\">\r\n                            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\r\n                                <tr>\r\n                                    <td>\r\n <p>We are excited to invite you to our upcoming event. Please find the details below:</p>\r\n                                        <p><strong>Event:</strong> {myEvent.Name}</p>\r\n                                        <p><strong>Date:</strong> {myEvent.EventDate.Date}</p>\r\n                                        <p><strong>Time:</strong> {myEvent.EventDate.TimeOfDay}</p>\r\n                                        <p><strong>Location:</strong> {myEvent.Location}, {myEvent.GoogleMapsLocation}</p>\r\n                                        <p>We hope you can join us for this special occasion.</p>\r\n                                        <p>Looking forward to seeing you there!</p>\r\n                                        <p>Best regards,</p>\r\n                                        <p>{myEvent.CreatorNavigation.FName} {myEvent.CreatorNavigation.LName}</p>\r\n                                        <p></p>\r\n                                    </td>\r\n                                </tr>\r\n                                <tr>\r\n                                    <td align=\"center\" style=\"padding: 20px 0 30px 0;\">\r\n                                        <p></p>\r\n                                    </td>\r\n                                </tr>\r\n                            </table>\r\n                        </td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td bgcolor=\"#70bbd9\" style=\"padding: 30px 30px 30px 30px;\">\r\n                            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\r\n                                <tr>\r\n                                    <td align=\"center\" style=\"color: white;\">\r\n                                        <p>&copy; 2024 Event Planning Company. All rights reserved.</p>\r\n                                    </td>\r\n                                </tr>\r\n                            </table>\r\n                        </td>\r\n                    </tr>\r\n                </table>\r\n            </td>\r\n        </tr>\r\n    </table>";
+				}
+				else if (type == EmailType.Cancel)
+				{
+					emailAdresses = allAttendees.Where(a => a.EventId == EventId && a.IsSent == true).ToList();
+					mailbody = $"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\r\n        <tr>\r\n            <td align=\"center\" style=\"padding: 10px 0 30px 0;\">\r\n                <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\">\r\n                    <tr>\r\n                        <td align=\"center\" bgcolor=\"#ff6b6b\" style=\"padding: 40px 0 30px 0;\">\r\n                            <h1 style=\"color: white;\">Event Cancellation Notice</h1>\r\n                        </td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td bgcolor=\"#ffffff\" style=\"padding: 40px 30px 40px 30px;\">\r\n                            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\r\n                                <tr>\r\n                                    <td>\r\n                                        <h2>Greetings, </h2>\r\n                                        <p>We regret to inform you that the following event has been cancelled:</p>\r\n                                        <p><strong>Event:</strong> {myEvent.Name}</p>\r\n                                        <p><strong>Original Date:</strong> {myEvent.EventDate.Date}</p>\r\n                                        <p>We apologize for any inconvenience this may cause. If you have any questions or need further information, please do not hesitate to contact us at {myEvent.CreatorNavigation.Email}.</p>\r\n                                        <p>Thank you for your understanding.</p>\r\n                                        <p>Best regards,</p>\r\n                                        <p>{myEvent.CreatorNavigation.FName} {myEvent.CreatorNavigation.LName}</p>\r\n                                        <p>Event Planning System</p>\r\n                                    </td>\r\n                                </tr>\r\n                                <tr>\r\n                                    <td align=\"center\" style=\"padding: 20px 0 30px 0;\">\r\n                                        <a href=\"#\" style=\"padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none;\">Contact Us</a>\r\n                                    </td>\r\n                                </tr>\r\n                            </table>\r\n                        </td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td bgcolor=\"#ff6b6b\" style=\"padding: 30px 30px 30px 30px;\">\r\n                            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\r\n                                <tr>\r\n                                    <td align=\"center\" style=\"color: white;\">\r\n                                        <p>&copy; 2024 Event Planning Company. All rights reserved.</p>\r\n                                    </td>\r\n                                </tr>\r\n                            </table>\r\n                        </td>\r\n                    </tr>\r\n                </table>\r\n            </td>\r\n        </tr>\r\n    </table>";
+				}
+				else if (type == EmailType.ThankYou)
+				{
+					emailAdresses = allAttendees.Where(a => a.EventId == EventId && a.IsSent == true).ToList();
+					mailbody = $"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\r\n        <tr>\r\n            <td align=\"center\" style=\"padding: 10px 0 30px 0;\">\r\n                <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\">\r\n                    <tr>\r\n                        <td align=\"center\" bgcolor=\"#28a745\" style=\"padding: 40px 0 30px 0;\">\r\n                            <h1 style=\"color: white;\">Thank You for Attending!</h1>\r\n                        </td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td bgcolor=\"#ffffff\" style=\"padding: 40px 30px 40px 30px;\">\r\n                            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\r\n                                <tr>\r\n                                    <td>\r\n                                        <h2>Greetings, </h2>\r\n                                        <p>We wanted to take a moment to thank you for attending {myEvent.Name} on {myEvent.EventDate.Date}.</p>\r\n                                        <p>We hope you found the event enjoyable and informative. Your presence made the event special and successful.</p>\r\n                                        <p>If you have any feedback or suggestions, please feel free to share them with us at eventplanningsys@gmail.com.</p>\r\n                                        <p>We look forward to seeing you at our future events!</p>\r\n                                        <p>Best regards,</p>\r\n                                        <p>{myEvent.CreatorNavigation.FName} {myEvent.CreatorNavigation.LName}</p>\r\n                                        <p></p>\r\n                                    </td>\r\n                                </tr>\r\n                                <tr>\r\n                                    <td align=\"center\" style=\"padding: 20px 0 30px 0;\">\r\n                                        <a href=\"#\" style=\"padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none;\">Give Feedback</a>\r\n                                    </td>\r\n                                </tr>\r\n                            </table>\r\n                        </td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td bgcolor=\"#28a745\" style=\"padding: 30px 30px 30px 30px;\">\r\n                            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\r\n                                <tr>\r\n                                    <td align=\"center\" style=\"color: white;\">\r\n                                        <p>&copy; 2024 Event Planning Company. All rights reserved.</p>\r\n                                    </td>\r\n                                </tr>\r\n                            </table>\r\n                        </td>\r\n                    </tr>\r\n                </table>\r\n            </td>\r\n        </tr>\r\n    </table>";
+				}
+				else
+					return false;
 
 				if (emailAdresses == null || !emailAdresses.Any())
 					return false;
@@ -37,9 +59,9 @@ namespace Event_Planning_System.Services
 					var email = new SendEmailDto
 					{
 						Sender = new EmailAdressDto { Email = "kingabdo391@gmail.com", Name = "EPP" },
-						Recipient = new EmailAdressDto { Email = attendee.Email, Name = "his name" },
+						Recipient = new EmailAdressDto { Email = attendee.Email, Name = "" },
 						Subject = "Invitaion mail",
-						Body = $"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\r\n        <tr>\r\n            <td align=\"center\" style=\"padding: 10px 0 30px 0;\">\r\n                <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\">\r\n                    <tr>\r\n                        <td align=\"center\" bgcolor=\"#70bbd9\" style=\"padding: 40px 0 30px 0;\">\r\n                            <h1 style=\"color: white;\">You're Invited!</h1>\r\n                        </td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td bgcolor=\"#ffffff\" style=\"padding: 40px 30px 40px 30px;\">\r\n                            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\r\n                                <tr>\r\n                                    <td>\r\n <p>We are excited to invite you to our upcoming event. Please find the details below:</p>\r\n                                        <p><strong>Event:</strong> {myEvent.Name}</p>\r\n                                        <p><strong>Date:</strong> {myEvent.EventDate.Date}</p>\r\n                                        <p><strong>Time:</strong> {myEvent.EventDate.TimeOfDay}</p>\r\n                                        <p><strong>Location:</strong> {myEvent.Location}, {myEvent.GoogleMapsLocation}</p>\r\n                                        <p>We hope you can join us for this special occasion.</p>\r\n                                        <p>Looking forward to seeing you there!</p>\r\n                                        <p>Best regards,</p>\r\n                                        <p>Event Planning System</p>\r\n                                        <p></p>\r\n                                    </td>\r\n                                </tr>\r\n                                <tr>\r\n                                    <td align=\"center\" style=\"padding: 20px 0 30px 0;\">\r\n                                        <p></p>\r\n                                    </td>\r\n                                </tr>\r\n                            </table>\r\n                        </td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td bgcolor=\"#70bbd9\" style=\"padding: 30px 30px 30px 30px;\">\r\n                            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\r\n                                <tr>\r\n                                    <td align=\"center\" style=\"color: white;\">\r\n                                        <p>&copy; 2024 Event Planning Company. All rights reserved.</p>\r\n                                    </td>\r\n                                </tr>\r\n                            </table>\r\n                        </td>\r\n                    </tr>\r\n                </table>\r\n            </td>\r\n        </tr>\r\n    </table>"
+						Body = mailbody
 					};
 					var emailresult = emailService.SendEmail(email);
 					attendee.IsSent = true;
@@ -105,6 +127,7 @@ namespace Event_Planning_System.Services
 				Event delEvent = await unitOfWork.EventRepo.FindById(id);
 				// SendCancellationMail Function for the event.
 				delEvent.IsDeleted = true;
+				await SendEventMail(id, EmailType.Cancel);
 				unitOfWork.save();
 				return true;
 			}
@@ -162,15 +185,20 @@ namespace Event_Planning_System.Services
 			return true;
 		}
 		// Add multiple guests to the event
-		public async Task<bool> AddGuests(int eventId, List<AttendanceDTO> newAttendancesDTO)
+		public async Task<string> AddGuests(int eventId, List<AttendanceDTO> newAttendancesDTO)
 		{
 			if (newAttendancesDTO == null)
-				return false;
+				return "Invalid data, Sent an empty list";
+			Event myEvent = await unitOfWork.EventRepo.FindById(eventId);
+
+			int attendeesno = (await unitOfWork.AttendanceRepo.GetAll()).Where(a => a.EventId == eventId).Count();
+			if (newAttendancesDTO.Count() >= (myEvent.AttendanceNumber - attendeesno))
+				return $"You cant add more guests, you invited ({attendeesno} of total {myEvent.AttendanceNumber}, you can invite {myEvent.AttendanceNumber - attendeesno})";
 			foreach (AttendanceDTO guest in newAttendancesDTO)
 				if (!await AddGuest(eventId, guest))
-					return false;
-			await SendInvitationMail(eventId);
-			return true;
+					return "failed to add guest";
+			await SendEventMail(eventId, EmailType.Invite);
+			return "true";
 		}
 		// Delete guest from the event
 		public async Task<bool> DeleteGuest(int eventId, string email)
@@ -180,6 +208,7 @@ namespace Event_Planning_System.Services
 				var guest = (await unitOfWork.AttendanceRepo.GetAll()).FirstOrDefault(g => g.EventNavigation.Id == eventId && g.Email == email);
 				if (guest == null)
 					return false;
+				await SendEventMail(eventId, EmailType.Cancel);
 				await unitOfWork.AttendanceRepo.Delete(guest);
 				unitOfWork.save();
 				return true;

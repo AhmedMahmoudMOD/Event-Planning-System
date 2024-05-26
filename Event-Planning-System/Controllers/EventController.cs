@@ -61,7 +61,7 @@ namespace Event_Planning_System.Controllers
 		}
 		// Create new Event
 		[SwaggerOperation(Summary = "Create new Event", Description = "Create New Event with the required details.")]
-		[SwaggerResponse(200, "Event created successfully", typeof(EventDTO))]
+		[SwaggerResponse(200, "Event created successfully")]
 		[HttpPost]
 		public async Task<IActionResult> CreateEvent(EventDTO newEventDTO)
 		{
@@ -76,7 +76,7 @@ namespace Event_Planning_System.Controllers
 		}
 		// delete Event
 		[SwaggerOperation(Summary = "Delete Event", Description = "Delete Event and send cancellation mail to the Attendace.")]
-		[SwaggerResponse(200, "Event Deleted successfully", typeof(EventDTO))]
+		[SwaggerResponse(200, "Event Deleted successfully")]
 		[HttpDelete]
 		public async Task<IActionResult> DeleteEvent(int id)
 		{
@@ -86,7 +86,7 @@ namespace Event_Planning_System.Controllers
 		}
 		// Get Event Attendance
 		[SwaggerOperation(Summary = "Get the Event's Attendance", Description = "Get a list of all Attendees' mails.")]
-		[SwaggerResponse(200, "Retrieved all mails successfully", typeof(EventDTO))]
+		[SwaggerResponse(200, "Retrieved all mails successfully")]
 		[HttpGet("Attendance")]
 		public async Task<IActionResult> GetAttendance(int id)
 		{
@@ -103,10 +103,11 @@ namespace Event_Planning_System.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				if (await eventService.AddGuests(eventId, newAttendancesDTO))
+				string res = await eventService.AddGuests(eventId, newAttendancesDTO);
+				if (res == "true")
 					return Created();
 				else
-					return BadRequest("Failed to add guest. Invalid data or event does not exist, or Email was added before");
+					return BadRequest(res);
 			}
 			return BadRequest(ModelState);
 		}

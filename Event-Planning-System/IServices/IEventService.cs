@@ -2,6 +2,7 @@
 using Event_Planinng_System_DAL.Models;
 using Event_Planning_System.DTO;
 using Event_Planning_System.Helpers;
+using Event_Planinng_System_DAL.Enums;
 namespace Event_Planning_System.IServices
 {
 	public interface IEventService
@@ -14,8 +15,8 @@ namespace Event_Planning_System.IServices
 		public Task<IEnumerable<AttendanceDTO>?> GetAllGuests(int id);
 		public Task<bool> CheckIfGuestExists(int eventId, string email);
 		public Task<bool> AddGuest(int eventId, AttendanceDTO newAttendanceDTO);
-		public Task<bool> AddGuests(int eventId, List<AttendanceDTO> newAttendance);
-		public Task<bool> SendInvitationMail(int EventId);
+		public Task<string> AddGuests(int eventId, List<AttendanceDTO> newAttendance);
+		public Task<bool> SendEventMail(int EventId, EmailType type);
 		public Task<bool> DeleteGuest(int eventId, string email);
 
 		Task<PaginatedList<EventDTO>> GetWithPagination(int pageNumber, int pageSize, string? search);
