@@ -5,11 +5,12 @@ using Event_Planning_System.DTO.Mail;
 using Event_Planning_System.Helpers;
 using Event_Planning_System.IServices;
 using Event_Planning_System.Services;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
 
 namespace Event_Planning_System
 {
@@ -21,10 +22,10 @@ namespace Event_Planning_System
 
 			
 
-			var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
-				throw new InvalidOperationException("No connection string was found");
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
+                throw new InvalidOperationException("No connection string was found");
 
-			builder.Services.AddIdentity<User, Role>().AddEntityFrameworkStores<dbContext>();
+			builder.Services.AddIdentity<User, Role>().AddEntityFrameworkStores<dbContext>().AddDefaultTokenProviders();
 
 			builder.Services.AddDbContext<dbContext>(optionBuiler =>
 			{
@@ -34,17 +35,23 @@ namespace Event_Planning_System
 
 			//add dependency injection
 			builder.Services.AddAutoMapper(typeof(Program));
-
 			builder.Services.AddScoped<UnitOfWork>();
 			builder.Services.AddScoped<IEventService, EventService>();
+			builder.Services.AddScoped<IToDoListService, ToDoListService>();
 			builder.Services.Configure<AzureStorage>(builder.Configuration.GetSection("AzureStorage"));
 			builder.Services.Configure<MailInfoDto>(builder.Configuration.GetSection("MailInfo"));
             builder.Services.AddScoped<IBlobServices, BlobService>();
             builder.Services.AddScoped<ISendEmailService, SendEmailService>();
+
+			     builder.Services.AddScoped<IAuthService, AuthService>();
+ 
+            builder.Services.AddScoped<Iregestration, Register>();
+            builder.Services.AddScoped<IaccountServices, AccountServices>();
             // Add services to the container.
 
             builder.Services.AddControllers();
-            builder.Services.AddScoped<Iregestration, Register>();
+           
+
 			builder.Services.AddScoped<IProfileService, Profile>();
 
 			builder.Services.AddCors(Services =>
@@ -57,6 +64,30 @@ namespace Event_Planning_System
 				});
 			});
 
+            var jwtSettings = builder.Configuration.GetSection("Jwt");
+            var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]);
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwtSettings["Issuer"],
+                    ValidAudience = jwtSettings["Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(key)
+                };
+            });
+
+
+            // Add services to the container.
 
 
             builder.Services.AddControllers();
@@ -69,15 +100,35 @@ namespace Event_Planning_System
                     Type = "string",
                     Format = "date"
                 });
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please enter into field the word 'Bearer' followed by a space and the JWT value",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] {}
+                    }
+                });
+
+
+
+
 				options.OperationFilter<FileUploadOperationFilter>();
 				options.EnableAnnotations();
             });
-			
-
-
-
-
-
 
 
             var app = builder.Build();
@@ -91,12 +142,11 @@ namespace Event_Planning_System
 			}
 			app.UseCors("CorsPolicy");
 			app.UseAuthorization();
-			app.UseCors();
 
 
             app.MapControllers();
 
-			app.Run();
-		}
-	}
+            app.Run();
+        }
+    }
 }

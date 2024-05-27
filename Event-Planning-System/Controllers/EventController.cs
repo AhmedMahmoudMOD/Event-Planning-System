@@ -2,6 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Event_Planning_System.DTO;
 using AutoMapper;
+using Event_Planinng_System_DAL.Models;
+using System.Text.RegularExpressions;
+using Event_Planinng_System_DAL.Enums;
+using Event_Planning_System.DTO.Mail;
+using Swashbuckle.AspNetCore.Annotations;
+using Event_Planning_System.Services;
 
 namespace Event_Planning_System.Controllers
 {
@@ -14,6 +20,48 @@ namespace Event_Planning_System.Controllers
 		{
 			eventService = _eventService;
 		}
+
+		// Get All Event for a user
+		[SwaggerOperation(Summary = "Get all events", Description = "Get all events by user's ID.")]
+		[SwaggerResponse(200, "Retrieved successfully", typeof(List<EventDTO>))]
+		[SwaggerResponse(400, "Failed to retrieve events. Invalid Id.")]
+		[HttpGet("user/{id:int}")]
+		public async Task<IActionResult> GetAllEventsByUserID([FromRoute] int id)
+		{
+			if (id <= 0)
+			{
+				return BadRequest("Invalid user ID.");
+			}
+
+			var requiredEvents = await eventService.GetAllEvents(id);
+			if (requiredEvents == null || !requiredEvents.Any())
+			{
+				return NotFound("No events found for the given user ID.");
+			}
+
+			return Ok(requiredEvents);
+		}
+
+		// Get Event By ID
+		[SwaggerOperation(Summary = "Get Event by its ID", Description = "Get Event Details by its ID.")]
+		[SwaggerResponse(200, "retrieved successfully", typeof(EventDTO))]
+		[SwaggerResponse(400, "Failed to retrieve event. Invalid Id.")]
+		[HttpGet]
+		public async Task<IActionResult> GetEventByID(int id)
+		{
+			if (ModelState.IsValid)
+			{
+				EventDTO? requiredEvent = await eventService.GetEventById(id);
+				if (requiredEvent != null)
+					return Ok(requiredEvent);
+				else
+					return BadRequest("Failed to retrieve event. Invalid Id.");
+			}
+			return BadRequest(ModelState);
+		}
+		// Create new Event
+		[SwaggerOperation(Summary = "Create new Event", Description = "Create New Event with the required details.")]
+		[SwaggerResponse(200, "Event created successfully")]
 		[HttpPost]
 		public async Task<IActionResult> CreateEvent(EventDTO newEventDTO)
 		{
@@ -26,6 +74,9 @@ namespace Event_Planning_System.Controllers
 			}
 			return BadRequest(ModelState);
 		}
+		// delete Event
+		[SwaggerOperation(Summary = "Delete Event", Description = "Delete Event and send cancellation mail to the Attendace.")]
+		[SwaggerResponse(200, "Event Deleted successfully")]
 		[HttpDelete]
 		public async Task<IActionResult> DeleteEvent(int id)
 		{
@@ -33,13 +84,55 @@ namespace Event_Planning_System.Controllers
 				return Created();
 			return BadRequest();
 		}
+		// Get Event Attendance
+		[SwaggerOperation(Summary = "Get the Event's Attendance", Description = "Get a list of all Attendees' mails.")]
+		[SwaggerResponse(200, "Retrieved all mails successfully")]
+		[HttpGet("Attendance")]
+		public async Task<IActionResult> GetAttendance(int id)
+		{
+			var guests = await eventService.GetAllGuests(id);
+			if (guests != null)
+				return Ok(guests);
+			return NotFound();
+		}
+		// add Attendance to event
+		[SwaggerOperation(Summary = "Add list of attendees", Description = "Add new list of attendees to the Event.")]
+		[SwaggerResponse(200, "Attendance was added successfully")]
+		[HttpPost("Attendance")]
+		public async Task<IActionResult> AddAttendace(int eventId, List<AttendanceDTO> newAttendancesDTO)
+		{
+			if (ModelState.IsValid)
+			{
+				string res = await eventService.AddGuests(eventId, newAttendancesDTO);
+				if (res == "true")
+					return Created();
+				else
+					return BadRequest(res);
+			}
+			return BadRequest(ModelState);
+		}
+		// Remove attendance from an event
+		[SwaggerOperation(Summary = "Remove Attendance from the Event", Description = "Delete an existing attendees.")]
+		[SwaggerResponse(200, "Event created successfully", typeof(EventDTO))]
+		[HttpDelete("Attendance")]
+		public async Task<IActionResult> DeleteAttendee(int eventId, string email)
+		{
+			try { var addr = new System.Net.Mail.MailAddress(email); }
+			catch { return BadRequest("Invalid email address"); }
+
+			if (await eventService.DeleteGuest(eventId, email))
+				return Ok();
+			return BadRequest($"{email} is not invited to the Event with id {eventId} or th Event id is incorrect");
+		}
+
+		// paginataion endpoint
 
 		[HttpGet("page")]
-		public async Task<IActionResult> GetWithPagination(int pageNumber=1, int pageSize=3, string? searchTerm=null)
-        {
-            var events = await eventService.GetWithPagination(pageNumber, pageSize, searchTerm);
-            if (events == null)
-                return NotFound();
+		public async Task<IActionResult> GetWithPagination(int pageNumber = 1, int pageSize = 3, string? searchTerm = null)
+		{
+			var events = await eventService.GetWithPagination(pageNumber, pageSize, searchTerm);
+			if (events == null)
+				return NotFound();
 
 			var data = new
 			{
@@ -50,8 +143,8 @@ namespace Event_Planning_System.Controllers
 				events.HasNext,
 				events
 			};
-            return Ok(data);
-        }
+			return Ok(data);
+		}
+	}
 
-    }
 }

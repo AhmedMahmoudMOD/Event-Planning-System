@@ -20,6 +20,7 @@
     "@angular/router": "^17.3.9",
     "bootstrap": "^5.3.3",
     "date-fns": "^3.6.0",
+    "jwt-decode": "^4.0.0",
     "primeicons": "^7.0.0",
     "primeng": "^17.17.0",
     "rxjs": "~7.8.0",

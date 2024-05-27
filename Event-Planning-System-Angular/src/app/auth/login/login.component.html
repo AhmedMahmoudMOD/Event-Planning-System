@@ -22,8 +22,15 @@
                     <div *ngIf="passwordControl.errors?.['required']">Password is Required</div>
                 </small>
             </div>
+            <small *ngIf="error" class="block p-error">
+                <div> {{errorMessage}} </div>
+            </small>
                 <button pButton label="Login"  type="submit" icon="pi pi-arrow-right" iconPos="right" class="p-button-success w-100 mt-2" [style]="{borderRadius: '6px'}" [disabled]="loginForm.invalid"></button>
+                <div class="mt-3">
+                        Don't have an account? <a routerLink="/auth/register">Register</a>
+                </div>
             </p-card>
         </form>
+        <p-toast [life]="5000" />
     </div>
 </div>
