@@ -13,10 +13,7 @@ namespace Event_Planning_System.MappingProfiles
 			CreateMap<Event, EventDTO>().ForMember(dest => dest.EventDate, opt => opt.MapFrom(src => src.EventDate.ToString("yyyy-MM-dd'T'HH:mm"))).ReverseMap();
 			CreateMap<Attendance, AttendanceDTO>().ReverseMap();
 			CreateMap<ToDoListDTO, ToDoList>()
-					   .ReverseMap()
-						.ForMember(dest => dest.DeadLineTime, opt => opt.MapFrom(src => src.DeadLineTime));
-
-
+					   .ReverseMap();
 			CreateMap<User, ProfileDTO>().ReverseMap();
 
        CreateMap(typeof(PaginatedList<>), typeof(PaginatedList<>)).ConvertUsing(typeof(CustomPaginatedListMapper<,>));
