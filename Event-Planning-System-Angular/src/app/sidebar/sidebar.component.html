@@ -1,10 +1,32 @@
-<p-sidebar [(visible)]="sidebarVisible" styleClass="w-30rem" [fullScreen]="false" dismissable="false">
+<p-sidebar [(visible)]="sidebarVisible" class="custom-sidebar" [fullScreen]="false" dismissable="false">
     <ng-template pTemplate="header">
-        <span class="font-semibold text-xl">Sidebar</span>
+        <div class="flex align-items-center gap-2">
+            <span class="font-semibold text-xl">Sidebar</span>
+        </div>
     </ng-template>
-    <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit...
-    </p>
-    
+    <ng-template pTemplate="content">
+        <div class="profile-section">
+            <h3>Profile</h3>
+            <ul>
+                <li><a href="#" class="link-button">View Profile</a></li>
+                <li><a href="#" class="link-button">Edit Profile</a></li>
+                <li><a href="#" class="link-button">Settings</a></li>
+            </ul>
+        </div>
+        <div class="events-section">
+            <h3>Events</h3>
+            <ul>
+                <li><a href="#" class="link-button">Event 1</a></li>
+                <li><a href="#" class="link-button">Event 2</a></li>
+                <li><a href="#" class="link-button">Event 3</a></li>
+            </ul>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <div class="footer-section flex align-items-center gap-2">
+            <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle"></p-avatar>
+            <span class="font-semibold text-xl">Amy Elsner</span>
+        </div>
+    </ng-template>
 </p-sidebar>
 <p-button (click)="sidebarVisible = true" icon="pi pi-arrow-right"></p-button>

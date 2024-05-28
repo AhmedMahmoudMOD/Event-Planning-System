@@ -1,3 +1,45 @@
-::ng-deep .p-sidebar-mask {
-    display: none !important;
+::ng-deep .custom-sidebar {
+    width: 30rem !important;
+    display: flex;
+    flex-direction: column;
+}
+
+::ng-deep .custom-sidebar .p-sidebar-content {
+    flex: 1;
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+.profile-section, .events-section {
+    margin-top: 1rem;
+}
+
+.profile-section ul, .events-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.profile-section ul li, .events-section ul li {
+    margin: 0.5rem 0;
+}
+
+.link-button {
+    display: inline-block;
+    color: var(--primary-color);
+    text-decoration: none;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.link-button:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+::ng-deep .custom-sidebar .p-sidebar-footer {
+    padding: 1rem;
+    background-color: var(--surface-b);
+    border-top: 1px solid var(--surface-d);
 }
