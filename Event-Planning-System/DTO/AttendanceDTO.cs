@@ -8,6 +8,5 @@ namespace Event_Planning_System.DTO
 		[EmailAddress(ErrorMessage = "invalid email message")]
 		[DataType(DataType.EmailAddress)]
 		public string Email { get; set; }
-		public bool IsSent { get; set; }
 	}
 }
