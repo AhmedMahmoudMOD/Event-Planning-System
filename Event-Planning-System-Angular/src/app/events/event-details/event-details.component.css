@@ -182,18 +182,6 @@
 
 /* see more */
 
-/* .contain {
-    position: relative;
-    max-width: 600px; 
-    margin: 0 auto;
-    font-size: .9rem;
-}
-
-#text {
-    max-height: 100px; 
-    overflow: hidden;
-    transition: max-height 0.5s ease;
-}  */
 
 #text.expanded {
     max-height: none;
@@ -205,4 +193,36 @@
     cursor: pointer;
     color: blue;
     text-decoration: underline;
+}
+/* people will attend */
+.status-container {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 20px;
+}
+
+.status-item {
+    width: 50%;
+    text-align: center;
+    border-radius: 8px;
+}
+.status-item:hover {
+    cursor: pointer;
+    background-color: #F0F2F5;
+}
+.status-count {
+    display: block;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.status-label {
+    display: block;
+    font-size: 14px;
+    color: #666;
+}
+
+:host ::ng-deep p-chip>div {
+    background-color: #EF4444 !important;
+    color: white !important;
 }

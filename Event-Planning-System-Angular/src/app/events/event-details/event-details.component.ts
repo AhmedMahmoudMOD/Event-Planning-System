@@ -9,6 +9,10 @@ import { ScrollPanelModule } from 'primeng/scrollpanel';
 import {  ScrollerModule } from 'primeng/scroller';
 import { TagModule } from 'primeng/tag';
 import { CheckboxModule } from 'primeng/checkbox';
+import { ChipModule } from 'primeng/chip';
+import { GalleriaModule } from 'primeng/galleria';
+import { ImageModule } from 'primeng/image';
+import { SafePipe } from './safe.pipe';
 
 
 
@@ -16,7 +20,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 @Component({
   selector: 'app-event-details',
   standalone: true,
-  imports: [FormsModule, CardModule, CheckboxModule,ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule , ScrollerModule, TabViewModule, ButtonModule, TagModule ],
+  imports: [FormsModule,GalleriaModule ,SafePipe,ImageModule,ChipModule , CardModule, CheckboxModule,ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule , ScrollerModule, TabViewModule, ButtonModule, TagModule ],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.css'
 })
@@ -24,15 +28,22 @@ import { CheckboxModule } from 'primeng/checkbox';
 
 
 export class EventDetailsComponent implements OnInit, OnChanges {
+
+  // declration of variables
   checked: boolean = false;
   seeMoreLink = document.getElementById("seeMoreLink") as HTMLAnchorElement;
   text = document.getElementById("text") as HTMLPreElement;
+
+// constructors
 
   ngOnChanges(changes: SimpleChanges): void {
   }
 
   ngOnInit(): void {
   }
+
+  //end of constructors
+
   reset() {
 } 
 
@@ -41,41 +52,76 @@ export class EventDetailsComponent implements OnInit, OnChanges {
   value: string = 'off';
 
 
+  //carsol related code
   products = [
-    {
-      id: '1000',
-      code: 'f230fh0g3',
-      name: 'Bamboo Watch',
-      description: 'Product Description',
-      image: 'bamboo-watch.jpg',
-      price: 65,
-      category: 'Accessories',
-      quantity: 24,
-      inventoryStatus: 'INSTOCK',
-      rating: 5
-  },
+      { name: 'Product 1', image: '../../../assets/images/software-developer-6521720_640.jpg' },
+      { name: 'Product 2', image: '../../../assets/images/software-developer-6521720_640.jpg' },
+      { name: 'Product 3', image: '../../../assets/images/software-developer-6521720_640.jpg' },
   ]
 
-  getSeverity(product: any) {
-    switch (product.inventoryStatus) {
-        case 'INSTOCK':
-            return 'success';
 
-        case 'LOWSTOCK':
-            return 'warning';
+  
 
-        case 'OUTOFSTOCK':
-            return 'danger';
+getSeverity(status: string):any {
+  switch (status) {
+      case 'INSTOCK':
+          return 'success';
+      case 'LOWSTOCK':
+          return 'warning';
+      case 'OUTOFSTOCK':
+          return 'danger';
+  }
+}
 
-        default:
-            return null;
-    }
+//end of carsol related code
+
+images: any[] | undefined = [
+  {
+    itemImageSrc: '../../../assets/images/software-developer-6521720_640.jpg',
+    alt: 'Description for Image 1',
+    title: 'Title 1'
+},
+{
+  itemImageSrc: 'https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg',
+  alt: 'Description for Image 1',
+  title: 'Title 1'
+},
+{
+  itemImageSrc: '../../../assets/images/software-developer-6521720_640.jpg',
+  alt: 'Description for Image 1',
+  title: 'Title 1'
+},
+]
+
+responsiveOptions: any[] = [
+  {
+      breakpoint: '1024px',
+      numVisible: 5
+  },
+  {
+      breakpoint: '768px',
+      numVisible: 3
+  },
+  {
+      breakpoint: '560px',
+      numVisible: 1
+  }
+];
+
+
+positionMap = {
+  street: "Brookline",
+  num: "123",
+  city: "NewYork"
 };
+mapsURL : string | null = `https://maps.google.com/maps?q=${this.positionMap.street}%20${this.positionMap.num}%20%${this.positionMap.city}&t=&z=20&ie=UTF8&iwloc=&output=embed`;
 
 
 
+log() :any{
+  console.log("hello world");
+}
 
 
-
-
+//end of class
 }
