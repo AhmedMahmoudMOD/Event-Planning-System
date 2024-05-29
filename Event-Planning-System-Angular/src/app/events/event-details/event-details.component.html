@@ -154,7 +154,7 @@
         </div>
         <!-- end of Emails Block -->
         <!-- new block Location -->
-        <div class="block" >
+        <div class="block"  (click)="log()">
           <div *ngIf="eventDetails.googleMapsLocation != null">
             <iframe 
               [src]="mapsURL | safe "

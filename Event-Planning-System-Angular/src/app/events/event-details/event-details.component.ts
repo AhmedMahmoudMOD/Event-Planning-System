@@ -41,6 +41,7 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   id: any | number;
   eventDetails: Event | any = {};
   defaultImage = '../../../assets/images/software-developer-6521720_640.jpg';
+  mapsURL: string | null = null;
   // constructors
   constructor(private ActivatedRoute: ActivatedRoute,
     private eventDetailsServices: EventdetailsService,
@@ -71,6 +72,7 @@ ngOnInit(): void {
     if (this.eventDetails.eventImages.length === 0) {
       this.eventDetails.eventImages.push(this.defaultImage);
     }
+    this.mapsURL = this.eventDetails.googleMapsLocation ? this.eventDetails.googleMapsLocation : null;
     console.log(this.eventDetails);
   });
 
@@ -134,12 +136,11 @@ positionMap = {
   num: "123",
   city: "NewYork"
 };
-mapsURL: string | null = this.eventDetails.googleMapsLocation ? this.eventDetails.googleMapsLocation : null;
 
 //end of iFrame related code
 
 log() :any{
-  console.log("hello world");
+  console.log(this.mapsURL);
 }
 
 getEventTypeString(eventTypeInt: number): string | undefined {
