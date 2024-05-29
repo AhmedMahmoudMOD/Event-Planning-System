@@ -106,23 +106,7 @@ getSeverity(status: string):any {
       return 'danger';
   }
 }
-images: any[] | undefined =[
-  {
-    itemImageSrc: '../../../assets/images/software-developer-6521720_640.jpg',
-    alt: 'Description for Image 1',
-    title: 'Title 1'
-  },
-  {
-    itemImageSrc: 'https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg',
-    alt: 'Description for Image 1',
-    title: 'Title 1'
-  },
-  {
-    itemImageSrc: '../../../assets/images/software-developer-6521720_640.jpg',
-    alt: 'Description for Image 1',
-    title: 'Title 1'
-  },
-]
+
 
 responsiveOptions: any[] = [
   {
@@ -150,7 +134,7 @@ positionMap = {
   num: "123",
   city: "NewYork"
 };
-mapsURL: string | null = `https://maps.google.com/maps?q=${this.positionMap.street}%20${this.positionMap.num}%20%${this.positionMap.city}&t=&z=20&ie=UTF8&iwloc=&output=embed`;
+mapsURL: string | null = this.eventDetails.googleMapsLocation ? this.eventDetails.googleMapsLocation : null;
 
 //end of iFrame related code
 
