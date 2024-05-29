@@ -1,0 +1,138 @@
+<!-- <p-calendar [(ngModel)]="date" />
+<p-galleria 
+    [value]="images" 
+    [showIndicators]="true" 
+    [showThumbnails]="false" 
+    [responsiveOptions]="responsiveOptions" 
+    [containerStyle]="{ 'max-width': '640px' }">
+    <ng-template pTemplate="item" let-item>
+        <img [src]="item.itemImageSrc" style="width: 100%; display: block;" />
+    </ng-template>
+</p-galleria> -->
+<!-- <div class="container-fluid !direction !spacing">
+    <div class="card flex justify-content-center">
+        <div class="text-center">
+            <p-card>
+                <div class="blur-bg-container">
+                    <img src="../../../assets/images/software-developer-6521720_640.jpg" alt="Card" class="card-image">
+                </div>
+            </p-card>
+        </div>
+    </div>
+</div> -->
+<div class="event-details-comp">
+  <div class="event-container">
+    <div class="event-details">
+      <p-card class="blur-bg-card">
+        <div class="p-card-body">
+          <img
+            src="../../../assets/images/software-developer-6521720_640.jpg"
+            alt="Card"
+            class="card-image"
+          />
+        </div>
+      </p-card>
+      <div class="box-parent mt-1 p-2">
+        <div class="box-date">
+          <div></div>
+          <p>12</p>
+        </div>
+        <div class="text-start p-2 pt-0 text-wrap">
+          <p
+            style="color: #f3425f; font-size: 1.1rem; font-weight: bold"
+            class="mt-3 mb-0"
+          >
+            JUN 12 AT 10 AM-JUN 14 AT 10 PM
+          </p>
+          <p class="mt-2 fw-bold text-secondary mb-0">
+            Easy Practisal Endo Course - Mansoura
+          </p>
+          <span class="text-secondary fw-light">White Dental Clinic </span>
+        </div>
+        <hr class="mb-2" />
+        <div class="d-flex justify-content-between">
+          <div class="">
+            <!-- <p-selectButton [options]="stateOptions" [(ngModel)]="value" optionLabel="label"
+                        optionValue="value" /> -->
+            <a class="link-tab fw-bold text-info blue-nav">About</a>
+            <a class="link-tab text-secondary">Discussion</a>
+          </div>
+          <div class="">
+            <p-button
+              label="Edit"
+              [text]="true"
+              severity="help"
+              [raised]="true"
+            />
+            <p-button
+              label="Delete"
+              [text]="true"
+              severity="danger"
+              [raised]="true"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- this is the about section -->
+
+  <div class="text-start main">
+    <div class="d-flex justify-content-between">
+      <!-- two cloumns -->
+      <div class="two-col">
+        <!-- Details -->
+        <div class="block">
+          <h6 class="mb-2">Details</h6>
+          <p style="font-size: 0.9rem">
+            <i class="pi pi-users me-2"></i>
+            439 Capacity of people
+          </p>
+          <p style="font-size: 0.9rem">
+            <i class="pi pi-user me-2"></i>
+            Event by
+            <a routerLink="" class="craeted-by-link">Abdelrahman badr</a>
+          </p>
+          <!-- location -->
+          <p style="font-size: 0.9rem">
+            <i class="pi pi-map-marker me-2"></i>
+            <a routerLink="" class="">White Castle</a>
+          </p>
+          <!-- Duration -->
+          <p style="font-size: 0.9rem">
+            <i class="pi pi-clock me-2"></i>
+            Duration: 2 days
+          </p>
+          <!-- status -->
+          <p style="font-size: 0.9rem">
+            <i class="pi pi-globe me-2"></i>
+            Public: Anyone on or off Facebook
+          </p>
+          <div class="contain">
+            <p-scrollPanel [style]="{ width: '100%', height: '150px' }">
+              <p class="fw-light">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </p>
+            </p-scrollPanel>
+          </div>
+        </div>
+      </div>
+      <!-- the seconed columns -->
+      <div class="two-col">
+        <div class="block">
+            <div>
+                
+            </div>
+            
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
