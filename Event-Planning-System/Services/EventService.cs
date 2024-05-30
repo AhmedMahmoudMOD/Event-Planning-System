@@ -94,9 +94,10 @@ namespace Event_Planning_System.Services
 		{
 			try
 			{
-				List<Event> userEvents = (await unitOfWork.EventRepo.GetAll()).Where(a => a.CreatorId == id).ToList();
-				if (userEvents == null)
+				User userToSearch = await unitOfWork.UserRepo.FindById(id);
+				if (userToSearch == null)
 					return null;
+				List<Event> userEvents = (await unitOfWork.EventRepo.GetAll()).Where(a => a.CreatorId == id).ToList();
 				return mapper.Map<List<EventDTO>>(userEvents);
 			}
 			catch { return null; }
@@ -199,8 +200,8 @@ namespace Event_Planning_System.Services
 				return $"You cant add more guests, you invited ({attendeesno} of total {myEvent.AttendanceNumber}, you can invite {myEvent.AttendanceNumber - attendeesno})";
 			foreach (AttendanceDTO guest in newAttendancesDTO)
 				if (!await AddGuest(eventId, guest))
-					return "failed to add guest";
-			await SendEventMail(eventId, EmailType.Invite);
+					return "Invalid Email or Guest already exists";
+			//await SendEventMail(eventId, EmailType.Invite);
 			return "true";
 		}
 		// Delete guest from the event
