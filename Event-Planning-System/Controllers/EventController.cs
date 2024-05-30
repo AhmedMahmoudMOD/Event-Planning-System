@@ -28,15 +28,10 @@ namespace Event_Planning_System.Controllers
 		[HttpGet("user/{id:int}")]
 		public async Task<IActionResult> GetAllEventsByUserID([FromRoute] int id)
 		{
-			if (id <= 0)
-			{
-				return BadRequest("Invalid user ID.");
-			}
-
 			var requiredEvents = await eventService.GetAllEvents(id);
-			if (requiredEvents == null || !requiredEvents.Any())
+			if (id == 0 || requiredEvents == null)
 			{
-				return NotFound("No events found for the given user ID.");
+				return NotFound("Invalid ID.");
 			}
 
 			return Ok(requiredEvents);
@@ -46,7 +41,7 @@ namespace Event_Planning_System.Controllers
 		[SwaggerOperation(Summary = "Get Event by its ID", Description = "Get Event Details by its ID.")]
 		[SwaggerResponse(200, "retrieved successfully", typeof(EventDTO))]
 		[SwaggerResponse(400, "Failed to retrieve event. Invalid Id.")]
-		[HttpGet]
+		[HttpGet("{id:int}")]
 		public async Task<IActionResult> GetEventByID(int id)
 		{
 			if (ModelState.IsValid)
@@ -98,7 +93,7 @@ namespace Event_Planning_System.Controllers
 		// add Attendance to event
 		[SwaggerOperation(Summary = "Add list of attendees", Description = "Add new list of attendees to the Event.")]
 		[SwaggerResponse(200, "Attendance was added successfully")]
-		[HttpPost("Attendance")]
+		[HttpPost("Attendance/{eventId:int}")]
 		public async Task<IActionResult> AddAttendace(int eventId, List<AttendanceDTO> newAttendancesDTO)
 		{
 			if (ModelState.IsValid)
