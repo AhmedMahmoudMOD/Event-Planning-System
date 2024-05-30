@@ -5,3 +5,8 @@
 @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
 @import "bootstrap/dist/css/bootstrap.min.css";
+
+body.event-list-body {
+  font-family: Arial, sans-serif;
+  background-color: #eee ;
+}

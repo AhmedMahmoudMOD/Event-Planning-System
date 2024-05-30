@@ -31,6 +31,11 @@ export class EventListComponent implements OnInit {
         this.filteredEventList = d; // Initialize filtered list
       }
     });
+    document.body.classList.add('event-list-body') // Add class to body
+  }
+
+  ngOnDestroy(): void {
+    document.body.classList.remove('event-list-body'); // Remove class from body
   }
 
   getEventTypeLabel(type: EventType): string {
