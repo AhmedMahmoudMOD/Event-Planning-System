@@ -17,7 +17,7 @@
   <ng-template pTemplate="content">
     <form [formGroup]="addEventForm" (ngSubmit)="addEvent()" class="p-fluid">
       <div class="p-field">
-        <label for="name">Title</label>
+        <label for="name">Title<span class="text-danger"> *</span></label>
         <input
           type="text"
           id="name"
@@ -45,20 +45,19 @@
       </div>
 
       <div class="p-field">
-        <label for="eventDate">Start Date</label>
+        <label for="eventDate">Start Date<span class="text-danger"> *</span></label>
         <input
           type="datetime-local"
           id="eventDate"
           class="p-inputtext p-component"
           formControlName="eventDate"
           placeholder="Enter event start date"
-          
         />
         <div *ngIf="addEventForm.get('eventDate')?.invalid && addEventForm.get('eventDate')?.touched" class="p-error">
           Start date is required.
         </div>
       </div>
-      
+
       <div class="p-field">
         <label for="attendanceNumber">Attendance Number</label>
         <input
@@ -88,19 +87,18 @@
       </div>
 
       <div class="p-field">
-        <label for="eventType">Event Type</label>
+        <label for="eventType">Event Type<span class="text-danger"> *</span></label>
         <select formControlName="eventType" class="form-select" name="Types" id="Type" required>
-          <option value="" >Select Event Type</option>
+          <option value="">Select Event Type</option>
           <option *ngFor="let event of Types" [value]="event.id | number">{{event.name}}</option>
-          </select>
-        </div>
+        </select>
         <div *ngIf="addEventForm.get('eventType')?.invalid && addEventForm.get('eventType')?.touched" class="p-error">
           Event Type is required.
         </div>
-      
+      </div>
 
       <div class="p-field">
-        <label for="location">Location</label>
+        <label for="location">Location<span class="text-danger"> *</span></label>
         <input
           type="text"
           id="location"
@@ -114,10 +112,16 @@
       </div>
 
       <div class="p-field">
-        <label for="googleMapsLocation"></label>
-        <input type="text" id="googleMapsLocation" class="p-inputtext p-component" formControlName="googleMapsLocation" placeholder="Enter google maps location" />
+        <label for="googleMapsLocation">Google Maps Location</label>
+        <input
+          type="text"
+          id="googleMapsLocation"
+          class="p-inputtext p-component"
+          formControlName="googleMapsLocation"
+          placeholder="Enter Google Maps location"
+        />
         <div *ngIf="addEventForm.get('googleMapsLocation')?.invalid && addEventForm.get('googleMapsLocation')?.touched" class="p-error">
-          Google maps location is required.
+          Google Maps location is required.
         </div>
       </div>
 

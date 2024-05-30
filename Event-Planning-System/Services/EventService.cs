@@ -7,6 +7,7 @@ using Event_Planning_System.DTO.Mail;
 using Event_Planning_System.Helpers;
 using Event_Planning_System.IServices;
 using Microsoft.Extensions.Logging;
+using MimeKit.Cryptography;
 using System.Security.Claims;
 namespace Event_Planning_System.Services
 {
@@ -80,9 +81,18 @@ namespace Event_Planning_System.Services
 		{
 			try
 			{
+				var AttendanceOfEvent = await unitOfWork.AttendanceRepo.GetAll();
+				var EventImages = await unitOfWork.EventImagesRepo.GetAll();
+
+				var AllEventAttendce  = AttendanceOfEvent.Where(x=>x.EventId == id && x.IsSent==true).Select(x=>x.Email);
+				var AllEventImages = EventImages.Where(x => x.EventId == id).Select(y=>y.EventImage);
+
 				Event eventFounded = await unitOfWork.EventRepo.FindById(id);
 				if (eventFounded == null) return null;
-				return mapper.Map<EventDTO>(eventFounded);
+				EventDTO Modal  = mapper.Map<EventDTO>(eventFounded);
+				Modal.Emails = AllEventAttendce.ToList();
+				Modal.EventImages = AllEventImages.ToList();
+				return Modal;
 			}
 			catch
 			{
