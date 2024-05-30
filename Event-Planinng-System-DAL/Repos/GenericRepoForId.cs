@@ -15,7 +15,7 @@ namespace Event_Planinng_System_DAL.Repos
 
         public async Task<TEntity> FindById(int id)
         {
-            var entity = await db.Set<TEntity>().FindAsync(id);
+            var entity = await db.Set<TEntity>().Where(e => e.Id == id && e.IsDeleted == false).FirstOrDefaultAsync();
             if (entity == null)
             {
                 throw new Exception("Fuck You");
