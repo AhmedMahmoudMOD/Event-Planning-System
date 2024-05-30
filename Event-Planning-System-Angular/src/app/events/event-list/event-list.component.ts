@@ -1,19 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Event, EventType } from '../../shared/models/eventsListRes.model';
-import { EventService } from '../../shared/services/event.service';
-import { TableLazyLoadEvent, TableModule } from 'primeng/table';
-import { LazyLoadEvent } from 'primeng/api';
-import { RouterLink, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterLink, RouterModule } from '@angular/router';
 import { PaginatorModule } from 'primeng/paginator';
 import { EventListService } from '../../shared/services/event-list.service';
-import { FormsModule } from '@angular/forms'; // Import FormsModule
+import { FormsModule } from '@angular/forms'; 
 
 
 @Component({
   selector: 'app-event-list',
   standalone: true,
-  imports: [CommonModule, TableModule, RouterModule, RouterLink, PaginatorModule, FormsModule],
+  imports: [CommonModule, RouterModule, RouterLink, PaginatorModule, FormsModule],
   templateUrl: './event-list.component.html',
   styleUrls: ['./event-list.component.css']
 })
@@ -22,7 +19,7 @@ export class EventListComponent implements OnInit {
   filteredEventList: Event[] = [];
   searchQuery: string = '';
 
-  constructor(private eventListService: EventListService) {}
+  constructor(private eventListService: EventListService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.eventListService.getAll(1).subscribe({
