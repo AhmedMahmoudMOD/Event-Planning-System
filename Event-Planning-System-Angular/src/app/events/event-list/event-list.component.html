@@ -1,4 +1,4 @@
-<p-table [value]="eventList" [paginator]="true" [rows]="3" [lazy]="true" [totalRecords]="total" (onLazyLoad)="loadEvents($event)">
+<!-- <p-table [value]="eventList" [paginator]="true" [rows]="3" [lazy]="true" [totalRecords]="total" (onLazyLoad)="loadEvents($event)">
     <ng-template pTemplate="header">
         <tr>
             <th>Event Name</th>
@@ -15,4 +15,47 @@
             <td>{{event.location}}</td>
         </tr>
     </ng-template>
-</p-table>
+</p-table> -->
+
+
+<div class="container">
+  <div class="main-content">
+      <div class="header">
+          <input type="text" class="search-bar" placeholder="Start typing to search for an Event">
+          <button class="add-event-button" routerLink="/addevent">+ ADD EVENT</button>
+      </div>
+      <div class="event-list">
+          <div *ngFor="let item of eventList; let i = index" class="event-item">
+              <!-- <div [ngClass]="{
+                    'approved': item.status === 'approved',
+                    'pending': item.status === 'pending',
+                    'canceled': item.status === 'canceled'
+                  }" class="event-status">
+                {{ item.status | titlecase }}
+              </div> -->
+              <div class="event-details">
+                  <h3>{{ item.name }}</h3>
+                  <div class="eventLocation">
+                      <img class="locationImg" src="assets/images/location.png" alt="Event Location">
+                      <p>{{ item.location }}</p>
+                  </div>
+                  <div class="eventDate">
+                      <div class="date">
+                          <p>Event Date:</p>
+                          <p>{{ item.eventDate.slice(0,10) }}</p>
+                          <p>{{ item.eventDate.slice(10) }}</p>
+                      </div>
+                      <div class="date">
+                          <p>Event Type:</p>
+                          <p>{{ getEventTypeLabel(item.eventType) }}</p>
+                      </div>
+                  </div>
+              </div>
+              <button class="btn btn-info h-25">Details</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+
