@@ -1,8 +1,8 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { AddEvent } from "../models/addEvent";
 import { environment } from "../../../environments/environment.development";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { Observable, catchError, throwError } from "rxjs";
 import { Event , EventListRes } from "../models/eventsListRes.model";
 
 @Injectable({
@@ -23,4 +23,11 @@ export class EventService  {
       return this.httpclient.
       get<EventListRes>(`${environment.apiUrl}/api/Event/page?pageNumber=${pageNumber}&pageSize${pageSize}&searchTerm=${searchTerm}`);
     }
+    addAttendance(eventId: number, emails: string[]){
+      const url = `${environment.apiUrl}/api/Event/Attendance/${eventId}`;
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const body = emails.map(email => ({ email })); // Transform the array of emails to the required format
+
+    return this.httpclient.post<string>(url, body);
+  }
 }

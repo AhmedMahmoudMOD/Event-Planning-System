@@ -5,6 +5,9 @@ import { AddEventComponent } from './add-event/add-event.component';
 import { EmailconfirmComponent } from './auth/emailconfirm/emailconfirm.component';
 import { EventListComponent } from './events/event-list/event-list.component';
 import { EmailConfirmCheckComponent } from './auth/email-confirm-check/email-confirm-check.component';
+
+import { AddEmailsComponent } from './add-emails/add-emails.component';
+
 import { SidebarComponent } from './sidebar/sidebar.component';
 
 import { EventDetailsComponent } from './events/event-details/event-details.component';
@@ -24,6 +27,10 @@ export const routes: Routes = [
     {path: 'planner/eventdetails/:id', component : EventDetailsComponent},
 
     
+    { path: 'auth/validateemail', component: EmailConfirmCheckComponent },
+    { path: 'event/addEmails', component: AddEmailsComponent },
+
+
 
     {path: 'edit-event', component: EditEventComponent},
 
