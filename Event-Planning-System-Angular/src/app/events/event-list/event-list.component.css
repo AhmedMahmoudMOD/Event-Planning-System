@@ -86,7 +86,7 @@ body {
 
 .pending {
   background-color: yellow;
-  color: black; /* Ensure the text is readable on a yellow background */
+  color: black; 
 }
 
 .canceled {
@@ -107,12 +107,6 @@ body {
   margin: 5px 0;
   font-size: 14px;
   color: #666;
-}
-
-.event-requester, .event-calendar {
-  font-size: 14px;
-  color: #666;
-  text-align: right;
 }
 
 .locationImg {
