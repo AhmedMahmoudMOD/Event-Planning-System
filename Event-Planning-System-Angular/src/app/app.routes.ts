@@ -5,7 +5,11 @@ import { AddEventComponent } from './add-event/add-event.component';
 import { EmailconfirmComponent } from './auth/emailconfirm/emailconfirm.component';
 import { EventListComponent } from './events/event-list/event-list.component';
 import { EmailConfirmCheckComponent } from './auth/email-confirm-check/email-confirm-check.component';
+
 import { EventDetailsComponent } from './events/event-details/event-details.component';
+
+import { EditEventComponent } from './edit-event/edit-event.component';
+
 
 
 export const routes: Routes = [
@@ -14,10 +18,13 @@ export const routes: Routes = [
     {path:'addevent',component:AddEventComponent},
     { path: 'auth/confirmemail', component: EmailconfirmComponent },
     {path: 'events', component: EventListComponent},
+
     {path: 'planner/eventdetails/:id', component : EventDetailsComponent},
 
     
-    { path: 'auth/validateemail', component: EmailConfirmCheckComponent },
 
+    {path: 'edit-event', component: EditEventComponent},
+
+    { path: 'auth/validateemail', component: EmailConfirmCheckComponent },
     { path: '', redirectTo: '/addevent', pathMatch: 'full' }
 ];
