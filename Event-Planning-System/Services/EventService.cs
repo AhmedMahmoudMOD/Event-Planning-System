@@ -182,7 +182,7 @@ namespace Event_Planning_System.Services
 			catch { return false; }
 
 			if (await CheckIfGuestExists(eventId, newAttendance.Email)) // Check if guest already exists
-				return false;
+				return true;
 
 			await unitOfWork.AttendanceRepo.Add(newAttendance);
 			unitOfWork.save();
@@ -193,15 +193,19 @@ namespace Event_Planning_System.Services
 		{
 			if (newAttendancesDTO == null)
 				return "Invalid data, Sent an empty list";
-			Event myEvent = await unitOfWork.EventRepo.FindById(eventId);
-
+			// Check if the event exists
+			Event myEvent;
+			try { myEvent = await unitOfWork.EventRepo.FindById(eventId); }
+			catch { return "Invalid Event Id"; }
+			// Check if the number of attendees is less than the remaining number of attendees
 			int attendeesno = (await unitOfWork.AttendanceRepo.GetAll()).Where(a => a.EventId == eventId).Count();
 			if (newAttendancesDTO.Count() >= (myEvent.AttendanceNumber - attendeesno))
 				return $"You cant add more guests, you invited ({attendeesno} of total {myEvent.AttendanceNumber}, you can invite {myEvent.AttendanceNumber - attendeesno})";
+			// Add guests
 			foreach (AttendanceDTO guest in newAttendancesDTO)
 				if (!await AddGuest(eventId, guest))
-					return "Invalid Email or Guest already exists";
-			//await SendEventMail(eventId, EmailType.Invite);
+					return "Invalid Email";
+			// await SendEventMail(eventId, EmailType.Invite);
 			return "true";
 		}
 		// Delete guest from the event
