@@ -68,9 +68,14 @@ namespace Event_Planinng_System_DAL.Unit_Of_Work
             get => userrroleRepo ??= new GenericRepo<UserRole>(db);
         }
 
+
         public void save()
         {
             db.SaveChangesAsync();
         }
-    }
+        public async Task saveAsync()
+		{
+			await db.SaveChangesAsync();
+		}
+	}
 }

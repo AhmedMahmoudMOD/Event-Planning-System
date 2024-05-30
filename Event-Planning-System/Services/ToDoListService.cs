@@ -4,6 +4,7 @@ using Event_Planinng_System_DAL.Unit_Of_Work;
 using Event_Planning_System.DTO;
 using Event_Planning_System.Helpers;
 using Event_Planning_System.IServices;
+using Microsoft.EntityFrameworkCore;
 
 namespace Event_Planning_System.Services
 {
@@ -22,17 +23,34 @@ namespace Event_Planning_System.Services
 		// Create new to do list
 		public async Task<bool> CreateToDoList(ToDoListDTO newToDoListDTO)
 		{
-			ToDoList newToDoList;
-			try { newToDoList = mapper.Map<ToDoList>(newToDoListDTO); }
-			catch { return false; }
-
-			if (newToDoList == null || newToDoList.DeadLineTime == DateOnly.FromDateTime(DateTime.Now))
+			// Check if the EventId exists in the Events table
+			var eventExists = db.Events.Any(e => e.Id == newToDoListDTO.EventId);
+			if (!eventExists)
+			{
 				return false;
+			}
+
+			ToDoList newToDoList;
+			try
+			{
+				newToDoList = mapper.Map<ToDoList>(newToDoListDTO);
+			}
+			catch
+			{
+				return false;
+			}
+
+			// Check if the deadline is valid
+			if (newToDoList == null || newToDoList.DeadLineTime <= DateOnly.FromDateTime(DateTime.Now))
+			{
+				return false;
+			}
 
 			await unitOfWork.ToDoListRepo.Add(newToDoList);
 			unitOfWork.save();
 			return true;
 		}
+
 
 		//get all to do lists
 		public async Task<IEnumerable<ToDoListDTO>?> GetAllToDoLists()
@@ -51,16 +69,25 @@ namespace Event_Planning_System.Services
 		//update to do list
 		public async Task<bool> UpdateToDoList(int eventId, string name, ToDoListDTO newToDoList)
 		{
-			ToDoList currentToDoList = db.ToDoLists.FirstOrDefault(x => x.EventId == eventId && x.Title == name);
+			var currentToDoList = await db.ToDoLists.FirstOrDefaultAsync(x => x.EventId == eventId && x.Title == name);
 			if (currentToDoList == null)
 				return false;
-			else
+
+			mapper.Map(newToDoList, currentToDoList);
+			db.Entry(currentToDoList).State = EntityState.Modified;
+
+			try
 			{
-				currentToDoList = mapper.Map<ToDoList>(newToDoList);
-				unitOfWork.save();
+				await unitOfWork.saveAsync();
 				return true;
 			}
+			catch (Exception ex)
+			{
+				
+				return false;
+			}
 		}
+
 
 		//delete to do list
 		public async Task<bool> DeleteToDoListSoft(int eventId, string name)
