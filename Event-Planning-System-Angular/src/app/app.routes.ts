@@ -31,8 +31,6 @@ export const routes: Routes = [
     {path: 'planner/eventdetails/:id', component : EventDetailsComponent},
 
     {path: 'auth/resetpassword', component: ResetPasswordComponent},
-    {path: 'auth/resetpassword/success', component: ResetPassSuccessComponent},
-
     
     { path: 'auth/validateemail', component: EmailConfirmCheckComponent },
     { path: 'event/addEmails', component: AddEmailsComponent },

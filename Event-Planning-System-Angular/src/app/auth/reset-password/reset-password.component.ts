@@ -11,12 +11,14 @@ import { passwordMatchValidator } from '../../shared/validators/passwordmatch.va
 import { AccountService } from '../../shared/services/account.service';
 import { ResetPass } from '../../shared/models/resetPass.model';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { ResetPassSuccessComponent } from '../reset-pass-success/reset-pass-success.component';
+import { ModalService } from '../../shared/services/modal.service';
 
 
 @Component({
   selector: 'app-reset-password',
   standalone: true,
-  imports: [CommonModule,FormsModule,ReactiveFormsModule,RouterModule,ButtonModule,InputTextModule,CardModule,ToastModule,FloatLabelModule],
+  imports: [CommonModule,FormsModule,ReactiveFormsModule,RouterModule,ButtonModule,InputTextModule,CardModule,ToastModule,FloatLabelModule,ResetPassSuccessComponent],
   templateUrl: './reset-password.component.html',
   styleUrl: './reset-password.component.css',
   providers:[MessageService]
@@ -33,7 +35,7 @@ export class ResetPasswordComponent {
   passwordControl = this.resetPasswordForm.controls['newPassword'];
   confirmPasswordControl = this.resetPasswordForm.controls['confirmPassword'];
 
-  constructor(private messageService:MessageService,private AccoutnService:AccountService,private router:Router,private ActivatedRoue:ActivatedRoute) { 
+  constructor(private messageService:MessageService,private AccoutnService:AccountService,private router:Router,private ActivatedRoue:ActivatedRoute,private modalService:ModalService) { 
     document.body.style.background = 'linear-gradient(to right, #f0f2f0, #000c40)';
   }
 
@@ -48,12 +50,11 @@ export class ResetPasswordComponent {
       this.AccoutnService.resetPassword(model).subscribe((res)=>{
         this.error = false;
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Password Reset Successful' });
-        setTimeout(() => { 
-          this.router.navigate(['/auth/resetpassword/success']);
-        }, 6000);
+       this.modalService.resetPassSuccessModalVisible = true;
       },(error)=>{
         this.error = true;
-        this.errorMessage = error;
+        console.log(error);
+        this.errorMessage = error.error.value;
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Password Reset Failed' });
       });
     }
