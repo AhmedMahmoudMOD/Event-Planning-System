@@ -6,6 +6,8 @@ import { EmailconfirmComponent } from './auth/emailconfirm/emailconfirm.componen
 import { EventListComponent } from './events/event-list/event-list.component';
 import { EmailConfirmCheckComponent } from './auth/email-confirm-check/email-confirm-check.component';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
+import { ResetPassSuccessComponent } from './auth/reset-pass-success/reset-pass-success.component';
 
 
 export const routes: Routes = [
@@ -15,6 +17,9 @@ export const routes: Routes = [
     { path: 'auth/confirmemail', component: EmailconfirmComponent },
     {path: 'auth/forgotpassword', component: ForgotPasswordComponent},
     {path: 'events', component: EventListComponent},
+
+    {path: 'auth/resetpassword', component: ResetPasswordComponent},
+    {path: 'auth/resetpassword/success', component: ResetPassSuccessComponent},
 
     
     { path: 'auth/validateemail', component: EmailConfirmCheckComponent },

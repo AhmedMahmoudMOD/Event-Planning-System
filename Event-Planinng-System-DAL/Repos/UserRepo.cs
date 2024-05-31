@@ -120,7 +120,7 @@ namespace Event_Planinng_System_DAL.Repos
            
             var token = await UserManager.GeneratePasswordResetTokenAsync(user);
             var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
-            string url = $"http://localhost:5006/api/auth/resetpassword?email={user.Email}&token={encodedToken}";
+            string url = $"http://localhost:4200/auth/resetpassword?email={user.Email}&token={encodedToken}";
             return url;
         }
 

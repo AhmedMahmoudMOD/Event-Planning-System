@@ -74,7 +74,7 @@ namespace Event_Planning_System.Services
             }
             else
             {
-                var result = await unitOfWork.UserRepo.ResetPasswordAsync(user, resetPasswordDTO.Token, resetPasswordDTO.Password);
+                var result = await unitOfWork.UserRepo.ResetPasswordAsync(user, resetPasswordDTO.Token, resetPasswordDTO.NewPassword);
                 if (result.Succeeded)
                 {
                     return IdentityResult.Success;
