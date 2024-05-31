@@ -62,7 +62,7 @@ namespace Event_Planning_System.Services
 				{
 					var email = new SendEmailDto
 					{
-						Sender = new EmailAdressDto { Email = null, Name = "EPP" },
+						Sender = new EmailAdressDto { Email = "abdullah.aiman.elsheshtawy@gmail.com", Name = "EPP" },
 						Recipient = new EmailAdressDto { Email = attendee.Email, Name = "" },
 						Subject = mailSubject,
 						Body = mailbody
@@ -84,12 +84,12 @@ namespace Event_Planning_System.Services
 				var AttendanceOfEvent = await unitOfWork.AttendanceRepo.GetAll();
 				var EventImages = await unitOfWork.EventImagesRepo.GetAll();
 
-				var AllEventAttendce  = AttendanceOfEvent.Where(x=>x.EventId == id && x.IsSent==true).Select(x=>x.Email);
-				var AllEventImages = EventImages.Where(x => x.EventId == id).Select(y=>y.EventImage);
+				var AllEventAttendce = AttendanceOfEvent.Where(x => x.EventId == id && x.IsSent == true).Select(x => x.Email);
+				var AllEventImages = EventImages.Where(x => x.EventId == id).Select(y => y.EventImage);
 
 				Event eventFounded = await unitOfWork.EventRepo.FindById(id);
 				if (eventFounded == null) return null;
-				EventDTO Modal  = mapper.Map<EventDTO>(eventFounded);
+				EventDTO Modal = mapper.Map<EventDTO>(eventFounded);
 				Modal.Emails = AllEventAttendce.ToList();
 				Modal.EventImages = AllEventImages.ToList();
 				return Modal;
@@ -192,8 +192,10 @@ namespace Event_Planning_System.Services
 			catch { return false; }
 
 			if (await CheckIfGuestExists(eventId, newAttendance.Email)) // Check if guest already exists
+			{
+				await SendEventMail(eventId, EmailType.Invite);
 				return true;
-
+			}
 			await unitOfWork.AttendanceRepo.Add(newAttendance);
 			unitOfWork.save();
 			return true;
@@ -209,13 +211,14 @@ namespace Event_Planning_System.Services
 			catch { return "Invalid Event Id"; }
 			// Check if the number of attendees is less than the remaining number of attendees
 			int attendeesno = (await unitOfWork.AttendanceRepo.GetAll()).Where(a => a.EventId == eventId).Count();
-			if (newAttendancesDTO.Count() >= (myEvent.AttendanceNumber - attendeesno))
+			List<AttendanceDTO> ditinctEmails = newAttendancesDTO.Distinct().ToList(); // to get distinct emails
+			if (ditinctEmails.Count() >= (myEvent.AttendanceNumber - attendeesno))
 				return $"You cant add more guests, you invited ({attendeesno} of total {myEvent.AttendanceNumber}, you can invite {myEvent.AttendanceNumber - attendeesno})";
 			// Add guests
-			foreach (AttendanceDTO guest in newAttendancesDTO)
+			foreach (AttendanceDTO guest in ditinctEmails)
 				if (!await AddGuest(eventId, guest))
 					return "Invalid Email";
-			// await SendEventMail(eventId, EmailType.Invite);
+			await SendEventMail(eventId, EmailType.Invite);
 			return "true";
 		}
 		// Delete guest from the event
