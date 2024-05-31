@@ -1,6 +1,7 @@
-<div class="d-flex justify-content-center align-content-center" style="height: 90vh;">
+<p-dialog  [modal]="true" [(visible)]="modalService.resetPassSuccessModalVisible">
+<div class="d-flex justify-content-center align-content-center">
     <div class="d-flex justify-content-center align-items-center">
-        <p-card>
+        <p-card [style]="{backgroundColor:'azure'}">
             <div class="mb-3">
             <img src="../../../assets/images/checkmark.png" class="img-fluid" style="height: 80px;">
             </div>
@@ -16,3 +17,4 @@
         </p-card>
     </div>
 </div>
+</p-dialog>
