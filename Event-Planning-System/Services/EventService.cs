@@ -6,6 +6,8 @@ using Event_Planning_System.DTO;
 using Event_Planning_System.DTO.Mail;
 using Event_Planning_System.Helpers;
 using Event_Planning_System.IServices;
+using Event_Planning_System.Custom;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MimeKit.Cryptography;
 using System.Security.Claims;
@@ -90,7 +92,7 @@ namespace Event_Planning_System.Services
 				Event eventFounded = await unitOfWork.EventRepo.FindById(id);
 				if (eventFounded == null) return null;
 				EventDTO Modal  = mapper.Map<EventDTO>(eventFounded);
-				Modal.Emails = AllEventAttendce.ToList();
+				//Modal.Emails = AllEventAttendce.ToList();
 				Modal.EventImages = AllEventImages.ToList();
 				return Modal;
 			}
@@ -159,6 +161,58 @@ namespace Event_Planning_System.Services
 			}
 			catch { return false; }
 		}
+		//edit event
+		public async Task<Result> UpdateEvent(int id, EventDTO newEventDTO)
+		{
+			// Retrieve the old event and ensure it's tracked by the context
+			var oldEvent = await unitOfWork.EventRepo.FindById(id);
+			if (oldEvent == null)
+				return Result.Failure(new Error("Event not found"));
+
+			Event newEvent;
+			try { newEvent = mapper.Map<Event>(newEventDTO); }
+			catch { return Result.Failure(new Error("Invalid data")); }
+
+			if (newEvent == null || newEvent.EventDate <= DateTime.Today)
+				return Result.Failure(new Error("Invalid date"));
+
+			// Update the old event with the new values
+			oldEvent.Name = newEvent.Name;
+			oldEvent.Description = newEvent.Description;
+			oldEvent.EventDate = newEvent.EventDate;
+			oldEvent.DateOfCreation = DateOnly.FromDateTime(DateTime.Today);
+			oldEvent.Location = newEvent.Location;
+			oldEvent.GoogleMapsLocation = newEvent.GoogleMapsLocation;
+			oldEvent.Budget = newEvent.Budget;
+
+
+			// ============= CreatorId should be the id of the logged in user ============= //
+			oldEvent.CreatorId = 1;
+			Attendance attendance = new Attendance()
+			{
+				Email = newEventDTO.Emails.FirstOrDefault().Email
+			};
+			// Add new emails to the old emails already in the event
+			
+				if (!oldEvent.AttendanceNavigation.Select(x => x.Email).Contains(attendance.Email))
+				{
+					oldEvent.AttendanceNavigation.Add(attendance);
+				}
+
+
+			try
+			{
+				// Save changes to the repository
+				await unitOfWork.EventRepo.Edit(oldEvent);
+				await unitOfWork.saveAsync();
+				return Result.Success();
+			}
+			catch (Exception ex)
+			{
+				return Result.Failure(new Error("Failed to update event"));
+			}
+		}
+
 		//---------------------------------------------------------------------------------------------//
 		// ------------------------------------------- Guests ----------------------------------------//
 		//-------------------------------------------------------------------------------------------//
