@@ -16,7 +16,7 @@ namespace Event_Planning_System.MappingProfiles
 					   .ReverseMap();
 			CreateMap<User, ProfileDTO>().ReverseMap();
 
-       CreateMap(typeof(PaginatedList<>), typeof(PaginatedList<>)).ConvertUsing(typeof(CustomPaginatedListMapper<,>));
+			CreateMap(typeof(PaginatedList<>), typeof(PaginatedList<>)).ConvertUsing(typeof(CustomPaginatedListMapper<,>));
      }
 
 	}

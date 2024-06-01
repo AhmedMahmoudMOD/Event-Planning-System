@@ -8,6 +8,7 @@ using Event_Planinng_System_DAL.Enums;
 using Event_Planning_System.DTO.Mail;
 using Swashbuckle.AspNetCore.Annotations;
 using Event_Planning_System.Services;
+using Event_Planning_System.Custom;
 
 namespace Event_Planning_System.Controllers
 {
@@ -78,6 +79,22 @@ namespace Event_Planning_System.Controllers
 			if (await eventService.DeleteEventSoft(id))
 				return Created();
 			return BadRequest();
+		}
+		// Update Event
+		[SwaggerOperation(Summary = "Update Event", Description = "Update Event with new details.")]
+		[SwaggerResponse(200, "Event updated successfully")]
+		[HttpPut]
+		public async Task<IActionResult> UpdateEvent(int id, EventDTO newEvent)
+		{
+			if (ModelState.IsValid)
+			{
+				var res = await eventService.UpdateEvent(id, newEvent);
+				if (res.IsSuccess)
+					return Created();
+				else
+					return BadRequest(res.Error.Description);
+			}
+			return BadRequest(ModelState);
 		}
 		// Get Event Attendance
 		[SwaggerOperation(Summary = "Get the Event's Attendance", Description = "Get a list of all Attendees' mails.")]
