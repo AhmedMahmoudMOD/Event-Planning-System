@@ -1,0 +1,20 @@
+<p-dialog  [modal]="true" [(visible)]="modalService.resetPassSuccessModalVisible">
+<div class="d-flex justify-content-center align-content-center">
+    <div class="d-flex justify-content-center align-items-center">
+        <p-card [style]="{backgroundColor:'azure'}">
+            <div class="mb-3">
+            <img src="../../../assets/images/checkmark.png" class="img-fluid" style="height: 80px;">
+            </div>
+            <h3>
+                Your Password has been Reset Successfully!
+            </h3>
+            <p class="m-3">
+                You can now login with your new password.
+            </p>
+            <p class="m-2">
+               <a [routerLink]="['/auth/login']">Login</a>
+            </p>
+        </p-card>
+    </div>
+</div>
+</p-dialog>
