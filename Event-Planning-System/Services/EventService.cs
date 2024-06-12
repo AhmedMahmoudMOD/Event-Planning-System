@@ -86,7 +86,7 @@ namespace Event_Planning_System.Services
 				var AttendanceOfEvent = await unitOfWork.AttendanceRepo.GetAll();
 				var EventImages = await unitOfWork.EventImagesRepo.GetAll();
 
-				var AllEventAttendce = AttendanceOfEvent.Where(x => x.EventId == id && x.IsSent == true).Select(x => x.Email);
+				var AllEventAttendce = AttendanceOfEvent.Where(x => x.EventId == id && x.IsSent == true).Select(x=>new AttendanceDTO() { Email=x.Email});
 				var AllEventImages = EventImages.Where(x => x.EventId == id).Select(y => y.EventImage);
 
 				Event eventFounded = await unitOfWork.EventRepo.FindById(id);

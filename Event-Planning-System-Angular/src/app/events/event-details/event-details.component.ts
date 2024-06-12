@@ -48,16 +48,17 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
     private el: ElementRef, private renderer: Renderer2) { }
 
     ngAfterViewInit() {
-      const backgroundStyle = `linear-gradient(rgba(0, 0, 0, 0), rgba(250, 250, 250, 1)), url('${this.eventDetails.eventImages[0]}')`;
-      const background_size = 'cover';
-      const background_position = 'center';
-      const elements = this.el.nativeElement.querySelectorAll('.blur-bg-card');
+      console.log(this.eventDetails);
+      // const backgroundStyle = `linear-gradient(rgba(0, 0, 0, 0), rgba(250, 250, 250, 1)), url('${this.eventDetails?.eventImages[0]??this.defaultImage}')`;
+      // const background_size = 'cover';
+      // const background_position = 'center';
+      // const elements = this.el.nativeElement.querySelectorAll('.blur-bg-card');
   
-      elements.forEach((element: any) => {
-        this.renderer.setStyle(element, 'background', backgroundStyle);
-        this.renderer.setStyle(element, 'background-size', background_size);
-        this.renderer.setStyle(element, 'background-position', background_position);
-      });
+      // elements.forEach((element: any) => {
+      //   this.renderer.setStyle(element, 'background', backgroundStyle);
+      //   this.renderer.setStyle(element, 'background-size', background_size);
+      //   this.renderer.setStyle(element, 'background-position', background_position);
+      // });
     }
 
 
@@ -73,6 +74,7 @@ ngOnInit(): void {
       this.eventDetails.eventImages.push(this.defaultImage);
     }
     this.mapsURL = this.eventDetails.googleMapsLocation ? this.eventDetails.googleMapsLocation : null;
+    this.renderBackgroungImage();
     console.log(this.eventDetails);
   });
 
@@ -85,6 +87,19 @@ ngOnDestroy(): void {
 //end of constructors
 
 reset() {
+}
+
+renderBackgroungImage() {
+  const backgroundStyle = `linear-gradient(rgba(0, 0, 0, 0), rgba(250, 250, 250, 1)), url('${this.eventDetails?.eventImages[0]??this.defaultImage}')`;
+      const background_size = 'cover';
+      const background_position = 'center';
+      const elements = this.el.nativeElement.querySelectorAll('.blur-bg-card');
+  
+      elements.forEach((element: any) => {
+        this.renderer.setStyle(element, 'background', backgroundStyle);
+        this.renderer.setStyle(element, 'background-size', background_size);
+        this.renderer.setStyle(element, 'background-position', background_position);
+      });
 }
 
 stateOptions: any[] = [{ label: 'About', value: 'About' }, { label: 'Discussion', value: 'Discussion' }];
