@@ -6,6 +6,8 @@ using Event_Planning_System.DTO;
 using Event_Planning_System.DTO.Mail;
 using Event_Planning_System.Helpers;
 using Event_Planning_System.IServices;
+using Event_Planning_System.Custom;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MimeKit.Cryptography;
 using System.Security.Claims;
@@ -62,7 +64,7 @@ namespace Event_Planning_System.Services
 				{
 					var email = new SendEmailDto
 					{
-						Sender = new EmailAdressDto { Email = null, Name = "EPP" },
+						Sender = new EmailAdressDto { Email = "abdullah.aiman.elsheshtawy@gmail.com", Name = "EPP" },
 						Recipient = new EmailAdressDto { Email = attendee.Email, Name = "" },
 						Subject = mailSubject,
 						Body = mailbody
@@ -84,13 +86,15 @@ namespace Event_Planning_System.Services
 				var AttendanceOfEvent = await unitOfWork.AttendanceRepo.GetAll();
 				var EventImages = await unitOfWork.EventImagesRepo.GetAll();
 
-				var AllEventAttendce  = AttendanceOfEvent.Where(x=>x.EventId == id && x.IsSent==true).Select(x=>x.Email);
-				var AllEventImages = EventImages.Where(x => x.EventId == id).Select(y=>y.EventImage);
+				var AllEventAttendce = AttendanceOfEvent.Where(x => x.EventId == id && x.IsSent == true).Select(x=>new AttendanceDTO() { Email=x.Email});
+				var AllEventImages = EventImages.Where(x => x.EventId == id).Select(y => y.EventImage);
 
 				Event eventFounded = await unitOfWork.EventRepo.FindById(id);
 				if (eventFounded == null) return null;
-				EventDTO Modal  = mapper.Map<EventDTO>(eventFounded);
+
+				EventDTO Modal = mapper.Map<EventDTO>(eventFounded);
 				Modal.Emails = AllEventAttendce.ToList();
+
 				Modal.EventImages = AllEventImages.ToList();
 				return Modal;
 			}
@@ -104,9 +108,10 @@ namespace Event_Planning_System.Services
 		{
 			try
 			{
-				List<Event> userEvents = (await unitOfWork.EventRepo.GetAll()).Where(a => a.CreatorId == id).ToList();
-				if (userEvents == null)
+				User userToSearch = await unitOfWork.UserRepo.FindById(id);
+				if (userToSearch == null)
 					return null;
+				List<Event> userEvents = (await unitOfWork.EventRepo.GetAll()).Where(a => a.CreatorId == id).ToList();
 				return mapper.Map<List<EventDTO>>(userEvents);
 			}
 			catch { return null; }
@@ -158,6 +163,58 @@ namespace Event_Planning_System.Services
 			}
 			catch { return false; }
 		}
+		//edit event
+		public async Task<Result> UpdateEvent(int id, EventDTO newEventDTO)
+		{
+			// Retrieve the old event and ensure it's tracked by the context
+			var oldEvent = await unitOfWork.EventRepo.FindById(id);
+			if (oldEvent == null)
+				return Result.Failure(new Error("Event not found"));
+
+			Event newEvent;
+			try { newEvent = mapper.Map<Event>(newEventDTO); }
+			catch { return Result.Failure(new Error("Invalid data")); }
+
+			if (newEvent == null || newEvent.EventDate <= DateTime.Today)
+				return Result.Failure(new Error("Invalid date"));
+
+			// Update the old event with the new values
+			oldEvent.Name = newEvent.Name;
+			oldEvent.Description = newEvent.Description;
+			oldEvent.EventDate = newEvent.EventDate;
+			oldEvent.DateOfCreation = DateOnly.FromDateTime(DateTime.Today);
+			oldEvent.Location = newEvent.Location;
+			oldEvent.GoogleMapsLocation = newEvent.GoogleMapsLocation;
+			oldEvent.Budget = newEvent.Budget;
+
+
+			// ============= CreatorId should be the id of the logged in user ============= //
+			oldEvent.CreatorId = 1;
+			Attendance attendance = new Attendance()
+			{
+				Email = newEventDTO.Emails.FirstOrDefault().Email
+			};
+			// Add new emails to the old emails already in the event
+			
+				if (!oldEvent.AttendanceNavigation.Select(x => x.Email).Contains(attendance.Email))
+				{
+					oldEvent.AttendanceNavigation.Add(attendance);
+				}
+
+
+			try
+			{
+				// Save changes to the repository
+				await unitOfWork.EventRepo.Edit(oldEvent);
+				await unitOfWork.saveAsync();
+				return Result.Success();
+			}
+			catch (Exception ex)
+			{
+				return Result.Failure(new Error("Failed to update event"));
+			}
+		}
+
 		//---------------------------------------------------------------------------------------------//
 		// ------------------------------------------- Guests ----------------------------------------//
 		//-------------------------------------------------------------------------------------------//
@@ -191,8 +248,10 @@ namespace Event_Planning_System.Services
 			catch { return false; }
 
 			if (await CheckIfGuestExists(eventId, newAttendance.Email)) // Check if guest already exists
-				return false;
-
+			{
+				await SendEventMail(eventId, EmailType.Invite);
+				return true;
+			}
 			await unitOfWork.AttendanceRepo.Add(newAttendance);
 			unitOfWork.save();
 			return true;
@@ -202,14 +261,19 @@ namespace Event_Planning_System.Services
 		{
 			if (newAttendancesDTO == null)
 				return "Invalid data, Sent an empty list";
-			Event myEvent = await unitOfWork.EventRepo.FindById(eventId);
-
+			// Check if the event exists
+			Event myEvent;
+			try { myEvent = await unitOfWork.EventRepo.FindById(eventId); }
+			catch { return "Invalid Event Id"; }
+			// Check if the number of attendees is less than the remaining number of attendees
 			int attendeesno = (await unitOfWork.AttendanceRepo.GetAll()).Where(a => a.EventId == eventId).Count();
-			if (newAttendancesDTO.Count() >= (myEvent.AttendanceNumber - attendeesno))
+			List<AttendanceDTO> ditinctEmails = newAttendancesDTO.Distinct().ToList(); // to get distinct emails
+			if (ditinctEmails.Count() >= (myEvent.AttendanceNumber - attendeesno))
 				return $"You cant add more guests, you invited ({attendeesno} of total {myEvent.AttendanceNumber}, you can invite {myEvent.AttendanceNumber - attendeesno})";
-			foreach (AttendanceDTO guest in newAttendancesDTO)
+			// Add guests
+			foreach (AttendanceDTO guest in ditinctEmails)
 				if (!await AddGuest(eventId, guest))
-					return "failed to add guest";
+					return "Invalid Email";
 			await SendEventMail(eventId, EmailType.Invite);
 			return "true";
 		}

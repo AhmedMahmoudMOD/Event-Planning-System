@@ -8,6 +8,7 @@ using Event_Planinng_System_DAL.Enums;
 using Event_Planning_System.DTO.Mail;
 using Swashbuckle.AspNetCore.Annotations;
 using Event_Planning_System.Services;
+using Event_Planning_System.Custom;
 
 namespace Event_Planning_System.Controllers
 {
@@ -28,15 +29,10 @@ namespace Event_Planning_System.Controllers
 		[HttpGet("user/{id:int}")]
 		public async Task<IActionResult> GetAllEventsByUserID([FromRoute] int id)
 		{
-			if (id <= 0)
-			{
-				return BadRequest("Invalid user ID.");
-			}
-
 			var requiredEvents = await eventService.GetAllEvents(id);
-			if (requiredEvents == null || !requiredEvents.Any())
+			if (id == 0 || requiredEvents == null)
 			{
-				return NotFound("No events found for the given user ID.");
+				return NotFound("Invalid ID.");
 			}
 
 			return Ok(requiredEvents);
@@ -46,7 +42,7 @@ namespace Event_Planning_System.Controllers
 		[SwaggerOperation(Summary = "Get Event by its ID", Description = "Get Event Details by its ID.")]
 		[SwaggerResponse(200, "retrieved successfully", typeof(EventDTO))]
 		[SwaggerResponse(400, "Failed to retrieve event. Invalid Id.")]
-		[HttpGet]
+		[HttpGet("{id:int}")]
 		public async Task<IActionResult> GetEventByID(int id)
 		{
 			if (ModelState.IsValid)
@@ -84,6 +80,22 @@ namespace Event_Planning_System.Controllers
 				return Created();
 			return BadRequest();
 		}
+		// Update Event
+		[SwaggerOperation(Summary = "Update Event", Description = "Update Event with new details.")]
+		[SwaggerResponse(200, "Event updated successfully")]
+		[HttpPut]
+		public async Task<IActionResult> UpdateEvent(int id, EventDTO newEvent)
+		{
+			if (ModelState.IsValid)
+			{
+				var res = await eventService.UpdateEvent(id, newEvent);
+				if (res.IsSuccess)
+					return Created();
+				else
+					return BadRequest(res.Error.Description);
+			}
+			return BadRequest(ModelState);
+		}
 		// Get Event Attendance
 		[SwaggerOperation(Summary = "Get the Event's Attendance", Description = "Get a list of all Attendees' mails.")]
 		[SwaggerResponse(200, "Retrieved all mails successfully")]
@@ -98,7 +110,7 @@ namespace Event_Planning_System.Controllers
 		// add Attendance to event
 		[SwaggerOperation(Summary = "Add list of attendees", Description = "Add new list of attendees to the Event.")]
 		[SwaggerResponse(200, "Attendance was added successfully")]
-		[HttpPost("Attendance")]
+		[HttpPost("Attendance/{eventId:int}")]
 		public async Task<IActionResult> AddAttendace(int eventId, List<AttendanceDTO> newAttendancesDTO)
 		{
 			if (ModelState.IsValid)

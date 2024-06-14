@@ -1,0 +1,30 @@
+<div class="text-center mt-2">
+    <p-button
+    label="Invite"
+    [text]="true"
+    severity="success"
+    [raised]="true"
+    (click)="openModal()"
+  />
+</div>
+
+<!-- Modal Dialog -->
+<p-dialog header="Add Guests" [style]="{ 'width': '60%' }" [(visible)]="displayModal" [modal]="true" [closable]="true"
+    (onHide)="closeModal()">
+    <div class="ms-2">
+        <div class="text-center my-2">
+            <p-chips [showClear]="true" [(ngModel)]="emails" placeholder="Enter emails"></p-chips>
+            <br />
+            <p-progressSpinner *ngIf="loading" styleClass="custom-spinner"></p-progressSpinner>
+            <br />
+            <p-message styleClass="alert alert-danger" *ngIf="errorMessage != null" severity="danger"
+                text="{{ errorMessage }}"></p-message>
+            <p-message styleClass="alert alert-success" *ngIf="successMessage != null" severity="success"
+                text="{{ successMessage }}"></p-message>
+        </div>
+        <div class="text-center mt-3">
+            <button pButton type="button" class="btn btn-success px-3" label="Submit Emails" (click)="submitEmails()"
+                [disabled]="loading">Submit</button>
+        </div>
+    </div>
+</p-dialog>

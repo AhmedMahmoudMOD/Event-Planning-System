@@ -23,7 +23,7 @@ namespace Event_Planning_System.DTO
 		public EventType EventType { get; set; }
 		public string EventDate { get; set; }
 
-		public List<string>? Emails { get; set; }
+		public List<AttendanceDTO>? Emails { get; set; }
 		public List<string>? EventImages { get; set; }
 
     }

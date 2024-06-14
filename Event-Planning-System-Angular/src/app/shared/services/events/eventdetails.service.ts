@@ -10,12 +10,8 @@ export class EventdetailsService {
 
   constructor(private http: HttpClient) { }
 
-  getEventById(id: number) {
-    return this.http.get<Event>(this.baseUrl + `Event?id=${id}`);
+  getEventById(id:number){
+    return this.http.get<Event>(this.baseUrl + `Event/${id}`);
   }
-
-
-
-
 
 }

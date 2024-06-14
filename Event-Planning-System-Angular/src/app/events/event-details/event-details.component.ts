@@ -16,6 +16,7 @@ import { SafePipe } from './safe.pipe';
 import { Subscription } from 'rxjs';
 import { EventdetailsService } from '../../shared/services/events/eventdetails.service';
 import { eventTypeMapping } from '../../shared/enums/eventstype';
+import { AddEmailsComponent } from '../../add-emails/add-emails.component';
 
 
 
@@ -23,7 +24,7 @@ import { eventTypeMapping } from '../../shared/enums/eventstype';
 @Component({
   selector: 'app-event-details',
   standalone: true,
-  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule],
+  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule,AddEmailsComponent],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.css'
 })
@@ -47,18 +48,19 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
     private eventDetailsServices: EventdetailsService,
     private el: ElementRef, private renderer: Renderer2) { }
 
-  ngAfterViewInit() {
-    const backgroundStyle = `linear-gradient(rgba(0, 0, 0, 0), rgba(250, 250, 250, 1)), url('${this.eventDetails.eventImages[0]}')`;
-    const background_size = 'cover';
-    const background_position = 'center';
-    const elements = this.el.nativeElement.querySelectorAll('.blur-bg-card');
-
-    elements.forEach((element: any) => {
-      this.renderer.setStyle(element, 'background', backgroundStyle);
-      this.renderer.setStyle(element, 'background-size', background_size);
-      this.renderer.setStyle(element, 'background-position', background_position);
-    });
-  }
+    ngAfterViewInit() {
+      console.log(this.eventDetails);
+      // const backgroundStyle = `linear-gradient(rgba(0, 0, 0, 0), rgba(250, 250, 250, 1)), url('${this.eventDetails?.eventImages[0]??this.defaultImage}')`;
+      // const background_size = 'cover';
+      // const background_position = 'center';
+      // const elements = this.el.nativeElement.querySelectorAll('.blur-bg-card');
+  
+      // elements.forEach((element: any) => {
+      //   this.renderer.setStyle(element, 'background', backgroundStyle);
+      //   this.renderer.setStyle(element, 'background-size', background_size);
+      //   this.renderer.setStyle(element, 'background-position', background_position);
+      // });
+    }
 
 
 
@@ -67,14 +69,15 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
       this.id = params['id'];
     });
 
-    this.eventsubscription = this.eventDetailsServices.getEventById(this.id).subscribe((res) => {
-      this.eventDetails = res;
-      if (this.eventDetails.eventImages.length === 0) {
-        this.eventDetails.eventImages.push(this.defaultImage);
-      }
-      this.mapsURL = this.eventDetails.googleMapsLocation ? this.eventDetails.googleMapsLocation : null;
-      console.log(this.eventDetails);
-    });
+  this.eventsubscription = this.eventDetailsServices.getEventById(this.id).subscribe((res) => {
+    this.eventDetails = res;
+    if (this.eventDetails.eventImages.length === 0) {
+      this.eventDetails.eventImages.push(this.defaultImage);
+    }
+    this.mapsURL = this.eventDetails.googleMapsLocation ? this.eventDetails.googleMapsLocation : null;
+    this.renderBackgroungImage();
+    console.log(this.eventDetails);
+  });
 
     console.log(this.id);
   }
@@ -89,7 +92,20 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   reset() {
   }
 
-  stateOptions: any[] = [{ label: 'About', value: 'About' }, { label: 'Discussion', value: 'Discussion' }];
+renderBackgroungImage() {
+  const backgroundStyle = `linear-gradient(rgba(0, 0, 0, 0), rgba(250, 250, 250, 1)), url('${this.eventDetails?.eventImages[0]??this.defaultImage}')`;
+      const background_size = 'cover';
+      const background_position = 'center';
+      const elements = this.el.nativeElement.querySelectorAll('.blur-bg-card');
+  
+      elements.forEach((element: any) => {
+        this.renderer.setStyle(element, 'background', backgroundStyle);
+        this.renderer.setStyle(element, 'background-size', background_size);
+        this.renderer.setStyle(element, 'background-position', background_position);
+      });
+}
+
+stateOptions: any[] = [{ label: 'About', value: 'About' }, { label: 'Discussion', value: 'Discussion' }];
 
   value: string = 'off';
 

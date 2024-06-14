@@ -5,8 +5,8 @@ import { UserRegister } from '../models/userRegister.model';
 import { UserAuthResponse } from '../models/userAuthRespones.model';
 import { ConfirmEmail } from '../models/confirmemail.model';
 import { jwtTokenRes } from '../models/jwtTokenRes.model';
-import * as jwtDecode from 'jwt-decode';
 import { Router } from '@angular/router';
+import { ResetPass } from '../models/resetPass.model';
 
 
 @Injectable({
@@ -50,6 +50,14 @@ export class AccountService {
 
   logout(){
     this.isLoggedIn = false;
+  }
+
+  forgotPassword(email:string){
+    return this.http.post(this.baseUrl + `auth/forgotpassword?email=${email}`,{},{observe:'response'});
+  }
+
+  resetPassword(model:ResetPass){
+    return this.http.post(this.baseUrl + 'auth/resetpassword',model);
   }
 
 
