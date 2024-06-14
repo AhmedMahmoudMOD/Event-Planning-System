@@ -36,6 +36,7 @@ export class AddEventComponent implements OnInit {
   display: boolean = false;
   addEventForm: FormGroup = new FormGroup({});
   submitted: boolean = false;
+  minDate: Date = new Date();
   Types : eventTypes[] = [ 
     {id: 1, name: 'Wedding'}, 
     {id: 2, name: 'Birthday'}, 

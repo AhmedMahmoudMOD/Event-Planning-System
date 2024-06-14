@@ -30,4 +30,12 @@ export class EventService  {
 
     return this.httpclient.post<string>(url, body);
   }
+  getEventById(id: number): Observable<Event> {
+    return this.httpclient.get<Event>(`${environment.apiUrl}/api/Event/${id}`);
+  }
+  editEvent(eventId: number, event: Event): Observable<Event> {
+    return this.httpclient.put<Event>(`${environment.apiUrl}/api/Event/${eventId}`, event);
+  }
+  
+
 }
