@@ -1,5 +1,11 @@
 <div class="text-center mt-2">
-    <button pButton type="button" class="btn btn-primary" label="Add Guests" (click)="openModal()">Add guests</button>
+    <p-button
+    label="Invite"
+    [text]="true"
+    severity="success"
+    [raised]="true"
+    (click)="openModal()"
+  />
 </div>
 
 <!-- Modal Dialog -->

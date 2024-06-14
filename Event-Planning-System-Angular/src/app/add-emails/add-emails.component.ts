@@ -8,6 +8,7 @@ import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-add-emails',
@@ -19,7 +20,8 @@ import { DialogModule } from 'primeng/dialog';
     MessagesModule,
     MessageModule,
     ProgressSpinnerModule,
-    DialogModule
+    DialogModule,
+    ButtonModule
   ],
   templateUrl: './add-emails.component.html',
   styleUrls: ['./add-emails.component.css'],

@@ -10,6 +10,11 @@ export interface Event {
     budget : number | null;
     eventType : Eventstype;
     eventDate : string;
-    emails : string[] | null;
+    emails : Email[] | null;
     eventImages: string[] | null;
+
+}
+
+export interface Email{
+    email:string;
 }
