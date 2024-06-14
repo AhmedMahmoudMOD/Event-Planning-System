@@ -15,5 +15,5 @@ import { AvatarModule } from 'primeng/avatar';
   styleUrl: './sidebar.component.css',
 })
 export class SidebarComponent {                          
-  sidebarVisible :boolean = false;
+  sidebarVisible :boolean = true;
 }
