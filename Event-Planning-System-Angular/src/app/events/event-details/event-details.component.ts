@@ -47,104 +47,106 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
     private eventDetailsServices: EventdetailsService,
     private el: ElementRef, private renderer: Renderer2) { }
 
-    ngAfterViewInit() {
-      const backgroundStyle = `linear-gradient(rgba(0, 0, 0, 0), rgba(250, 250, 250, 1)), url('${this.eventDetails.eventImages[0]}')`;
-      const background_size = 'cover';
-      const background_position = 'center';
-      const elements = this.el.nativeElement.querySelectorAll('.blur-bg-card');
-  
-      elements.forEach((element: any) => {
-        this.renderer.setStyle(element, 'background', backgroundStyle);
-        this.renderer.setStyle(element, 'background-size', background_size);
-        this.renderer.setStyle(element, 'background-position', background_position);
-      });
-    }
+  ngAfterViewInit() {
+    const backgroundStyle = `linear-gradient(rgba(0, 0, 0, 0), rgba(250, 250, 250, 1)), url('${this.eventDetails.eventImages[0]}')`;
+    const background_size = 'cover';
+    const background_position = 'center';
+    const elements = this.el.nativeElement.querySelectorAll('.blur-bg-card');
 
-
-
-ngOnInit(): void {
-  this.idsubscripe = this.ActivatedRoute.params.subscribe(params => {
-    this.id = params['id'];
-  });
-
-  this.eventsubscription = this.eventDetailsServices.getEventById(this.id).subscribe((res) => {
-    this.eventDetails = res;
-    if (this.eventDetails.eventImages.length === 0) {
-      this.eventDetails.eventImages.push(this.defaultImage);
-    }
-    this.mapsURL = this.eventDetails.googleMapsLocation ? this.eventDetails.googleMapsLocation : null;
-    console.log(this.eventDetails);
-  });
-
-  console.log(this.id);
-}
-ngOnDestroy(): void {
-  this.idsubscripe.unsubscribe();
-  this.eventsubscription.unsubscribe();
-}
-//end of constructors
-
-reset() {
-}
-
-stateOptions: any[] = [{ label: 'About', value: 'About' }, { label: 'Discussion', value: 'Discussion' }];
-
-value: string = 'off';
-
-
-//carsol related code
-
-
-
-
-
-getSeverity(status: string):any {
-  switch (status) {
-    case 'INSTOCK':
-      return 'success';
-    case 'LOWSTOCK':
-      return 'warning';
-    case 'OUTOFSTOCK':
-      return 'danger';
+    elements.forEach((element: any) => {
+      this.renderer.setStyle(element, 'background', backgroundStyle);
+      this.renderer.setStyle(element, 'background-size', background_size);
+      this.renderer.setStyle(element, 'background-position', background_position);
+    });
   }
-}
 
 
-responsiveOptions: any[] = [
-  {
-    breakpoint: '1024px',
-    numVisible: 5
-  },
-  {
-    breakpoint: '768px',
-    numVisible: 3
-  },
-  {
-    breakpoint: '560px',
-    numVisible: 1
+
+  ngOnInit(): void {
+    this.idsubscripe = this.ActivatedRoute.params.subscribe(params => {
+      this.id = params['id'];
+    });
+
+    this.eventsubscription = this.eventDetailsServices.getEventById(this.id).subscribe((res) => {
+      this.eventDetails = res;
+      if (this.eventDetails.eventImages.length === 0) {
+        this.eventDetails.eventImages.push(this.defaultImage);
+      }
+      this.mapsURL = this.eventDetails.googleMapsLocation ? this.eventDetails.googleMapsLocation : null;
+      console.log(this.eventDetails);
+    });
+
+    console.log(this.id);
   }
-];
 
-//end of carsol related code
+  //destroy
+  ngOnDestroy(): void {
+    this.idsubscripe.unsubscribe();
+    this.eventsubscription.unsubscribe();
+  }
+  //end of constructors
+
+  reset() {
+  }
+
+  stateOptions: any[] = [{ label: 'About', value: 'About' }, { label: 'Discussion', value: 'Discussion' }];
+
+  value: string = 'off';
+
+
+  //carsol related code
 
 
 
 
-//iFrame related code
-positionMap = {
-  street: "Brookline",
-  num: "123",
-  city: "NewYork"
-};
 
-//end of iFrame related code
+  getSeverity(status: string): any {
+    switch (status) {
+      case 'INSTOCK':
+        return 'success';
+      case 'LOWSTOCK':
+        return 'warning';
+      case 'OUTOFSTOCK':
+        return 'danger';
+    }
+  }
 
-log() :any{
-  console.log(this.mapsURL);
-}
 
-getEventTypeString(eventTypeInt: number): string | undefined {
-  return eventTypeMapping[eventTypeInt];
-}
-//end of class
+  responsiveOptions: any[] = [
+    {
+      breakpoint: '1024px',
+      numVisible: 5
+    },
+    {
+      breakpoint: '768px',
+      numVisible: 3
+    },
+    {
+      breakpoint: '560px',
+      numVisible: 1
+    }
+  ];
+
+  //end of carsol related code
+
+
+
+
+  //iFrame related code
+  positionMap = {
+    street: "Brookline",
+    num: "123",
+    city: "NewYork"
+  };
+
+  //end of iFrame related code
+
+  log(): any {
+    console.log(this.mapsURL);
+  }
+
+  getEventTypeString(eventTypeInt: number): string | undefined {
+    return eventTypeMapping[eventTypeInt];
+  }
+  //end of class
 }

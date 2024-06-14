@@ -8,14 +8,14 @@ import { HttpClient } from '@angular/common/http';
 export class EventdetailsService {
   baseUrl = 'http://localhost:5006/api/';
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-  getEventById(id:number){
+  getEventById(id: number) {
     return this.http.get<Event>(this.baseUrl + `Event?id=${id}`);
   }
 
 
-    
-    
+
+
 
 }
