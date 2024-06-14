@@ -5,12 +5,14 @@ import { ActivatedRoute, RouterLink, RouterModule } from '@angular/router';
 import { PaginatorModule } from 'primeng/paginator';
 import { EventListService } from '../../shared/services/event-list.service';
 import { FormsModule } from '@angular/forms'; 
+import { AddEventComponent } from '../../add-event/add-event.component';
+import { SidebarComponent } from '../../sidebar/sidebar.component';
 
 
 @Component({
   selector: 'app-event-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterLink, PaginatorModule, FormsModule],
+  imports: [CommonModule, RouterModule, RouterLink, PaginatorModule, FormsModule,AddEventComponent,SidebarComponent],
   templateUrl: './event-list.component.html',
   styleUrls: ['./event-list.component.css']
 })
