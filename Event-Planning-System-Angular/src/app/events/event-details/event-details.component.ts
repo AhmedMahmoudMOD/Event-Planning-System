@@ -17,6 +17,7 @@ import { Subscription } from 'rxjs';
 import { EventdetailsService } from '../../shared/services/events/eventdetails.service';
 import { eventTypeMapping } from '../../shared/enums/eventstype';
 import { AddEmailsComponent } from '../../add-emails/add-emails.component';
+import Swal from 'sweetalert2';
 
 
 
@@ -50,16 +51,17 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
     private router: Router) { }
 
   ngAfterViewInit() {
-    const backgroundStyle = `linear-gradient(rgba(0, 0, 0, 0), rgba(250, 250, 250, 1)), url('${this.eventDetails.eventImages[0]}')`;
-    const background_size = 'cover';
-    const background_position = 'center';
-    const elements = this.el.nativeElement.querySelectorAll('.blur-bg-card');
+    console.log(this.eventDetails);
+    // const backgroundStyle = `linear-gradient(rgba(0, 0, 0, 0), rgba(250, 250, 250, 1)), url('${this.eventDetails?.eventImages[0]??this.defaultImage}')`;
+    // const background_size = 'cover';
+    // const background_position = 'center';
+    // const elements = this.el.nativeElement.querySelectorAll('.blur-bg-card');
 
-    elements.forEach((element: any) => {
-      this.renderer.setStyle(element, 'background', backgroundStyle);
-      this.renderer.setStyle(element, 'background-size', background_size);
-      this.renderer.setStyle(element, 'background-position', background_position);
-    });
+    // elements.forEach((element: any) => {
+    //   this.renderer.setStyle(element, 'background', backgroundStyle);
+    //   this.renderer.setStyle(element, 'background-size', background_size);
+    //   this.renderer.setStyle(element, 'background-position', background_position);
+    // });
   }
 
 
@@ -75,26 +77,32 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
         this.eventDetails.eventImages.push(this.defaultImage);
       }
       this.mapsURL = this.eventDetails.googleMapsLocation ? this.eventDetails.googleMapsLocation : null;
+      this.renderBackgroungImage();
       console.log(this.eventDetails);
     });
 
     console.log(this.id);
   }
-
-  //destroy
   ngOnDestroy(): void {
     this.idsubscripe.unsubscribe();
     this.eventsubscription.unsubscribe();
   }
   //end of constructors
 
-  deleteEvent() {
-    // this.eventDetailsServices.removeEventById(this.id).subscribe(() => {
-    //   console.log('Event Deleted');
-    //   this.router.navigate(['/events']);
-    // });
-    console.log('Event Deleted');
-    this.router.navigate(['/events']);
+  reset() {
+  }
+
+  renderBackgroungImage() {
+    const backgroundStyle = `linear-gradient(rgba(0, 0, 0, 0), rgba(250, 250, 250, 1)), url('${this.eventDetails?.eventImages[0] ?? this.defaultImage}')`;
+    const background_size = 'cover';
+    const background_position = 'center';
+    const elements = this.el.nativeElement.querySelectorAll('.blur-bg-card');
+
+    elements.forEach((element: any) => {
+      this.renderer.setStyle(element, 'background', backgroundStyle);
+      this.renderer.setStyle(element, 'background-size', background_size);
+      this.renderer.setStyle(element, 'background-position', background_position);
+    });
   }
 
   stateOptions: any[] = [{ label: 'About', value: 'About' }, { label: 'Discussion', value: 'Discussion' }];
@@ -102,8 +110,26 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   value: string = 'off';
 
 
-  //carsol related code
+  //delete event 
+  deleteEvent() {
+    Swal.fire({
+      title: 'Are you sure You want to delete this?',
+      text: 'You won\'t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
 
+        this.eventDetailsServices.removeEventById(this.id).subscribe((res) => {
+          this.router.navigate(['/events']);
+        });
+      }
+    });
+
+  }
 
 
 
