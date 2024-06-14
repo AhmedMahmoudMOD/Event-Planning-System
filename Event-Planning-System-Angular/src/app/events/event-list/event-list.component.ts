@@ -4,7 +4,7 @@ import { Event, EventType } from '../../shared/models/eventsListRes.model';
 import { ActivatedRoute, RouterLink, RouterModule } from '@angular/router';
 import { PaginatorModule } from 'primeng/paginator';
 import { EventListService } from '../../shared/services/event-list.service';
-import { FormsModule } from '@angular/forms'; 
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
@@ -15,6 +15,7 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./event-list.component.css']
 })
 export class EventListComponent implements OnInit {
+  title = 'Events';
   eventList: Event[] = [];
   filteredEventList: Event[] = [];
   searchQuery: string = '';
