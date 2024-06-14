@@ -16,6 +16,7 @@ import { SafePipe } from './safe.pipe';
 import { Subscription } from 'rxjs';
 import { EventdetailsService } from '../../shared/services/events/eventdetails.service';
 import { eventTypeMapping } from '../../shared/enums/eventstype';
+import { AddEmailsComponent } from '../../add-emails/add-emails.component';
 
 
 
@@ -23,7 +24,7 @@ import { eventTypeMapping } from '../../shared/enums/eventstype';
 @Component({
   selector: 'app-event-details',
   standalone: true,
-  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule],
+  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule,AddEmailsComponent],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.css'
 })
