@@ -44,6 +44,7 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   eventDetails: Event | any = {};
   defaultImage = '../../../assets/images/software-developer-6521720_640.jpg';
   mapsURL: string | null = null;
+  // map?: google.maps.Map;
   // constructors
   constructor(private ActivatedRoute: ActivatedRoute,
     private eventDetailsServices: EventdetailsService,
@@ -52,6 +53,7 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit() {
     console.log(this.eventDetails);
+    // this.initMap();
   }
 
 
@@ -193,5 +195,35 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   getEventTypeString(eventTypeInt: number): string | undefined {
     return eventTypeMapping[eventTypeInt];
   }
+
+
+  ///////////////////////////google maps////////////////////////
+  // initMap(): void {
+  //   const coordinates = this.parseLocation("30.885255,31.543716");
+  //   if (!coordinates) {
+  //     console.error('Invalid location format');
+  //     return;
+  //   }
+
+  //   const mapOptions: google.maps.MapOptions = {
+  //     center: coordinates,
+  //     zoom: 15
+  //   };
+
+  //   this.map = new google.maps.Map(document.getElementById('map') as HTMLElement, mapOptions);
+
+  //   new google.maps.Marker({
+  //     position: coordinates,
+  //     map: this.map
+  //   });
+  // }
+
+  // parseLocation(location: string): google.maps.LatLng | null {
+  //   const [lat, lng] = location.split(',').map(Number);
+  //   if (!isNaN(lat) && !isNaN(lng)) {
+  //     return new google.maps.LatLng(lat, lng);
+  //   }
+  //   return null;
+  // }
   //end of class
 }
