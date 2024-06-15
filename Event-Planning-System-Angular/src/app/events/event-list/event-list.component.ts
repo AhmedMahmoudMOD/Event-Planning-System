@@ -7,6 +7,7 @@ import { EventListService } from '../../shared/services/event-list.service';
 import { FormsModule } from '@angular/forms'; 
 import { AddEventComponent } from '../../add-event/add-event.component';
 import { SidebarComponent } from '../../sidebar/sidebar.component';
+import { AccountService } from '../../shared/services/account.service';
 
 
 @Component({
@@ -21,10 +22,11 @@ export class EventListComponent implements OnInit {
   filteredEventList: Event[] = [];
   searchQuery: string = '';
 
-  constructor(private eventListService: EventListService, private route: ActivatedRoute) {}
+  constructor(private eventListService: EventListService, private route: ActivatedRoute,private accountService:AccountService) {}
 
   ngOnInit(): void {
-    this.eventListService.getAll(1).subscribe({
+    const id = + this.accountService.extractUserID();
+    this.eventListService.getAll(id).subscribe({
       next: d => {
         this.eventList = d;
         this.filteredEventList = d; // Initialize filtered list

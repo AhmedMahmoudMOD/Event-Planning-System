@@ -61,7 +61,8 @@ export class AddEventComponent implements OnInit {
       googleMapsLocation: ['', Validators.required],
       budget: ['', Validators.required],
       eventType: ['', Validators.required],
-      eventDate: ['', Validators.required]
+      eventDate: ['', Validators.required],
+      endDate: ['', Validators.required]
     });
   }
 

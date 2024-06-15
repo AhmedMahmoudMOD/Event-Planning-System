@@ -118,7 +118,7 @@ namespace Event_Planning_System.Services
 		}
 
 		// Create new event
-		public async Task<bool> CreateEvent(EventDTO newEventDTO)
+		public async Task<bool> CreateEvent(EventDTO newEventDTO,int id)
 		{
 			Event newEvent;
 			try { newEvent = mapper.Map<Event>(newEventDTO); }
@@ -130,7 +130,7 @@ namespace Event_Planning_System.Services
 			newEvent.DateOfCreation = DateOnly.FromDateTime(DateTime.Today);
 
 			// ============= CreatorId should be the id of the logged in user ============= //
-			newEvent.CreatorId = 1;
+			newEvent.CreatorId = 22;
 
 			await unitOfWork.EventRepo.Add(newEvent);
 			unitOfWork.save();
