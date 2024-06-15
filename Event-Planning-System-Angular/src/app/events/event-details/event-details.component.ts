@@ -52,45 +52,24 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit() {
     console.log(this.eventDetails);
-    // const backgroundStyle = `linear-gradient(rgba(0, 0, 0, 0), rgba(250, 250, 250, 1)), url('${this.eventDetails?.eventImages[0]??this.defaultImage}')`;
-    // const background_size = 'cover';
-    // const background_position = 'center';
-    // const elements = this.el.nativeElement.querySelectorAll('.blur-bg-card');
-
-    // elements.forEach((element: any) => {
-    //   this.renderer.setStyle(element, 'background', backgroundStyle);
-    //   this.renderer.setStyle(element, 'background-size', background_size);
-    //   this.renderer.setStyle(element, 'background-position', background_position);
-    // });
   }
 
 
-
+  //oninit
   ngOnInit(): void {
     this.idsubscripe = this.ActivatedRoute.params.subscribe(params => {
       this.id = params['id'];
     });
-
-    this.eventsubscription = this.eventDetailsServices.getEventById(this.id).subscribe((res) => {
-      this.eventDetails = res;
-      if (this.eventDetails.eventImages.length === 0) {
-        this.eventDetails.eventImages.push(this.defaultImage);
-      }
-      this.mapsURL = this.eventDetails.googleMapsLocation ? this.eventDetails.googleMapsLocation : null;
-      this.renderBackgroungImage();
-      console.log(this.eventDetails);
-    });
-
-    console.log(this.id);
+    //get event details
+    this.getEventDetails();
   }
+
   ngOnDestroy(): void {
     this.idsubscripe.unsubscribe();
     this.eventsubscription.unsubscribe();
   }
   //end of constructors
 
-  reset() {
-  }
 
   renderBackgroungImage() {
     const backgroundStyle = `linear-gradient(rgba(0, 0, 0, 0), rgba(250, 250, 250, 1)), url('${this.eventDetails?.eventImages[0] ?? this.defaultImage}')`;
@@ -131,8 +110,40 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
 
+  //get event details
+  getEventDetails() {
+    this.eventsubscription = this.eventDetailsServices.getEventById(this.id).subscribe({
+      next: (res) => {
+        this.eventDetails = res;
+        if (this.eventDetails.eventImages.length === 0) {
+          this.eventDetails.eventImages.push(this.defaultImage);
+        }
+        this.mapsURL = this.eventDetails.googleMapsLocation ? this.eventDetails.googleMapsLocation : null;
+        this.renderBackgroungImage();
+      },
+      error: (error) => {
+        // Handle error case
+        console.error('Error fetching event details:', error);
+        if (error.status === 400) {
+          this.router.navigate(['/events']);
+        } else {
+          // Handle other status codes or errors if needed
+          this.router.navigate(['/error']);
+        }
+      },
+    });
+  }
 
+  // heck the data 
+  checkdate() {
+    const currentDate = new Date();
+    const eventDate = new Date(this.eventDetails.eventDate);
+    return eventDate >= currentDate;
+  }
 
+  /////////////////////////////////////////////////////////////
+  ///////////////////carsol related code //////////////////////
+  /////////////////////////////////////////////////////////////
 
   getSeverity(status: string): any {
     switch (status) {
