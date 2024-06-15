@@ -8,7 +8,7 @@ namespace Event_Planning_System.IServices
 {
 	public interface IEventService
 	{
-		public Task<bool> CreateEvent(EventDTO newEventDTO);
+		public Task<bool> CreateEvent(EventDTO newEventDTO,int id);
 		public Task<EventDTO?> GetEventById(int id);
 		public Task<List<EventDTO>?> GetAllEvents(int id);
 		public Task<bool> DeleteEventSoft(int id);

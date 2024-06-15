@@ -9,6 +9,7 @@ using Event_Planning_System.DTO.Mail;
 using Swashbuckle.AspNetCore.Annotations;
 using Event_Planning_System.Services;
 using Event_Planning_System.Custom;
+using System.Security.Claims;
 
 namespace Event_Planning_System.Controllers
 {
@@ -61,9 +62,12 @@ namespace Event_Planning_System.Controllers
 		[HttpPost]
 		public async Task<IActionResult> CreateEvent(EventDTO newEventDTO)
 		{
-			if (ModelState.IsValid)
+            var nameIdentifierstring = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            Console.WriteLine(nameIdentifierstring);
+            var tryparse = int.TryParse(nameIdentifierstring, out int nameIdentifier);
+            if (ModelState.IsValid)
 			{
-				if (await eventService.CreateEvent(newEventDTO))
+				if (await eventService.CreateEvent(newEventDTO,nameIdentifier))
 					return Created();
 				else
 					return BadRequest("Failed to create event. Invalid data or event date is in the past.");
