@@ -80,24 +80,25 @@ namespace Event_Planning_System.Controllers
 				return Created();
 			return BadRequest();
 		}
-		// Update Event
-		[SwaggerOperation(Summary = "Update Event", Description = "Update Event with new details.")]
-		[SwaggerResponse(200, "Event updated successfully")]
-		[HttpPut]
-		public async Task<IActionResult> UpdateEvent(int id, EventDTO newEvent)
-		{
-			if (ModelState.IsValid)
-			{
-				var res = await eventService.UpdateEvent(id, newEvent);
-				if (res.IsSuccess)
-					return Created();
-				else
-					return BadRequest(res.Error.Description);
-			}
-			return BadRequest(ModelState);
-		}
-		// Get Event Attendance
-		[SwaggerOperation(Summary = "Get the Event's Attendance", Description = "Get a list of all Attendees' mails.")]
+        // Update Event
+        [SwaggerOperation(Summary = "Update Event", Description = "Update Event with new details.")]
+        [SwaggerResponse(200, "Event updated successfully")]
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> UpdateEvent(int id, EditEventDTO newEvent)
+        {
+            if (ModelState.IsValid)
+            {
+                var res = await eventService.UpdateEvent(id, newEvent);
+                if (res.IsSuccess)
+                    return Ok();  // Return Ok instead of Created for updates
+                else
+                    return BadRequest(new { error = res.Error.Description });
+            }
+            return BadRequest(ModelState);
+        }
+
+        // Get Event Attendance
+        [SwaggerOperation(Summary = "Get the Event's Attendance", Description = "Get a list of all Attendees' mails.")]
 		[SwaggerResponse(200, "Retrieved all mails successfully")]
 		[HttpGet("Attendance")]
 		public async Task<IActionResult> GetAttendance(int id)

@@ -23,13 +23,15 @@ namespace Event_Planinng_System_DAL.Models
         public string Location { get; set; }
         [Range(0, int.MaxValue)]
         public int? AttendanceNumber { get; set; }
-        [StringLength(5000, MinimumLength =3)]
+        [StringLength(5000, MinimumLength =3)] 
         public string? GoogleMapsLocation { get; set; }
         [Range(0, int.MaxValue)]
         public int? Budget { get; set; }
         public EventType EventType { get; set; }
         [FutureDate]
         public DateTime EventDate { get; set; }
+        [FutureDate]
+        public DateTime EndDate { get; set; }
         public DateOnly DateOfCreation { get; set;}
 
         public virtual User CreatorNavigation { get; set; }

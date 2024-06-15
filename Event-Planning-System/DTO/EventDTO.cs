@@ -24,8 +24,9 @@ namespace Event_Planning_System.DTO
 		public int? Budget { get; set; }
 		public EventType EventType { get; set; }
 		public string EventDate { get; set; }
+        public string EndDate { get; set; }
 
-		public List<AttendanceDTO>? Emails { get; set; }
+        public List<AttendanceDTO>? Emails { get; set; }
 		public List<string>? EventImages { get; set; }
 
     }
