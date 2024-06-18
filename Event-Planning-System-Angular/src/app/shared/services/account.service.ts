@@ -7,6 +7,12 @@ import { ConfirmEmail } from '../models/confirmemail.model';
 import { jwtTokenRes } from '../models/jwtTokenRes.model';
 import { Router } from '@angular/router';
 import { ResetPass } from '../models/resetPass.model';
+import { jwtDecode } from 'jwt-decode';
+
+interface JwtPayload {
+  'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier': string;
+  // Add other fields if needed
+}
 
 
 @Injectable({
@@ -45,6 +51,12 @@ export class AccountService {
 
   login(user:UserLogin){
     return this.http.post<jwtTokenRes>(this.baseUrl + 'login/login',user,{observe:'response'});
+  }
+
+  extractUserID(){
+    const token = localStorage.getItem('token') as string;
+    const decodedToken = jwtDecode<JwtPayload>(token);
+    return decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
   }
 
 

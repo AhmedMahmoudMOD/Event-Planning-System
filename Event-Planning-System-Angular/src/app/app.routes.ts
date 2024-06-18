@@ -44,5 +44,5 @@ export const routes: Routes = [
     { path: 'edit-event', component: EditEventComponent },
 
     { path: 'auth/validateemail', component: EmailConfirmCheckComponent },
-    { path: '', redirectTo: '/addevent', pathMatch: 'full' }
+    { path: '', redirectTo: '/auth/login', pathMatch: 'full' }
 ];

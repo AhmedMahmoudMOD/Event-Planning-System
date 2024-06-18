@@ -36,6 +36,7 @@ export class AddEventComponent implements OnInit {
   display: boolean = false;
   addEventForm: FormGroup = new FormGroup({});
   submitted: boolean = false;
+  minDate: Date = new Date();
   Types : eventTypes[] = [ 
     {id: 1, name: 'Wedding'}, 
     {id: 2, name: 'Birthday'}, 
@@ -60,7 +61,8 @@ export class AddEventComponent implements OnInit {
       googleMapsLocation: ['', Validators.required],
       budget: ['', Validators.required],
       eventType: ['', Validators.required],
-      eventDate: ['', Validators.required]
+      eventDate: ['', Validators.required],
+      endDate: ['', Validators.required]
     });
   }
 

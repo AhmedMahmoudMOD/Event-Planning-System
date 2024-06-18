@@ -18,6 +18,7 @@ import { EventdetailsService } from '../../shared/services/events/eventdetails.s
 import { eventTypeMapping } from '../../shared/enums/eventstype';
 import { AddEmailsComponent } from '../../add-emails/add-emails.component';
 import Swal from 'sweetalert2';
+import { EditEventComponent } from '../../edit-event/edit-event.component';
 
 
 
@@ -25,7 +26,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-event-details',
   standalone: true,
-  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule, AddEmailsComponent],
+  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule, AddEmailsComponent,EditEventComponent],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.css'
 })

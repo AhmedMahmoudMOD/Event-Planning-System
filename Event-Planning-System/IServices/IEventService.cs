@@ -8,7 +8,7 @@ namespace Event_Planning_System.IServices
 {
 	public interface IEventService
 	{
-		public Task<bool> CreateEvent(EventDTO newEventDTO);
+		public Task<bool> CreateEvent(EventDTO newEventDTO,int id);
 		public Task<EventDTO?> GetEventById(int id);
 		public Task<List<EventDTO>?> GetAllEvents(int id);
 		public Task<bool> DeleteEventSoft(int id);
@@ -19,7 +19,7 @@ namespace Event_Planning_System.IServices
 		public Task<string> AddGuests(int eventId, List<AttendanceDTO> newAttendance);
 		public Task<bool> SendEventMail(int EventId, EmailType type);
 		public Task<bool> DeleteGuest(int eventId, string email);
-		public Task<Result> UpdateEvent(int id, EventDTO newEvent);
+		public Task<Result> UpdateEvent(int id, EditEventDTO newEvent);
 
 		Task<PaginatedList<EventDTO>> GetWithPagination(int pageNumber, int pageSize, string? search);
 
