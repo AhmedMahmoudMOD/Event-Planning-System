@@ -16,6 +16,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { EventDetailsComponent } from './events/event-details/event-details.component';
 
 import { EditEventComponent } from './edit-event/edit-event.component';
+import { EventCalenderComponent } from './events/event-calender/event-calender.component';
 
 
 
@@ -29,6 +30,8 @@ export const routes: Routes = [
     {path:'sidebar',component:SidebarComponent},
 
     {path: 'planner/eventdetails/:id', component : EventDetailsComponent},
+    {path: 'planner/events', component : EventCalenderComponent},
+    
 
     {path: 'auth/resetpassword', component: ResetPasswordComponent},
     
