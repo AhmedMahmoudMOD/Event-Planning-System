@@ -136,7 +136,7 @@ namespace Event_Planning_System.Services
                 RecurrenceRule = data.RecurrenceRule,
                 RecurrenceID = data.RecurrenceID,
                 RecurrenceException = data.RecurrenceException,
-                Loacation = data.Loacation,
+                Location = data.Location,
                 Description = data.Description            
             };
 
@@ -161,6 +161,39 @@ namespace Event_Planning_System.Services
             var model = await GetAllSchedulePerEvent(id);
             return model;
 
+        }
+
+        public async Task<List<ScheduleEventData>> UpdateFromSchedule (int id , ScheduleEventData data)
+        {
+            var AllSchedules = await unitOfWork.EventScheduleRepo.GetAll();
+            var AllSchedulesPerEvent = AllSchedules.Where(x => x.EventId == id).ToList();
+
+            var ScheduleEvent = AllSchedulesPerEvent.First(x => x.Id == data.Id);
+
+            if(ScheduleEvent != null)
+            {
+                ScheduleEvent.EventId = id;
+                ScheduleEvent.StartTime = Convert.ToDateTime(data.StartTime);
+                ScheduleEvent.EndTime = Convert.ToDateTime(data.EndTime);
+                ScheduleEvent.StartTimezone = data.EndTimezone;
+                ScheduleEvent.StartTimezone = data.EndTimezone;
+                ScheduleEvent.Description = data.Description;
+                ScheduleEvent.Location = data.Location;
+                ScheduleEvent.Subject = data.Subject;
+                ScheduleEvent.IsAllDay = data.IsAllDay;
+                ScheduleEvent.RecurrenceRule = data.RecurrenceRule;
+                ScheduleEvent.RecurrenceException = data.RecurrenceException;
+                ScheduleEvent.RecurrenceID = data.RecurrenceID;
+                ScheduleEvent.Id = data.Id;
+
+
+
+                await unitOfWork.EventScheduleRepo.Edit(ScheduleEvent);
+            }
+            
+
+            var model = await GetAllSchedulePerEvent(id);
+            return model;
         }
     }
 }

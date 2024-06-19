@@ -8,6 +8,7 @@ namespace Event_Planning_System.IServices
         public Task<List<ScheduleEventData>> CrudServiceOnSchedule(int id, EditParams param);
         public Task<List<ScheduleEventData>> addnewschedule(int id, ScheduleEventData data);
         public Task<List<ScheduleEventData>> DeleteFromSchedule(int id, ScheduleEventData data);
+        public Task<List<ScheduleEventData>> UpdateFromSchedule(int id, ScheduleEventData data);
 
 
     }

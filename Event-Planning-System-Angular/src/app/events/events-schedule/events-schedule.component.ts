@@ -24,6 +24,7 @@ import Swal from 'sweetalert2';
 })
 export class EventsScheduleComponent implements OnInit, OnDestroy {
 
+
   public showWeekend: boolean = false;
   @Input() public readonly: boolean = false;
   minValidation: (args: { [key: string]: string }) => boolean = (args: { [key: string]: string }) => {
@@ -39,12 +40,31 @@ export class EventsScheduleComponent implements OnInit, OnDestroy {
   id: any | number;
   private dataManager: DataManager = new DataManager();
   public eventScheduledata: EventSchedule[] = [];
-  public eventSettings: EventSettingsModel = {};
   public temp = false;
   @ViewChild("scheduleObj") scheduleObj?: ScheduleComponent;
   public event?: Event;
   public eventobj: any;
   public allowedDays: number[] = [];
+
+
+
+  /////////configering eventsetting/////////////////////
+  public fields: any = {
+    id: { name: 'id' },
+    subject: { name: 'subject', validation: { required: true } },
+    location: { name: 'location' },
+    isAllDay: { name: 'isAllDay' },
+    startTime: { name: 'startTime', validation: { required: true } },
+    endTime: { name: 'endTime', validation: { required: true } },
+    description: { name: 'description', validation: { required: true, minLength: [this.minValidation, 'Need atleast 5 letters to be entered'] } }
+  }
+  public eventSettings: EventSettingsModel = {
+    dataSource: this.eventScheduledata,
+    fields: this.fields,
+    allowAdding: true,
+    allowEditing: true,
+    allowDeleting: true
+  };
 
   //////////////////constructors/////////////////////
   constructor(private ActivatedRoute: ActivatedRoute, private eventservice: EventdetailsService) { }
@@ -102,8 +122,13 @@ export class EventsScheduleComponent implements OnInit, OnDestroy {
         }));
         this.eventSettings = {
           dataSource: this.eventScheduledata,
-          fields: this.fields
+          fields: this.fields,
+          allowAdding: true,
+          allowEditing: true,
+          allowDeleting: true
+
         };
+        console.log(this.eventScheduledata);
       }
     })
   }
@@ -156,18 +181,34 @@ export class EventsScheduleComponent implements OnInit, OnDestroy {
     })
   }
 
+  UpdateEvent(args: any) {
+    this.idsubscripe = this.eventservice.UpdateEventSchedule(this.id, args.data).subscribe({
+      next: data => {
+        this.eventScheduledata = data.map(event => ({
+          ...event,
+          startTime: new Date(event.startTime),
+          endTime: new Date(event.endTime)
+        }));
+        this.eventSettings = {
+          dataSource: this.eventScheduledata,
+          fields: this.fields
+        };
+        console.log(this.eventScheduledata);
+      }
+    });
+  }
 
   onBinding(args: any): void { }
 
   onBegin(args: any) {
 
 
-    if (args.requestType === 'eventCreate' || args.requestType === 'eventChange') {
+    if (args.requestType === 'eventCreate') {
       const startDate = new Date(this.eventobj.eventDate);;
       const endDate = new Date(this.eventobj.endDate);;
 
-      const eventStart = args.data.startTime || args.data[0].startTime;
-      const eventEnd = args.data.endTime || args.data[0].endTime;
+      const eventStart = args.data.StartTime || args.data[0].startTime;
+      const eventEnd = args.data.EndTime || args.data[0].endTime;
 
       if (eventStart < startDate || eventEnd > endDate) {
         args.cancel = true;
@@ -181,10 +222,13 @@ export class EventsScheduleComponent implements OnInit, OnDestroy {
     }
 
     if (args.requestType === 'eventCreate') {
+      console.log(args.data);
       this.CreateNewEvent(args);
     }
     else if (args.requestType === 'eventChange') {
-      console.log(args.data[0]);
+      console.log(args.data);
+      this.scheduleObj?.closeEditor();
+      this.UpdateEvent(args);
     }
     else if (args.requestType === 'eventRemove') {
       console.log(args.data[0]);
@@ -226,15 +270,6 @@ export class EventsScheduleComponent implements OnInit, OnDestroy {
 
 
   //////////fiels /////////////////////
-  public fields: any = {
-    id: 'id',
-    subject: { name: 'subject', validation: { required: true } },
-    location: { name: 'location' },
-    isAllDay: { name: 'isAllDay' },
-    startTime: { name: 'startTime', validation: { required: true } },
-    endTime: { name: 'endTime', validation: { required: true } },
-    description: { name: 'description', validation: { required: true, minLength: [this.minValidation, 'Need atleast 5 letters to be entered'] } }
-  }
 
 
   ////////////////allowed days//////////////////////

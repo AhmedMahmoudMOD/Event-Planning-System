@@ -31,4 +31,8 @@ export class EventdetailsService {
   DeleteEventSchedule(id: number, eventSchedule: any) {
     return this.http.patch<EventSchedule[]>(this.baseUrl + `EventSchedule/delete/${id}`, eventSchedule);
   }
+
+  UpdateEventSchedule(id: number, eventSchedule: any) {
+    return this.http.put<EventSchedule[]>(this.baseUrl + `EventSchedule/update/${id}`, eventSchedule);
+  }
 }

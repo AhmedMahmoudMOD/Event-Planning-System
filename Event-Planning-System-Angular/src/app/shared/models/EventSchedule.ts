@@ -9,4 +9,6 @@ export interface EventSchedule {
     recurrenceRule: string;
     recurrenceID: number;
     recurrenceException: string;
+    location: string;
+    description: string;
 }

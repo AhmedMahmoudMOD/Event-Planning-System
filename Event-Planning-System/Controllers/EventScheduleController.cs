@@ -1,5 +1,6 @@
 ﻿using Event_Planning_System.DTO.EventSchedule;
 using Event_Planning_System.IServices;
+using Event_Planning_System.Migrations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -52,6 +53,17 @@ namespace Event_Planning_System.Controllers
         {
             var model  = await EventScheduleService.DeleteFromSchedule(id, data);
             if(model == null)
+            {
+                return BadRequest();
+            }
+            return Ok(model);
+        }
+
+        [HttpPut("update/{id:int}")]
+        public async Task<IActionResult> Updateevent(int id , ScheduleEventData data)
+        {
+            var model = await EventScheduleService.UpdateFromSchedule(id, data);
+            if (model == null)
             {
                 return BadRequest();
             }
