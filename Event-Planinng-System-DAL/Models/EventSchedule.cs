@@ -20,6 +20,8 @@ namespace Event_Planinng_System_DAL.Models
         public string? EndTimezone { get; set; }
         public string? RecurrenceRule { get; set; }
         public int? RecurrenceID { get; set; }
+        public string? Loacation {  get; set; }
+        public string? Description { get; set; }
         public string? RecurrenceException { get; set; }
         public virtual Event EventNavigation { get; set; }
     }

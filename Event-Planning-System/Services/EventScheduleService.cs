@@ -135,7 +135,9 @@ namespace Event_Planning_System.Services
                 EndTimezone = data.EndTimezone,
                 RecurrenceRule = data.RecurrenceRule,
                 RecurrenceID = data.RecurrenceID,
-                RecurrenceException = data.RecurrenceException
+                RecurrenceException = data.RecurrenceException,
+                Loacation = data.Loacation,
+                Description = data.Description            
             };
 
             var addeventschedule = Mapper.Map<EventSchedule>(appointment);
