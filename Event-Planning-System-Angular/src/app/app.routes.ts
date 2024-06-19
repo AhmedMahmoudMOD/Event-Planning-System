@@ -16,28 +16,32 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { EventDetailsComponent } from './events/event-details/event-details.component';
 
 import { EditEventComponent } from './edit-event/edit-event.component';
+import { EventsScheduleComponent } from './events/events-schedule/events-schedule.component';
 
 
 
 export const routes: Routes = [
     { path: 'auth/login', component: LoginComponent },
-    { path: 'auth/register' , component: RegisterComponent},
-    {path:'addevent',component:AddEventComponent},
+    { path: 'auth/register', component: RegisterComponent },
+    { path: 'addevent', component: AddEventComponent },
     { path: 'auth/confirmemail', component: EmailconfirmComponent },
-    {path: 'auth/forgotpassword', component: ForgotPasswordComponent},
-    {path: 'events', component: EventListComponent},
-    {path:'sidebar',component:SidebarComponent},
+    { path: 'auth/forgotpassword', component: ForgotPasswordComponent },
+    { path: 'events', component: EventListComponent },
+    { path: 'sidebar', component: SidebarComponent },
+    //event details
+    { path: 'planner/eventdetails/:id', component: EventDetailsComponent },
+    { path: 'schedule/:id', component: EventsScheduleComponent },
 
-    {path: 'planner/eventdetails/:id', component : EventDetailsComponent},
+    //end of event details
 
-    {path: 'auth/resetpassword', component: ResetPasswordComponent},
-    
+    { path: 'auth/resetpassword', component: ResetPasswordComponent },
+
     { path: 'auth/validateemail', component: EmailConfirmCheckComponent },
     { path: 'event/addEmails', component: AddEmailsComponent },
 
 
 
-    {path: 'edit-event', component: EditEventComponent},
+    { path: 'edit-event', component: EditEventComponent },
 
     { path: 'auth/validateemail', component: EmailConfirmCheckComponent },
     { path: '', redirectTo: '/auth/login', pathMatch: 'full' }

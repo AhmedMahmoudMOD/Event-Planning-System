@@ -20,6 +20,7 @@ namespace Event_Planinng_System_DAL.Models
         public virtual DbSet<Emails> Emails { get; set; }
         public virtual DbSet<Event> Events { get; set; }
         public virtual DbSet<EventImages> EventsImages { get; set; }
+        public virtual DbSet<EventSchedule> EventSchedules { get; set; }
         public virtual DbSet<ToDoList> ToDoLists { get; set; }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -67,6 +68,12 @@ namespace Event_Planinng_System_DAL.Models
             modelBuilder.Entity<EventImages>(entity =>
             {
                 entity.HasKey(e => new { e.EventImage, e.EventId });
+            });
+
+            //event schedule
+            modelBuilder.Entity<EventSchedule>(entity =>
+            {
+                entity.HasKey(e => new { e.EventId, e.Id });
             });
 
             //to do list
