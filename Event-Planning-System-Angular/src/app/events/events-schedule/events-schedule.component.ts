@@ -58,7 +58,7 @@ export class EventsScheduleComponent implements OnInit, OnDestroy {
       this.id = +params['id'];
     });
 
-    this.eventservice.getEventById(this.id).subscribe({
+    this.idsubscripe = this.eventservice.getEventById(this.id).subscribe({
       next: data => {
         this.event = data;
         this.eventobj = JSON.parse(JSON.stringify(this.event));
@@ -79,19 +79,33 @@ export class EventsScheduleComponent implements OnInit, OnDestroy {
 
   //getting all the data from the server
   GettingAllData(id: number) {
-    const scheduleObj = this.scheduleObj;
 
-    const ajax = new Ajax(
-      `http://localhost:5006/api/EventSchedule/${id}`,
-      "GET"
-    );
-    ajax.send();
-    ajax.onSuccess = (data: string) => {
-      this.eventSettings = {
-        dataSource: JSON.parse(data),
-        fields: this.fields
-      };
-    }
+    // const ajax = new Ajax(
+    //   `http://localhost:5006/api/EventSchedule/${id}`,
+    //   "GET"
+    // );
+    // ajax.send();
+    // ajax.onSuccess = (data: string) => {
+    //   this.eventSettings = {
+    //     dataSource: JSON.parse(data),
+    //     fields: this.fields
+    //   };
+    //   console.log(JSON.parse(data));
+    // }
+
+    this.idsubscripe = this.eventservice.getEventScheduleById(id).subscribe({
+      next: data => {
+        this.eventScheduledata = data.map(event => ({
+          ...event,
+          startTime: new Date(event.startTime),
+          endTime: new Date(event.endTime)
+        }));
+        this.eventSettings = {
+          dataSource: this.eventScheduledata,
+          fields: this.fields
+        };
+      }
+    })
   }
 
   CreateNewEvent(args: any) {
@@ -111,7 +125,7 @@ export class EventsScheduleComponent implements OnInit, OnDestroy {
     //   console.log("success");
     // };
 
-    this.eventservice.AddeventSchedule(this.id, args.data[0]).subscribe({
+    this.idsubscripe = this.eventservice.AddeventSchedule(this.id, args.data[0]).subscribe({
       next: data => {
         this.eventScheduledata = data.map(event => ({
           ...event,
@@ -127,7 +141,7 @@ export class EventsScheduleComponent implements OnInit, OnDestroy {
 
   }
   DeleteEvent(args: any) {
-    this.eventservice.DeleteEventSchedule(this.id, args.data[0]).subscribe({
+    this.idsubscripe = this.eventservice.DeleteEventSchedule(this.id, args.data[0]).subscribe({
       next: data => {
         this.eventScheduledata = data.map(event => ({
           ...event,
@@ -167,7 +181,6 @@ export class EventsScheduleComponent implements OnInit, OnDestroy {
     }
 
     if (args.requestType === 'eventCreate') {
-      console.log(args.data[0]);
       this.CreateNewEvent(args);
     }
     else if (args.requestType === 'eventChange') {

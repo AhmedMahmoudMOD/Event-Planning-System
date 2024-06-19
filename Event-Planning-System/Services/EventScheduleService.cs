@@ -30,84 +30,84 @@ namespace Event_Planning_System.Services
 
         public async Task<List<ScheduleEventData>> CrudServiceOnSchedule(int id ,EditParams param)
         {
-            var AllSchedules = await unitOfWork.EventScheduleRepo.GetAll();
-            var AllSchedulesPerEvent = AllSchedules.Where(x => x.EventId == id).ToList();
+        //    var AllSchedules = await unitOfWork.EventScheduleRepo.GetAll();
+        //    var AllSchedulesPerEvent = AllSchedules.Where(x => x.EventId == id).ToList();
 
-            if (param.action == "insert" || (param.action == "batch" && param.added != null))
-            {
-                var value = (param.action == "insert") ? param.value : param.added[0];
+        //    if (param.action == "insert" || (param.action == "batch" && param.added != null))
+        //    {
+        //        var value = (param.action == "insert") ? param.value : param.added[0];
                  
 
-                int intMax = AllSchedulesPerEvent.Count > 0 ? AllSchedulesPerEvent.Max(x=>x.Id) : 1;
-                DateTime startTime = Convert.ToDateTime(value.StartTime);
-                DateTime endTime = Convert.ToDateTime(value.EndTime);
+        //        int intMax = AllSchedulesPerEvent.Count > 0 ? AllSchedulesPerEvent.Max(x=>x.Id) : 1;
+        //        DateTime startTime = Convert.ToDateTime(value.StartTime);
+        //        DateTime endTime = Convert.ToDateTime(value.EndTime);
 
-                ScheduleEventData appointment = new ScheduleEventData()
-                {
-                    Id = intMax + 1,
-                    StartTime = startTime.ToLocalTime(),
-                    EndTime = endTime.ToLocalTime(),
-                    Subject = value.Subject,
-                    IsAllDay = value.IsAllDay,
-                    StartTimezone = value.StartTimezone,
-                    EndTimezone = value.EndTimezone,
-                    RecurrenceRule = value.RecurrenceRule,
-                    RecurrenceID = value.RecurrenceID,
-                    RecurrenceException = value.RecurrenceException
-                };
+        //        ScheduleEventData appointment = new ScheduleEventData()
+        //        {
+        //            Id = intMax + 1,
+        //            StartTime = startTime.ToLocalTime(),
+        //            EndTime = endTime.ToLocalTime(),
+        //            Subject = value.Subject,
+        //            IsAllDay = value.IsAllDay,
+        //            StartTimezone = value.StartTimezone,
+        //            EndTimezone = value.EndTimezone,
+        //            RecurrenceRule = value.RecurrenceRule,
+        //            RecurrenceID = value.RecurrenceID,
+        //            RecurrenceException = value.RecurrenceException
+        //        };
 
-                var addeventschedule = Mapper.Map<EventSchedule>(appointment);
-                addeventschedule.EventId = id;
-                await unitOfWork.EventScheduleRepo.Add(addeventschedule);
-            }
+        //        var addeventschedule = Mapper.Map<EventSchedule>(appointment);
+        //        addeventschedule.EventId = id;
+        //        await unitOfWork.EventScheduleRepo.Add(addeventschedule);
+        //    }
 
-            if (param.action == "update" || (param.action == "batch" && param.changed != null))
-            {
-                var value = (param.action == "update") ? param.value : param.changed[0];
+        //    if (param.action == "update" || (param.action == "batch" && param.changed != null))
+        //    {
+        //        var value = (param.action == "update") ? param.value : param.changed[0];
                 
 
-                var filterData = AllSchedulesPerEvent.Where(c => c.Id == Convert.ToInt32(value.Id));
-                if (filterData.Count() > 0)
-                {
-                    DateTime startTime = Convert.ToDateTime(value.StartTime);
-                    DateTime endTime = Convert.ToDateTime(value.EndTime);
-                    var appointment = AllSchedulesPerEvent.Single(A => A.Id == Convert.ToInt32(value.Id));
-                    appointment.StartTime = startTime.ToLocalTime();
-                    appointment.EndTime = endTime.ToLocalTime();
-                    appointment.StartTimezone = value.StartTimezone;
-                    appointment.EndTimezone = value.EndTimezone;
-                    appointment.Subject = value.Subject;
-                    appointment.IsAllDay = value.IsAllDay;
-                    appointment.RecurrenceRule = value.RecurrenceRule;
-                    appointment.RecurrenceID = value.RecurrenceID;
-                    appointment.RecurrenceException = value.RecurrenceException;
-                    appointment.EventId = id;
-                    await unitOfWork.EventScheduleRepo.Edit(appointment);
-                }
-                await unitOfWork.saveAsync();
-            }
+        //        var filterData = AllSchedulesPerEvent.Where(c => c.Id == Convert.ToInt32(value.Id));
+        //        if (filterData.Count() > 0)
+        //        {
+        //            DateTime startTime = Convert.ToDateTime(value.StartTime);
+        //            DateTime endTime = Convert.ToDateTime(value.EndTime);
+        //            var appointment = AllSchedulesPerEvent.Single(A => A.Id == Convert.ToInt32(value.Id));
+        //            appointment.StartTime = startTime.ToLocalTime();
+        //            appointment.EndTime = endTime.ToLocalTime();
+        //            appointment.StartTimezone = value.StartTimezone;
+        //            appointment.EndTimezone = value.EndTimezone;
+        //            appointment.Subject = value.Subject;
+        //            appointment.IsAllDay = value.IsAllDay;
+        //            appointment.RecurrenceRule = value.RecurrenceRule;
+        //            appointment.RecurrenceID = value.RecurrenceID;
+        //            appointment.RecurrenceException = value.RecurrenceException;
+        //            appointment.EventId = id;
+        //            await unitOfWork.EventScheduleRepo.Edit(appointment);
+        //        }
+        //        await unitOfWork.saveAsync();
+        //    }
 
-            if (param.action == "remove" || (param.action == "batch" && param.deleted != null))
-            {
-                if (param.action == "remove")
-                {
-                    int key = Convert.ToInt32(param.key);
-                    var deletedItem = AllSchedulesPerEvent.Where(x=>x.Id == key).FirstOrDefault();
-                    if (deletedItem != null)                   
-                        await unitOfWork.EventScheduleRepo.Delete(deletedItem);
+        //    if (param.action == "remove" || (param.action == "batch" && param.deleted != null))
+        //    {
+        //        if (param.action == "remove")
+        //        {
+        //            int key = Convert.ToInt32(param.key);
+        //            var deletedItem = AllSchedulesPerEvent.Where(x=>x.Id == key).FirstOrDefault();
+        //            if (deletedItem != null)                   
+        //                await unitOfWork.EventScheduleRepo.Delete(deletedItem);
                     
-                }
-                else
-                {
-                    foreach (var apps in param.deleted)
-                    {
-                        var deletedItem = AllSchedulesPerEvent.Where(x => x.Id == apps.Id).FirstOrDefault();
-                        if (deletedItem != null)
-                            await unitOfWork.EventScheduleRepo.Delete(deletedItem);
-                    }
-                }
-                await unitOfWork.saveAsync();
-            }
+        //        }
+        //        else
+        //        {
+        //            foreach (var apps in param.deleted)
+        //            {
+        //                var deletedItem = AllSchedulesPerEvent.Where(x => x.Id == apps.Id).FirstOrDefault();
+        //                if (deletedItem != null)
+        //                    await unitOfWork.EventScheduleRepo.Delete(deletedItem);
+        //            }
+        //        }
+        //        await unitOfWork.saveAsync();
+        //    }
 
             var data = await GetAllSchedulePerEvent(id);
 
