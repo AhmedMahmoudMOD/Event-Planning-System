@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CalendarModule, CalendarUtils } from 'angular-calendar';
+import { EVENT_COLORS } from '../../shared/models/event-color'; // Import the color scheme
 
 @Component({
   selector: 'app-event-calender',
@@ -17,56 +18,76 @@ import { CalendarModule, CalendarUtils } from 'angular-calendar';
   templateUrl: './event-calender.component.html',
   styleUrls: ['./event-calender.component.css'],
 })
-export class EventCalenderComponent implements OnInit,OnDestroy{
+export class EventCalenderComponent implements OnInit, OnDestroy {
   viewDate: Date = new Date();
   events: MyCalendarEvent[] = [];
   filteredEvents: MyCalendarEvent[] = [];
   searchKeyword: string = '';
-  selectedGroup: string = 'all';
   selectedType: string = 'all';
   eventDate: string = '';
-  eventTypes: string[] = ['all', 'Wedding', 'Birthday', 'Corporate', 'Social','Other'];
+  startDate: string = ''; 
+  endDate: string = ''; 
+  eventTypes: string[] = ['all', 'Wedding', 'Birthday', 'Corporate', 'Social', 'Other'];
   id: number = 0;
-  idSunbscription: Subscription|null = null;
+  idSubscription: Subscription | null = null;
 
-  constructor(private eventService: EventService, private accountService:AccountService) { }
-  
+  constructor(private eventService: EventService, private accountService: AccountService) { }
+
   ngOnInit(): void {
     this.fetchEvents();
   }
+  
   ngOnDestroy(): void {
-    this.idSunbscription?.unsubscribe();
+    this.idSubscription?.unsubscribe();
   }
 
   fetchEvents(): void {
-    this.id = 1//Number.parseInt(this.accountService.extractUserID());
-    this.idSunbscription= this.eventService.getEventsByUser(this.id).subscribe((events: calenderEvent[]) => {
-      this.events = events.map(event => ({
-        id: event.id,
-        start: new Date(event.eventDate),
-        end: new Date(event.endDate),
-        title: event.name,
-        color: {
-          primary: '#ad2121', // Default color, you can set based on eventType
-          secondary: '#FAE3E3'
-        },
-        draggable: false,
-        resizable: {
-          beforeStart: false,
-          afterEnd: false
-        },
-        allDay: false,
-        description: event.description,
-        location: event.location,
-        attendanceNumber: event.attendanceNumber,
-        googleMapsLocation: event.googleMapsLocation,
-        budget: event.budget,
-        eventType: event.eventType,
-        emails: event.emails,
-        eventImages: event.eventImages
-      }));
+    this.id = 1 // Number.parseInt(this.accountService.extractUserID());
+    this.idSubscription = this.eventService.getEventsByUser(this.id).subscribe((events: calenderEvent[]) => {
+      this.events = events.map(event => {
+        const isPast = new Date(event.endDate) < new Date();
+        const color = EVENT_COLORS[event.eventType] || EVENT_COLORS['Other'];
+        return {
+          id: event.id,
+          start: new Date(event.eventDate),
+          end: new Date(event.endDate),
+          title: event.name,
+          color: {
+            primary: isPast ? this.lightenColor(color.primary, 75) : color.primary,
+            secondary: isPast ? this.lightenColor(color.secondary, 75) : color.secondary
+          },
+          draggable: false,
+          resizable: {
+            beforeStart: false,
+            afterEnd: false
+          },
+          allDay: false,
+          description: event.description,
+          location: event.location,
+          attendanceNumber: event.attendanceNumber,
+          googleMapsLocation: event.googleMapsLocation,
+          budget: event.budget,
+          eventType: event.eventType,
+          emails: event.emails,
+          eventImages: event.eventImages
+        };
+      });
       this.filteredEvents = this.events;
     });
+  }
+
+  lightenColor(color: string, percent: number): string {
+    const num = parseInt(color.replace("#", ""), 16),
+      amt = Math.round(2.55 * percent),
+      R = (num >> 16) + amt,
+      G = (num >> 8 & 0x00FF) + amt,
+      B = (num & 0x0000FF) + amt;
+    return "#" + (
+      0x1000000 +
+      (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
+      (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
+      (B < 255 ? B < 1 ? 0 : B : 255)
+    ).toString(16).slice(1);
   }
 
   goToPreviousMonth(): void {
@@ -81,9 +102,13 @@ export class EventCalenderComponent implements OnInit,OnDestroy{
     this.filteredEvents = this.events.filter(event => {
       const matchesDate = this.eventDate ? new Date(event.start).toDateString() === new Date(this.eventDate).toDateString() : true;
       const matchesKeyword = event.title.toLowerCase().includes(this.searchKeyword.toLowerCase());
-      // const matchesGroup = this.selectedGroup === 'all' || event.title.toLowerCase().includes(this.selectedGroup.toLowerCase());
-      const matchesType = this.selectedType === 'all' || event.title.toLowerCase().includes(this.selectedType.toLowerCase());
-      return matchesDate && matchesKeyword  && matchesType;
+      const matchesType = this.selectedType === 'all' || event.eventType.toString() === this.selectedType;
+      
+      // Filter by date range
+      const matchesDateRange = (!this.startDate || new Date(event.start) >= new Date(this.startDate)) &&
+                               (!this.endDate || new Date(event.end) <= new Date(this.endDate));
+      
+      return matchesDate && matchesKeyword && matchesType && matchesDateRange;
     });
   }
 }
