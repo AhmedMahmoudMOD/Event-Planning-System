@@ -30,7 +30,7 @@ export const routes: Routes = [
     { path: 'sidebar', component: SidebarComponent },
     //event details
     { path: 'planner/eventdetails/:id', component: EventDetailsComponent },
-    { path: 'schedule', component: EventsScheduleComponent },
+    { path: 'schedule/:id', component: EventsScheduleComponent },
 
     //end of event details
 

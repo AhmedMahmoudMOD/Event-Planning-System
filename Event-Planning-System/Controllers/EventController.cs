@@ -162,6 +162,8 @@ namespace Event_Planning_System.Controllers
 			};
 			return Ok(data);
 		}
+
+
 	}
 
 }

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { EventSchedule } from '../../models/EventSchedule';
 
 
 @Injectable({
@@ -18,4 +19,16 @@ export class EventdetailsService {
     return this.http.delete(this.baseUrl + `Event?id=${id}`);
   }
 
+
+  getEventScheduleById(id: number) {
+    return this.http.get<EventSchedule[]>(this.baseUrl + `EventSchedule/${id}`);
+  }
+
+  AddeventSchedule(id: number, eventSchedule: any) {
+    return this.http.post<EventSchedule[]>(this.baseUrl + `EventSchedule/Add/${id}`, eventSchedule);
+  }
+
+  DeleteEventSchedule(id: number, eventSchedule: any) {
+    return this.http.patch<EventSchedule[]>(this.baseUrl + `EventSchedule/delete/${id}`, eventSchedule);
+  }
 }
