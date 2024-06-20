@@ -22,8 +22,8 @@ import { ProfileComponent } from './profile/profile.component';
 
 
 export const routes: Routes = [
-    { path: 'auth/login', component: LoginComponent },
-    { path: 'auth/register', component: RegisterComponent },
+  { path: 'auth/login', component: LoginComponent },
+  { path: 'auth/register', component: RegisterComponent },
     { path: 'addevent', component: AddEventComponent },
     { path: 'auth/confirmemail', component: EmailconfirmComponent },
     { path: 'auth/forgotpassword', component: ForgotPasswordComponent },

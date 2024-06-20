@@ -3,7 +3,7 @@
     <main class="main-content">
         <header class="profile-header">
             <div class="user-info">
-                <img src="/src/assets/images/software-developer-6521720_640.jpg" alt="Profile Picture" class="profile-picture">
+                <img [src]="defaultImage" alt="Profile Picture" class="profile-picture">
                 <div>
                     <h2>{{ profile.fName + " " + profile.lName }}</h2>
                     <p>{{ profile.street + ", " + profile.city + ", " + profile.region }}</p>
@@ -29,7 +29,7 @@
             </div>
         </section>
         <section class="profile-settings">
-            <h3>Account Details</h3>
+            <h3 class="account-details">Account Details</h3>
             <form class="settings-form">
                 <div class="form-group">
                     <label for="first-name">First Name</label>
@@ -37,31 +37,31 @@
                 </div>
                 <div class="form-group">
                     <label for="last-name">Last Name</label>
-                    <input type="text" id="last-name" value="Poole">
+                    <h3 id="last-name">{{ profile.lName }}</h3>
                 </div>
                 <div class="form-group">
                     <label for="phone-number">Phone Number</label>
-                    <input type="text" id="phone-number" value="+1800-000">
+                    <h3 id="phone-number">{{ profile.phoneNumber }}</h3>
                 </div>
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" id="email" value="nathaniel.poole@microsoft.com">
+                    <h3 id="email">{{profile.email}}</h3>
                 </div>
                 <div class="form-group">
-                    <label for="city">City</label>
-                    <input type="text" id="city" value="Bridgeport">
+                    <label for="city">Street</label>
+                    <h3 id="city">{{profile.street}}</h3>
                 </div>
                 <div class="form-group">
-                    <label for="state">State/County</label>
-                    <input type="text" id="state" value="WA">
+                    <label for="state">City</label>
+                    <h3 id="state">{{profile.city}}</h3>
+                </div>
+                <div class="form-group">
+                    <label for="country">State</label>
+                    <h3 id="country">{{profile.region}}</h3>
                 </div>
                 <div class="form-group">
                     <label for="postcode">Postcode</label>
-                    <input type="text" id="postcode" value="33065">
-                </div>
-                <div class="form-group">
-                    <label for="country">Country</label>
-                    <input type="text" id="country" value="United States">
+                    <h3 id="postcode">{{profile.postalCode}}</h3>
                 </div>
                 <button type="submit" class="update-button">Update</button>
             </form>

@@ -16,7 +16,7 @@ import { Profile } from '../shared/models/profile';
 export class ProfileComponent implements OnInit{
   title = 'Profile';
   profile: Profile | any = {};
-
+  defaultImage = "/src/assets/images/software-developer-6521720_640.jpg";
 
   constructor(private profileService: ProfileService, private route: ActivatedRoute) { }
     //get profile by user id
