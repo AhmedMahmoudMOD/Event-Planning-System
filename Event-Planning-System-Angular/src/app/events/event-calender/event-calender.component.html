@@ -16,6 +16,6 @@
     <input class="form-control w-25" type="date" [(ngModel)]="endDate" (change)="filterEvents()" title="End Date">
 </div>
 <div>
-    <mwl-calendar-month-view [viewDate]="viewDate" [events]="filteredEvents" (eventClicked)="eventDetails(2)">
+    <mwl-calendar-month-view [viewDate]="viewDate" [events]="filteredEvents" (eventClicked)="eventDetails($event.event)">
     </mwl-calendar-month-view>
 </div>

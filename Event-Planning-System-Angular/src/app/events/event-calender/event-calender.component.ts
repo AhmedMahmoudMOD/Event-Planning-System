@@ -6,7 +6,7 @@ import { MyCalendarEvent } from '../../shared/models/calendar-event-inter';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { CalendarModule, CalendarUtils } from 'angular-calendar';
+import { CalendarEvent, CalendarModule, CalendarUtils } from 'angular-calendar';
 import { EVENT_COLORS } from '../../shared/models/event-color'; // Import the color scheme
 import { eventTypeMapping } from '../../shared/enums/eventstype';
 import { Router } from '@angular/router';
@@ -115,8 +115,8 @@ export class EventCalenderComponent implements OnInit, OnDestroy {
       return matchesKeyword && matchesType && matchesDateRange;
     });
   }
-  eventDetails(EevntId:number):void{
-    console.log("Clicked");
-    this.router.navigate(['/planner/eventdetails/',EevntId]);    
+  eventDetails(event:CalendarEvent):void{
+    console.log("Clicked"+ event.id);
+    this.router.navigate(['/planner/eventdetails/',event.id]);    
   }
 }
