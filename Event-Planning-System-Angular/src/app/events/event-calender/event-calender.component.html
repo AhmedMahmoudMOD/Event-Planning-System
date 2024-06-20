@@ -1,11 +1,9 @@
 <div class="calendar-header my-2 px-2">
-    <button class="btn bg-success" (click)="goToPreviousMonth()"><i class="pi pi-angle-left" style="font-size: 2rem">`</i></button>
+    <button class="btn bg-success" (click)="goToPreviousMonth()"><i class="pi pi-angle-left" style="font-size: 2rem"></i></button>
     <h2 class="fst-italic text-danger">{{ viewDate | date: 'MMMM yyyy' }}</h2>
-    <button class="btn bg-success" (click)="goToNextMonth()"> <i class="pi pi-angle-right" style="font-size: 2rem">`</i></button>
+    <button class="btn bg-success" (click)="goToNextMonth()"> <i class="pi pi-angle-right" style="font-size: 2rem"></i></button>
 </div>
 <div class="calendar-filters form-group">
-    <label class="form-label text-nowrap my-auto">Events In:</label>
-    <input class="form-control w-25" type="date" [(ngModel)]="eventDate" (change)="filterEvents()" title="Event Date">
     <label class="form-label my-auto">Search:</label>
     <input class="form-control" type="text" [(ngModel)]="searchKeyword" (input)="filterEvents()" title="Search Keyword">
     <label class="form-label my-auto">Type:</label>
@@ -18,6 +16,6 @@
     <input class="form-control w-25" type="date" [(ngModel)]="endDate" (change)="filterEvents()" title="End Date">
 </div>
 <div>
-    <mwl-calendar-month-view [viewDate]="viewDate" [events]="filteredEvents">
+    <mwl-calendar-month-view [viewDate]="viewDate" [events]="filteredEvents" (eventClicked)="eventDetails(2)">
     </mwl-calendar-month-view>
 </div>

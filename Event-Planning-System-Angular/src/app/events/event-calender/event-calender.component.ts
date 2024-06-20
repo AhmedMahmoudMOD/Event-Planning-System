@@ -8,6 +8,8 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CalendarModule, CalendarUtils } from 'angular-calendar';
 import { EVENT_COLORS } from '../../shared/models/event-color'; // Import the color scheme
+import { eventTypeMapping } from '../../shared/enums/eventstype';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-event-calender',
@@ -24,14 +26,13 @@ export class EventCalenderComponent implements OnInit, OnDestroy {
   filteredEvents: MyCalendarEvent[] = [];
   searchKeyword: string = '';
   selectedType: string = 'all';
-  eventDate: string = '';
   startDate: string = ''; 
   endDate: string = ''; 
   eventTypes: string[] = ['all', 'Wedding', 'Birthday', 'Corporate', 'Social', 'Other'];
   id: number = 0;
   idSubscription: Subscription | null = null;
 
-  constructor(private eventService: EventService, private accountService: AccountService) { }
+  constructor(private eventService: EventService, private accountService: AccountService,private router:Router) { }
 
   ngOnInit(): void {
     this.fetchEvents();
@@ -42,19 +43,21 @@ export class EventCalenderComponent implements OnInit, OnDestroy {
   }
 
   fetchEvents(): void {
-    this.id = 1 // Number.parseInt(this.accountService.extractUserID());
+    this.id = Number.parseInt(this.accountService.extractUserID());    
     this.idSubscription = this.eventService.getEventsByUser(this.id).subscribe((events: calenderEvent[]) => {
+      console.log(events);
+      
       this.events = events.map(event => {
         const isPast = new Date(event.endDate) < new Date();
-        const color = EVENT_COLORS[event.eventType] || EVENT_COLORS['Other'];
+        const color = EVENT_COLORS[eventTypeMapping[parseInt(event.eventType)]] || EVENT_COLORS['Other'];
         return {
           id: event.id,
           start: new Date(event.eventDate),
           end: new Date(event.endDate),
           title: event.name,
           color: {
-            primary: isPast ? this.lightenColor(color.primary, 75) : color.primary,
-            secondary: isPast ? this.lightenColor(color.secondary, 75) : color.secondary
+            primary:  color.primary,
+            secondary: color.secondary
           },
           draggable: false,
           resizable: {
@@ -99,16 +102,21 @@ export class EventCalenderComponent implements OnInit, OnDestroy {
   }
 
   filterEvents(): void {
-    this.filteredEvents = this.events.filter(event => {
-      const matchesDate = this.eventDate ? new Date(event.start).toDateString() === new Date(this.eventDate).toDateString() : true;
+    this.filteredEvents = this.events.filter(event => { 
       const matchesKeyword = event.title.toLowerCase().includes(this.searchKeyword.toLowerCase());
-      const matchesType = this.selectedType === 'all' || event.eventType.toString() === this.selectedType;
-      
+      const matchesType = this.selectedType === 'all' || eventTypeMapping[parseInt(event.eventType)] === this.selectedType;
+
       // Filter by date range
-      const matchesDateRange = (!this.startDate || new Date(event.start) >= new Date(this.startDate)) &&
-                               (!this.endDate || new Date(event.end) <= new Date(this.endDate));
+      const matchesDateRange = (!this.startDate || new Date(event.start).getDate() >= new Date(this.startDate).getDate()) 
+                            &&(!this.endDate || new Date(event.end).getDate() <= new Date(this.endDate).getDate())
+                            &&(!this.startDate || new Date(event.start).getMonth() == new Date(this.startDate).getMonth())
+                            &&(!this.endDate || new Date(event.end).getMonth() == new Date(this.endDate).getMonth());
       
-      return matchesDate && matchesKeyword && matchesType && matchesDateRange;
+      return matchesKeyword && matchesType && matchesDateRange;
     });
+  }
+  eventDetails(EevntId:number):void{
+    console.log("Clicked");
+    this.router.navigate(['/planner/eventdetails/',EevntId]);    
   }
 }
