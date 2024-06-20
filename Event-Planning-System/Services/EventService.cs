@@ -118,7 +118,7 @@ namespace Event_Planning_System.Services
 		}
 
 		// Create new event
-		public async Task<bool> CreateEvent(EventDTO newEventDTO)
+		public async Task<bool> CreateEvent(EventDTO newEventDTO,int id)
 		{
 			Event newEvent;
 			try { newEvent = mapper.Map<Event>(newEventDTO); }
@@ -130,7 +130,7 @@ namespace Event_Planning_System.Services
 			newEvent.DateOfCreation = DateOnly.FromDateTime(DateTime.Today);
 
 			// ============= CreatorId should be the id of the logged in user ============= //
-			newEvent.CreatorId = 1;
+			newEvent.CreatorId = 22;
 
 			await unitOfWork.EventRepo.Add(newEvent);
 			unitOfWork.save();
@@ -163,64 +163,55 @@ namespace Event_Planning_System.Services
 			}
 			catch { return false; }
 		}
-		//edit event
-		public async Task<Result> UpdateEvent(int id, EventDTO newEventDTO)
-		{
-			// Retrieve the old event and ensure it's tracked by the context
-			var oldEvent = await unitOfWork.EventRepo.FindById(id);
-			if (oldEvent == null)
-				return Result.Failure(new Error("Event not found"));
+        //edit event
+        public async Task<Result> UpdateEvent(int id, EditEventDTO newEventDTO)
+        {
+            var oldEvent = await unitOfWork.EventRepo.FindById(id);
+            if (oldEvent == null)
+                return Result.Failure(new Error("400", "Event not found"));
 
-			Event newEvent;
-			try { newEvent = mapper.Map<Event>(newEventDTO); }
-			catch { return Result.Failure(new Error("Invalid data")); }
+            Event newEvent;
+            try { newEvent = mapper.Map<Event>(newEventDTO); }
+            catch { return Result.Failure(new Error("400", "Invalid data")); }
 
-			if (newEvent == null || newEvent.EventDate <= DateTime.Today)
-				return Result.Failure(new Error("Invalid date"));
-
-			// Update the old event with the new values
-			oldEvent.Name = newEvent.Name;
-			oldEvent.Description = newEvent.Description;
-			oldEvent.EventDate = newEvent.EventDate;
-			oldEvent.DateOfCreation = DateOnly.FromDateTime(DateTime.Today);
-			oldEvent.Location = newEvent.Location;
-			oldEvent.GoogleMapsLocation = newEvent.GoogleMapsLocation;
-			oldEvent.Budget = newEvent.Budget;
-
-
-			// ============= CreatorId should be the id of the logged in user ============= //
-			oldEvent.CreatorId = 1;
-			Attendance attendance = new Attendance()
+            if (newEvent == null || newEvent.EventDate <= DateTime.Today)
+                return Result.Failure(new Error("400", "Invalid date"));
+			if(newEvent.AttendanceNumber < oldEvent.AttendanceNumber)
 			{
-				Email = newEventDTO.Emails.FirstOrDefault().Email
-			};
-			// Add new emails to the old emails already in the event
-			
-				if (!oldEvent.AttendanceNavigation.Select(x => x.Email).Contains(attendance.Email))
-				{
-					oldEvent.AttendanceNavigation.Add(attendance);
-				}
+                return Result.Failure(new Error("400", "You can't reduce the number of attendees"));
+            }
+
+            oldEvent.Name = newEvent.Name;
+            oldEvent.Description = newEvent.Description;
+            oldEvent.EventDate = newEvent.EventDate;
+            oldEvent.DateOfCreation = DateOnly.FromDateTime(DateTime.Today);
+            oldEvent.Location = newEvent.Location;
+            oldEvent.GoogleMapsLocation = newEvent.GoogleMapsLocation;
+            oldEvent.Budget = newEvent.Budget;
+            oldEvent.CreatorId = 1;
+			oldEvent.AttendanceNumber = newEvent.AttendanceNumber;
+			oldEvent.EndDate = newEvent.EndDate;
 
 
-			try
-			{
-				// Save changes to the repository
-				await unitOfWork.EventRepo.Edit(oldEvent);
-				await unitOfWork.saveAsync();
-				return Result.Success();
-			}
-			catch (Exception ex)
-			{
-				return Result.Failure(new Error("Failed to update event"));
-			}
-		}
 
-		//---------------------------------------------------------------------------------------------//
-		// ------------------------------------------- Guests ----------------------------------------//
-		//-------------------------------------------------------------------------------------------//
+            try
+            {
+                await unitOfWork.EventRepo.Edit(oldEvent);
+                await unitOfWork.saveAsync();
+                return Result.Success();
+            }
+            catch (Exception)
+            {
+                return Result.Failure(new Error("400", "Failed to update event"));
+            }
+        }
 
-		// Get all guests of the event either mail is sent or not
-		public async Task<IEnumerable<AttendanceDTO>?> GetAllGuests(int id)
+        //---------------------------------------------------------------------------------------------//
+        // ------------------------------------------- Guests ----------------------------------------//
+        //-------------------------------------------------------------------------------------------//
+
+        // Get all guests of the event either mail is sent or not
+        public async Task<IEnumerable<AttendanceDTO>?> GetAllGuests(int id)
 		{
 			try
 			{

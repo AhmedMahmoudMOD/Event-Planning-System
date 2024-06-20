@@ -8,7 +8,9 @@ namespace Event_Planning_System.DTO
 {
 	public class EventDTO
 	{
-		[StringLength(50, MinimumLength = 3)]
+        public int? Id { get; set; }
+
+        [StringLength(50, MinimumLength = 3)]
 		public string Name { get; set; }
 		[MinLength(3)]
 		public string? Description { get; set; }
@@ -22,8 +24,9 @@ namespace Event_Planning_System.DTO
 		public int? Budget { get; set; }
 		public EventType EventType { get; set; }
 		public string EventDate { get; set; }
+        public string EndDate { get; set; }
 
-		public List<AttendanceDTO>? Emails { get; set; }
+        public List<AttendanceDTO>? Emails { get; set; }
 		public List<string>? EventImages { get; set; }
 
     }

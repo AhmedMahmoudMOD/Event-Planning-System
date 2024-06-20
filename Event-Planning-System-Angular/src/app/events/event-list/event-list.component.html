@@ -22,7 +22,7 @@
   <div class="main-content">
     <div class="header">
       <input type="text" class="search-bar" placeholder="Start typing to search for an Event" [(ngModel)]="searchQuery" (input)="onSearch()">
-      <button class="add-event-button" routerLink="/addevent">+ ADD EVENT</button>
+      <app-add-event></app-add-event>
     </div>
     <div class="event-list">
       <div *ngFor="let item of filteredEventList; let i = index" class="event-item">
@@ -54,7 +54,7 @@
             </div>
           </div>
         </div>
-        <button class="btn btn-info h-25">Details</button>
+        <button class="btn btn-info h-25" routerLink="/planner/eventdetails/{{item.id}}">Details</button>
       </div>
     </div>
   </div>

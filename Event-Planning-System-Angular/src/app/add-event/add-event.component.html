@@ -46,17 +46,36 @@
 
       <div class="p-field">
         <label for="eventDate">Start Date<span class="text-danger"> *</span></label>
-        <input
-          type="datetime-local"
+        <p-calendar
           id="eventDate"
-          class="p-inputtext p-component"
           formControlName="eventDate"
-          placeholder="Enter event start date"
+          dateFormat="yy-mm-dd"
+          [showTime]="true"
+          hourFormat="24"
+          [showIcon]="true"
+          [minDate]="minDate"
         />
         <div *ngIf="addEventForm.get('eventDate')?.invalid && addEventForm.get('eventDate')?.touched" class="p-error">
           Start date is required.
         </div>
       </div>
+      
+      <div class="p-field">
+        <label for="endDate">End Date<span class="text-danger"> *</span></label>
+        <p-calendar
+          id="endDate"
+          formControlName="endDate"
+          dateFormat="yy-mm-dd"
+          [showTime]="true"
+          hourFormat="24"
+          [showIcon]="true"
+          [minDate]="addEventForm.get('eventDate')?.value || minDate"
+        ></p-calendar>
+        <div *ngIf="addEventForm.get('endDate')?.invalid && addEventForm.get('endDate')?.touched" class="p-error">
+          End date is required.
+        </div>
+      </div>
+      
 
       <div class="p-field">
         <label for="attendanceNumber">Attendance Number</label>

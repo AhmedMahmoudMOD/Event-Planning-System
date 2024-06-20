@@ -4,6 +4,7 @@ using Event_Planinng_System_DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Event_Planning_System.Migrations
 {
     [DbContext(typeof(dbContext))]
-    partial class dbContextModelSnapshot : ModelSnapshot
+    [Migration("20240614135808_AddEndDate")]
+    partial class AddEndDate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -163,52 +166,6 @@ namespace Event_Planning_System.Migrations
                     b.HasIndex("EventId");
 
                     b.ToTable("EventsImages");
-                });
-
-            modelBuilder.Entity("Event_Planinng_System_DAL.Models.EventSchedule", b =>
-                {
-                    b.Property<int>("EventId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("EndTimezone")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsAllDay")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RecurrenceException")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("RecurrenceID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("RecurrenceRule")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("StartTimezone")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Subject")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("EventId", "Id");
-
-                    b.ToTable("EventSchedules");
                 });
 
             modelBuilder.Entity("Event_Planinng_System_DAL.Models.Role", b =>
@@ -542,17 +499,6 @@ namespace Event_Planning_System.Migrations
                     b.Navigation("EventNavigation");
                 });
 
-            modelBuilder.Entity("Event_Planinng_System_DAL.Models.EventSchedule", b =>
-                {
-                    b.HasOne("Event_Planinng_System_DAL.Models.Event", "EventNavigation")
-                        .WithMany("EventScheduleNavigation")
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("EventNavigation");
-                });
-
             modelBuilder.Entity("Event_Planinng_System_DAL.Models.ToDoList", b =>
                 {
                     b.HasOne("Event_Planinng_System_DAL.Models.Event", "EventNavigation")
@@ -624,8 +570,6 @@ namespace Event_Planning_System.Migrations
                     b.Navigation("EventEmailsNavigation");
 
                     b.Navigation("EventImagesNavigation");
-
-                    b.Navigation("EventScheduleNavigation");
 
                     b.Navigation("ToDoListsNavigation");
                 });
