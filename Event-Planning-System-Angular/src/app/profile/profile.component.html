@@ -3,10 +3,10 @@
     <main class="main-content">
         <header class="profile-header">
             <div class="user-info">
-                <img src="profile-picture.jpg" alt="Profile Picture" class="profile-picture">
+                <img src="/src/assets/images/software-developer-6521720_640.jpg" alt="Profile Picture" class="profile-picture">
                 <div>
-                    <h2>Nathaniel Poole</h2>
-                    <p>Microsoft Inc.</p>
+                    <h2>{{ profile.fName + " " + profile.lName }}</h2>
+                    <p>{{ profile.street + ", " + profile.city + ", " + profile.region }}</p>
                 </div>
             </div>
             <button class="change-cover-button">Change Cover</button>
@@ -29,11 +29,11 @@
             </div>
         </section>
         <section class="profile-settings">
-            <h3>Account Settings</h3>
+            <h3>Account Details</h3>
             <form class="settings-form">
                 <div class="form-group">
                     <label for="first-name">First Name</label>
-                    <input type="text" id="first-name" value="Nathaniel">
+                    <h3 id="first-name">{{ profile.fName }}</h3>
                 </div>
                 <div class="form-group">
                     <label for="last-name">Last Name</label>

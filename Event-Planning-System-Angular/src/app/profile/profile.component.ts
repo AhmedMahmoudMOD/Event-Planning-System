@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ProfileService } from '../shared/services/profile.service';
+import { Profile } from '../shared/models/profile';
 
 
 @Component({
@@ -12,16 +13,19 @@ import { ProfileService } from '../shared/services/profile.service';
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnInit{
   title = 'Profile';
-  userId: number;
-  profile: any;
+  profile: Profile | any = {};
 
 
   constructor(private profileService: ProfileService, private route: ActivatedRoute) { }
     //get profile by user id
-  getProfile(userId: number) {
-    return this.profileService.getProfile(userId);
-
+  ngOnInit(): void {
+    this.profileService.getProfile(1).subscribe
+    ({
+      next: d => {
+        this.profile = d;
+      }
+    });
   }
 }
