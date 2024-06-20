@@ -27,7 +27,7 @@ export const routes: Routes = [
     { path: 'addevent', component: AddEventComponent },
     { path: 'auth/confirmemail', component: EmailconfirmComponent },
     { path: 'auth/forgotpassword', component: ForgotPasswordComponent },
-    { path: 'events', component: EventListComponent },
+    { path: 'events', component:EventCalenderComponent },
     { path: 'sidebar', component: SidebarComponent },
     //event details
     { path: 'planner/eventdetails/:id', component: EventDetailsComponent },

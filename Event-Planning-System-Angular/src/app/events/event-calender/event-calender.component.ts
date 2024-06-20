@@ -10,11 +10,12 @@ import { CalendarEvent, CalendarModule, CalendarUtils } from 'angular-calendar';
 import { EVENT_COLORS } from '../../shared/models/event-color'; // Import the color scheme
 import { eventTypeMapping } from '../../shared/enums/eventstype';
 import { Router } from '@angular/router';
+import { AddEventComponent } from '../../add-event/add-event.component';
 
 @Component({
   selector: 'app-event-calender',
   standalone: true,
-  imports: [FormsModule, CommonModule, CalendarModule],
+  imports: [FormsModule, CommonModule, CalendarModule,AddEventComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
   providers: [CalendarUtils], // Provide CalendarUtils if needed
   templateUrl: './event-calender.component.html',
