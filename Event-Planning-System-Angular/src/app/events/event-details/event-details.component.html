@@ -32,7 +32,13 @@
           <div class="">
             <!-- <p-selectButton [options]="stateOptions" [(ngModel)]="value" optionLabel="label"
                         optionValue="value" /> -->
-            <a class="link-tab fw-bold text-info blue-nav">About</a>
+                       <!-- event-details.component.html -->
+              <a class="link-tab fw-bold" 
+              [ngClass]="{'text-info blue-nav': activeLink === 'about'}" 
+              (click)="setActiveLink('about')">About</a>
+              <a class="link-tab fw-bold" 
+              [ngClass]="{'text-info blue-nav': activeLink === 'todolist'}" 
+              (click)="setActiveLink('todolist')">ToDo List</a>
             <a class="link-tab text-secondary">Discussion</a>
           </div>
           <div class="">

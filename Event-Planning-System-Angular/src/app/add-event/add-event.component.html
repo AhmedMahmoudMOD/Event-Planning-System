@@ -67,9 +67,10 @@
           formControlName="endDate"
           dateFormat="yy-mm-dd"
           [showTime]="true"
-          hourFormat="24"
+          hourFormat="12"
           [showIcon]="true"
           [minDate]="addEventForm.get('eventDate')?.value || minDate"
+          
         ></p-calendar>
         <div *ngIf="addEventForm.get('endDate')?.invalid && addEventForm.get('endDate')?.touched" class="p-error">
           End date is required.

@@ -61,8 +61,20 @@ export class AddEventComponent implements OnInit {
       googleMapsLocation: ['', Validators.required],
       budget: ['', Validators.required],
       eventType: ['', Validators.required],
-      eventDate: ['', Validators.required]
+      eventDate: ['', Validators.required],
+      endDate: ['', Validators.required, this.checkDate]
     });
+  }
+checkDate(endDate: any): boolean {
+  const datePipe = new DatePipe('en-US');
+ const eventDate = this.addEventForm.get('eventDate')?.value;
+  const endDateValue = datePipe.transform(endDate, 'yyyy-MM-dd');
+  const eventDateValue = datePipe.transform(eventDate, 'yyyy-MM-dd');
+  if ( endDateValue! <= eventDateValue!) {
+    return false;
+  }
+  return true;
+
   }
 
   showAddModal() {

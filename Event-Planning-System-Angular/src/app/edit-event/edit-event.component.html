@@ -55,7 +55,7 @@
         </div>
       </div>
 
-    <div class="p-field">
+      <div class="p-field">
         <label for="location">Location</label>
         <input
           type="text"
@@ -67,6 +67,7 @@
           Location is required.
         </div>
       </div>
+
       <div class="p-field">
         <label for="googleMapsLocation">Google Location</label>
         <input
@@ -79,6 +80,7 @@
           Google maps location is required.
         </div>
       </div>
+
       <div class="p-field">
         <label for="budget">Budget</label>
         <input
@@ -91,6 +93,7 @@
           Budget is required.
         </div>
       </div>
+
       <div class="p-field">
         <label for="eventDate">Start Date<span class="text-danger"> *</span></label>
         <p-calendar
@@ -101,6 +104,7 @@
           hourFormat="24"
           [showIcon]="true"
           [minDate]="MinDate"
+          [defaultDate]="editForm.get('eventDate')?.value"
         ></p-calendar>
         <div *ngIf="editForm.get('eventDate')?.invalid && editForm.get('eventDate')?.touched" class="p-error">
           Start date is required.
@@ -117,15 +121,13 @@
           hourFormat="24"
           [showIcon]="true"
           [minDate]="editForm.get('eventDate')?.value || MinDate"
+          [defaultDate]="editForm.get('endDate')?.value"
         ></p-calendar>
         <div *ngIf="editForm.get('endDate')?.invalid && editForm.get('endDate')?.touched" class="p-error">
           End date is required.
         </div>
       </div>
-      
-
-
-
+<hr>
       <div class="p-dialog-footer">
         <p-button
           label="Cancel"

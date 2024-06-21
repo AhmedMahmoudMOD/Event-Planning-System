@@ -17,23 +17,16 @@ import { EditEventComponent } from './edit-event/edit-event.component';
 
 
 export const routes: Routes = [
-    { path: 'auth/login', component: LoginComponent },
-    { path: 'auth/register' , component: RegisterComponent},
-    {path:'addevent',component:AddEventComponent},
+    { path: 'auth/login', component: LoginComponent , title: 'Login'},
+    { path: 'auth/register' , component: RegisterComponent, title: 'Register'},
+    {path:'addevent',component:AddEventComponent,title:'Add Event'},
     { path: 'auth/confirmemail', component: EmailconfirmComponent },
-    {path: 'events', component: EventListComponent},
+    {path: 'events', component: EventListComponent,title:'Events'},
     {path:'sidebar',component:SidebarComponent},
-
-    {path: 'planner/eventdetails/:id', component : EventDetailsComponent},
-
-    
+    {path: 'planner/eventdetails/:id', component : EventDetailsComponent, title: 'Event Details'},
     { path: 'auth/validateemail', component: EmailConfirmCheckComponent },
     { path: 'event/addEmails', component: AddEmailsComponent },
-
-
-
-    {path: 'edit-event', component: EditEventComponent},
-
+    {path: 'edit-event', component: EditEventComponent, title: 'Edit Event'},
     { path: 'auth/validateemail', component: EmailConfirmCheckComponent },
     { path: '', redirectTo: '/addevent', pathMatch: 'full' }
 ];

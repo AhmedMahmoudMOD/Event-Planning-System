@@ -42,11 +42,13 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   eventDetails: Event | any = {};
   defaultImage = '../../../assets/images/software-developer-6521720_640.jpg';
   mapsURL: string | null = null;
+  activeLink: string = 'about';
+
   // constructors
   constructor(private ActivatedRoute: ActivatedRoute,
     private eventDetailsServices: EventdetailsService,
     private el: ElementRef, private renderer: Renderer2) { }
-
+  
     ngAfterViewInit() {
       const backgroundStyle = `linear-gradient(rgba(0, 0, 0, 0), rgba(250, 250, 250, 1)), url('${this.eventDetails.eventImages[0]}')`;
       const background_size = 'cover';
@@ -82,6 +84,11 @@ ngOnDestroy(): void {
   this.idsubscripe.unsubscribe();
   this.eventsubscription.unsubscribe();
 }
+setActiveLink(link: string) {
+  this.activeLink = link;
+  console.log('Active link set to:', link);  
+}
+
 //end of constructors
 
 reset() {
