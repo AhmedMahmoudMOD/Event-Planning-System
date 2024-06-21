@@ -4,6 +4,7 @@ import { ActivatedRoute, RouterLink, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ProfileService } from '../shared/services/profile.service';
 import { Profile } from '../shared/models/profile';
+import { AccountService } from '../shared/services/account.service';
 
 
 @Component({
@@ -18,11 +19,11 @@ export class ProfileComponent implements OnInit{
   profile: Profile | any = {};
   defaultImage = "/src/assets/images/software-developer-6521720_640.jpg";
 
-  constructor(private profileService: ProfileService, private route: ActivatedRoute) { }
+  constructor(private profileService: ProfileService, private accountService:AccountService, private route: ActivatedRoute) { }
     //get profile by user id
   ngOnInit(): void {
-    this.profileService.getProfile(1).subscribe
-    ({
+    const id = + this.accountService.extractUserID();
+    this.profileService.getProfile(id).subscribe({
       next: d => {
         this.profile = d;
       }
