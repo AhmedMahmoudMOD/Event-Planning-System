@@ -124,8 +124,10 @@ namespace Event_Planning_System.Services
 			try { newEvent = mapper.Map<Event>(newEventDTO); }
 			catch { return false; }
 
-			if (newEvent == null || newEvent.EventDate <= DateTime.Today)
+			if (newEvent == null || newEvent.EventDate <= DateTime.Today || newEvent.EndDate <= newEvent.EventDate)
 				return false;
+
+
 
 			newEvent.DateOfCreation = DateOnly.FromDateTime(DateTime.Today);
 

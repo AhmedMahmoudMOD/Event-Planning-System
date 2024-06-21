@@ -68,11 +68,12 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getEventDetails();
   }
 
+
   ngOnDestroy(): void {
     this.idsubscripe.unsubscribe();
     this.eventsubscription.unsubscribe();
   }
-  //end of constructors
+
 
 
   renderBackgroungImage() {

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Event_Planinng_System_DAL.Models;
 using Event_Planinng_System_DAL.Unit_Of_Work;
+using Event_Planning_System.Custom;
 using Event_Planning_System.DTO;
 using Event_Planning_System.Helpers;
 using Event_Planning_System.IServices;
@@ -21,15 +22,20 @@ namespace Event_Planning_System.Services
 		}
 
 		// Create new to do list
-		public async Task<bool> CreateToDoList(ToDoListDTO newToDoListDTO)
+		public async Task<Result> CreateToDoList(ToDoListDTO newToDoListDTO)
 		{
 			// Check if the EventId exists in the Events table
-			var eventExists = db.Events.Any(e => e.Id == newToDoListDTO.EventId);
-			if (!eventExists)
+			var eventExists = db.Events.FirstOrDefault(e => e.Id == newToDoListDTO.EventId);
+			if (eventExists == null)
 			{
-				return false;
-			}
-
+                return Result.Failure(new Error("400", "Event not found"));
+            }
+            DateOnly dateNow = DateOnly.FromDateTime(DateTime.Now);
+			DateOnly eventDeadline = DateOnly.FromDateTime(eventExists.EndDate);
+            if (newToDoListDTO.DeadLineTime <= dateNow || newToDoListDTO.DeadLineTime > eventDeadline)
+			{
+                return Result.Failure(new Error("400", "Invalid deadline"));
+            }
 			ToDoList newToDoList;
 			try
 			{
@@ -37,55 +43,89 @@ namespace Event_Planning_System.Services
 			}
 			catch
 			{
-				return false;
-			}
-
-			// Check if the deadline is valid
-			if (newToDoList == null || newToDoList.DeadLineTime <= DateOnly.FromDateTime(DateTime.Now))
+                return Result.Failure(new Error("400", "Failed to map the object"));
+            }
+			try
 			{
-				return false;
+				await unitOfWork.ToDoListRepo.Add(newToDoList);
+				unitOfWork.save();
+				return Result.Success();
 			}
-
-			await unitOfWork.ToDoListRepo.Add(newToDoList);
-			unitOfWork.save();
-			return true;
-		}
+            catch
+            {
+                return Result.Failure(new Error("400", "Failed to add the object"));
+            }
+        }
 
 
 		//get all to do lists
-		public async Task<IEnumerable<ToDoListDTO>?> GetAllToDoLists()
+		public  List<ToDoListDTO>? GetAllToDoLists()
 		{
-			var toDoLists = await unitOfWork.ToDoListRepo.GetAll();
-			if (toDoLists == null)
-				return null;
-			return mapper.Map<IEnumerable<ToDoListDTO>>(toDoLists);
-		}
+			try
+			{
+				List<ToDoList> toDoLists =  db.ToDoLists.ToList();
+                if (toDoLists == null)
+                {
+                    return null;
+                }
+                var TDLists = mapper.Map<List<ToDoListDTO>>(toDoLists);
+				if (TDLists == null)
+                    return null;
+				return TDLists;
+            }
+            catch
+            {
+                return null;
+            }
+
+        }
 
 		//get to do list by event id && name
-		public async Task<ToDoList> GetToDoList(int eventId, string name)
+		public async Task<ToDoListDTO> GetToDoListByNameId(int eventId, string name)
 		{
-			return db.ToDoLists.FirstOrDefault(x => x.EventId == eventId && x.Title == name);
-		}
-		//update to do list
-		public async Task<bool> UpdateToDoList(int eventId, string name, ToDoListDTO newToDoList)
-		{
-			var currentToDoList = await db.ToDoLists.FirstOrDefaultAsync(x => x.EventId == eventId && x.Title == name);
-			if (currentToDoList == null)
-				return false;
+			var toDoList = db.ToDoLists.FirstOrDefault(x => x.EventId == eventId && x.Title == name);
+			if (toDoList == null)
+			{
+                return null;
+            }
+            var TDList = mapper.Map<ToDoListDTO>(toDoList);
+            return TDList;
 
-			mapper.Map(newToDoList, currentToDoList);
+        }
+		public  List<ToDoListDTO> GetRelatedToDoList(int eventId)
+		{
+			var toDoLists = db.ToDoLists.Where(x => x.EventId == eventId).ToList();
+            if (toDoLists == null)
+            {
+                return null;
+            }
+            var TDLists = mapper.Map<List<ToDoListDTO>>(toDoLists);
+            return TDLists;
+        }
+		//update to do list
+		public async Task<Result> UpdateToDoList(int eventId, string name, ToDoListDTO newToDoList)
+		{
+			if(newToDoList.DeadLineTime <= DateOnly.FromDateTime(DateTime.Now))
+                return Result.Failure(new Error("400", "Invalid deadline"));
+            var currentToDoList = await db.ToDoLists.FirstOrDefaultAsync(x => x.EventId == eventId && x.Title == name);
+			if (currentToDoList.DeadLineTime <= DateOnly.FromDateTime(DateTime.Now))
+				return Result.Failure(new Error("400", "can't edit todo list"));
+			if (currentToDoList == null)
+				return Result.Failure(new Error("400", "To do list not found"));
+
+            mapper.Map(newToDoList, currentToDoList);
 			db.Entry(currentToDoList).State = EntityState.Modified;
 
 			try
 			{
 				await unitOfWork.saveAsync();
-				return true;
-			}
+				return Result.Success();
+            }
 			catch (Exception ex)
 			{
 				
-				return false;
-			}
+				return Result.Failure(new Error("400", ex.Message));
+            }
 		}
 
 
