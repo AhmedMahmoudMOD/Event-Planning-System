@@ -17,6 +17,7 @@ import { EventDetailsComponent } from './events/event-details/event-details.comp
 
 import { EditEventComponent } from './edit-event/edit-event.component';
 import { EventsScheduleComponent } from './events/events-schedule/events-schedule.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 
 
@@ -33,6 +34,8 @@ export const routes: Routes = [
     { path: 'schedule/:id', component: EventsScheduleComponent },
 
     //end of event details
+
+    { path: 'navbar', component: NavbarComponent},
 
     { path: 'auth/resetpassword', component: ResetPasswordComponent },
 
