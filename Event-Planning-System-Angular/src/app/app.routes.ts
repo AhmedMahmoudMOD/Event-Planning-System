@@ -17,18 +17,14 @@ import { EventDetailsComponent } from './events/event-details/event-details.comp
 
 import { EditEventComponent } from './edit-event/edit-event.component';
 import { EventsScheduleComponent } from './events/events-schedule/events-schedule.component';
-<<<<<<< HEAD
 import { NavbarComponent } from './navbar/navbar.component';
 import { ProfileComponent } from './profile/profile.component';
-=======
-import { ProfileComponent } from './profile/profile.component';
->>>>>>> profile
 
 
 
 export const routes: Routes = [
-  { path: 'auth/login', component: LoginComponent },
-  { path: 'auth/register', component: RegisterComponent },
+    { path: 'auth/login', component: LoginComponent },
+    { path: 'auth/register', component: RegisterComponent },
     { path: 'addevent', component: AddEventComponent },
     { path: 'auth/confirmemail', component: EmailconfirmComponent },
     { path: 'auth/forgotpassword', component: ForgotPasswordComponent },
