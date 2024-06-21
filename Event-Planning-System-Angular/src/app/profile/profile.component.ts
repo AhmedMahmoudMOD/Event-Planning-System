@@ -19,11 +19,7 @@ export class ProfileComponent implements OnInit{
   profile: Profile | any = {};
   defaultImage = "/src/assets/images/software-developer-6521720_640.jpg";
 
-<<<<<<< HEAD
-  constructor(private profileService: ProfileService, private accountService: AccountService, private route: ActivatedRoute) { }
-=======
   constructor(private profileService: ProfileService, private accountService:AccountService, private route: ActivatedRoute) { }
->>>>>>> profile
     //get profile by user id
   ngOnInit(): void {
     const id = + this.accountService.extractUserID();
