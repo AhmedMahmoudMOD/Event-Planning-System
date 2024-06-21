@@ -132,7 +132,7 @@ namespace Event_Planning_System.Services
 			newEvent.DateOfCreation = DateOnly.FromDateTime(DateTime.Today);
 
 			// ============= CreatorId should be the id of the logged in user ============= //
-			newEvent.CreatorId = 22;
+			newEvent.CreatorId = id;
 
 			await unitOfWork.EventRepo.Add(newEvent);
 			unitOfWork.save();
