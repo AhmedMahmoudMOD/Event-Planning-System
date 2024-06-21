@@ -21,8 +21,8 @@ export class ProfileComponent implements OnInit{
   constructor(private profileService: ProfileService, private route: ActivatedRoute) { }
     //get profile by user id
   ngOnInit(): void {
-    this.profileService.getProfile(1).subscribe
-    ({
+    const id = + this.accountService.extractUserID();
+    this.profileService.getProfile(id).subscribe({
       next: d => {
         this.profile = d;
       }
