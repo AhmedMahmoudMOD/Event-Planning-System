@@ -1,23 +1,3 @@
-.text-holder {
-  position: relative;
-  padding: 15px;
-  background: rgba(255, 255, 255, 0.1); /* Optional: adjust background color and opacity */
-  overflow: hidden; /* Ensure the pseudo-element stays within the container */
-}
-
-.text-holder::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: inherit; /* Inherit the background from the parent */
-  backdrop-filter: blur(20px); /* Apply the blur effect */
-  -webkit-backdrop-filter: blur(20px); /* Apply the blur effect for Safari */
-  z-index: -1; /* Place the pseudo-element behind the content */
-}
-
 .calendar-header {
   display: flex;
   justify-content: space-between;
@@ -27,6 +7,7 @@
 .calendar-filters {
   display: flex;
   justify-content: space-around;
+  flex-wrap: wrap;
   margin-bottom: 20px;
 }
 
@@ -50,7 +31,7 @@ input ,select{
   background-color:rgb(255, 227, 227) ;
 }
 .main-container {
-  padding: 15px;
+  padding:0 15px ;
   background-image: url("../../../../src/assets/images/Welcome-pana.svg");
   background-size: cover;
   background-repeat: no-repeat;
