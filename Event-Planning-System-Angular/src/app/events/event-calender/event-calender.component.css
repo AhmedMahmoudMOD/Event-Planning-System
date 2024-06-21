@@ -1,22 +1,157 @@
+.text-holder {
+  position: relative;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.1); /* Optional: adjust background color and opacity */
+  overflow: hidden; /* Ensure the pseudo-element stays within the container */
+}
+
+.text-holder::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: inherit; /* Inherit the background from the parent */
+  backdrop-filter: blur(20px); /* Apply the blur effect */
+  -webkit-backdrop-filter: blur(20px); /* Apply the blur effect for Safari */
+  z-index: -1; /* Place the pseudo-element behind the content */
+}
+
 .calendar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.calendar-filters {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.calendar-filters label {
+  padding:0 3px;
+  background-color: rgba(255, 255, 255, 0.515) ;
+  border-radius: 10%;
+  margin-right: 5px;
+  text-wrap: nowrap;
+}
+
+.calendar-filters input,
+.calendar-filters select,
+.calendar-filters button {
+  margin-right: 10px;
+}
+input ,select{
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color:rgb(255, 227, 227) ;
+}
+.main-container {
+  padding: 15px;
+  background-image: url("../../../../src/assets/images/Welcome-pana.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  /* "https://thumbor-cdn.b2match.com/bCC4xgRJbRZEiT9DUJvb3WJznrk=/full-fit-in/1600x0/filters:quality(75):no_upscale()/https://www.b2match.com/img/events-site_header-image.jpg"); */
+}
+
+.animated {
+  height: 300px;
+}
+
+svg#freepik_stories-events:not(.animated) .animable {
+  opacity: 0;
+}
+
+svg#freepik_stories-events.animated #freepik--background-simple--inject-36 {
+  animation: 1s 1 forwards cubic-bezier(0.36, -0.01, 0.5, 1.38) slideDown;
+  animation-delay: 0s;
+}
+
+svg#freepik_stories-events.animated #freepik--Floor--inject-36 {
+  animation: 1s 1 forwards cubic-bezier(0.36, -0.01, 0.5, 1.38) slideLeft;
+  animation-delay: 0s;
+}
+
+svg#freepik_stories-events.animated #freepik--Plants--inject-36 {
+  animation: 1s 1 forwards cubic-bezier(0.36, -0.01, 0.5, 1.38) slideLeft;
+  animation-delay: 0s;
+}
+
+svg#freepik_stories-events.animated #freepik--Calendar--inject-36 {
+  animation: 1s 1 forwards cubic-bezier(0.36, -0.01, 0.5, 1.38) fadeIn;
+  animation-delay: 0s;
+}
+
+svg#freepik_stories-events.animated #freepik--character-2--inject-36 {
+  animation: 1s 1 forwards cubic-bezier(0.36, -0.01, 0.5, 1.38) lightSpeedLeft;
+  animation-delay: 0s;
+}
+
+svg#freepik_stories-events.animated #freepik--character-1--inject-36 {
+  animation: 1s 1 forwards cubic-bezier(0.36, -0.01, 0.5, 1.38) slideRight;
+  animation-delay: 0s;
+}
+
+@keyframes slideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px);
   }
-  
-  .calendar-filters {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .calendar-filters label {
-    margin-right: 5px;
+}
+
+@keyframes slideLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-30px);
   }
-  
-  .calendar-filters input,
-  .calendar-filters select,
-  .calendar-filters button {
-    margin-right: 10px;
+  100% {
+    opacity: 1;
+    transform: translateX(0);
   }
-  
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes lightSpeedLeft {
+  from {
+    transform: translate3d(-50%, 0, 0) skewX(20deg);
+    opacity: 0;
+  }
+  60% {
+    transform: skewX(-10deg);
+    opacity: 1;
+  }
+  80% {
+    transform: skewX(2deg);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes slideRight {
+  0% {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
