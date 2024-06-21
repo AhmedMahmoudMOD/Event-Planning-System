@@ -111,7 +111,7 @@ namespace Event_Planning_System.Services
 				User userToSearch = await unitOfWork.UserRepo.FindById(id);
 				if (userToSearch == null)
 					return null;
-				List<Event> userEvents = (await unitOfWork.EventRepo.GetAll()).Where(a => a.CreatorId == id).ToList();
+				List<Event> userEvents = (await unitOfWork.EventRepo.GetAll()).Where(a => a.CreatorId == id && a.IsDeleted==false).ToList();
 				return mapper.Map<List<EventDTO>>(userEvents);
 			}
 			catch { return null; }
