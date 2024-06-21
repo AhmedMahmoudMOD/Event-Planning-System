@@ -8,6 +8,8 @@ import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-add-emails',
@@ -19,7 +21,8 @@ import { DialogModule } from 'primeng/dialog';
     MessagesModule,
     MessageModule,
     ProgressSpinnerModule,
-    DialogModule
+    DialogModule,
+    ButtonModule,
   ],
   templateUrl: './add-emails.component.html',
   styleUrls: ['./add-emails.component.css'],
@@ -31,16 +34,23 @@ export class AddEmailsComponent implements OnDestroy, OnInit {
   loading: boolean = false;
   eventId: number = 0;
   sub: Subscription | null = null;
+  EmailSub: Subscription | null = null;
   displayModal: boolean = false;
 
-  constructor(private eventService: EventService) {}
+  constructor(
+    private eventService: EventService,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.eventId = 4; // assign the ID of the event from URL
+    this.sub = this.activatedRoute.params.subscribe((params) => {
+      this.eventId = params['id'];
+    });
   }
 
   ngOnDestroy(): void {
     this.sub?.unsubscribe();
+    this.EmailSub?.unsubscribe();
   }
 
   checkEmails(emailsToCheck: string[]): boolean {
@@ -72,16 +82,20 @@ export class AddEmailsComponent implements OnDestroy, OnInit {
 
     this.loading = true;
 
-    this.sub = this.eventService.addAttendance(this.eventId, this.emails).subscribe({
-      next: () => {
-        this.successMessage = 'Emails added successfully';
-        this.loading = false;
-      },
-      error: (error) => {
-        console.log(error);
-        this.errorMessage = error.error || 'An error occurred while adding emails';
-        this.loading = false;
-      },
-    });
+    this.EmailSub = this.eventService
+      .addAttendance(this.eventId, this.emails)
+      .subscribe({
+        next: () => {
+          this.successMessage = 'Emails added successfully';
+          this.loading = false;
+        },
+        error: (error) => {
+          console.log(error);
+          this.errorMessage =
+            error.error || 'An error occurred while adding emails';
+          this.loading = false;
+          console.log(error);
+        },
+      });
   }
 }

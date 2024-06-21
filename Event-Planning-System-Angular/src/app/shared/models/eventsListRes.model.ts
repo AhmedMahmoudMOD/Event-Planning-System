@@ -1,3 +1,5 @@
+import { eventTypes } from "./eventTypes";
+
 export interface Event {
     name: string;
     description: string;
@@ -5,10 +7,11 @@ export interface Event {
     attendanceNumber: number;
     googleMapsLocation: string;
     budget: number;
-    eventType: number;
+    eventType: EventType;
     eventDate: string;
+    id: number;
   }
-  
+
 export  interface EventListRes {
     currentPage: number;
     totalPages: number;
@@ -17,4 +20,11 @@ export  interface EventListRes {
     hasNext: boolean;
     events: Event[];
   }
-  
+
+  export enum EventType {
+    Wedding,
+    Birthday,
+    Corporate,
+    Social,
+    Other,
+}

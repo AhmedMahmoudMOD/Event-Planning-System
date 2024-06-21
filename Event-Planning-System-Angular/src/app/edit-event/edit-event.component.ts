@@ -50,10 +50,10 @@ export class EditEventComponent implements OnInit {
   ngOnInit(): void {
     var event = this.eventService.getEventById(4);
     console.log(event);
-   //const id = (this.route.snapshot.paramMap.get('id'));
-    //this.eventId = id ? parseInt(id) : 0;
-    //if (this.eventId) {
-      this.eventService.getEventById(2).subscribe((event: any) => {
+   const id = (this.route.snapshot.paramMap.get('id'));
+    this.eventId = id ? parseInt(id) : 0;
+    if (this.eventId) {
+      this.eventService.getEventById(this.eventId).subscribe((event: any) => {
         this.oldEvent = event;
         this.editForm.patchValue({
           name: this.oldEvent.name,
@@ -61,12 +61,14 @@ export class EditEventComponent implements OnInit {
           location: this.oldEvent.location,
           attendanceNumber: this.oldEvent.attendanceNumber,
           googleMapsLocation: this.oldEvent.googleMapsLocation,
-          eventDate: this.oldEvent.eventDate,
+          eventDate: Date.parse(this.oldEvent.eventDate),
           budget: this.oldEvent.budget,
           endDate: this.oldEvent.endDate
         });
+        console.log(Date.parse(this.oldEvent.eventDate));
       });
   }
+}
   showEditModal() {
     this.display = true;
   }
@@ -77,7 +79,7 @@ export class EditEventComponent implements OnInit {
 
   saveChanges() {
     if (this.editForm.valid) {
-      this.eventService.editEvent(2, this.editForm.value).subscribe(
+      this.eventService.editEvent(this.eventId, this.editForm.value).subscribe(
         () => {
           this.hideEditModal();
         },

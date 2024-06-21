@@ -1,0 +1,26 @@
+<!-- 
+<ejs-schedule
+  width="100%"
+  height="550px"
+  [selectedDate]="selectedDate"
+  [eventSettings]="eventSettings"
+></ejs-schedule> -->
+
+<ejs-schedule
+  #scheduleObj
+  width="100%"
+  height="550px"
+  [(selectedDate)]="selectedDate"
+  [eventSettings]="eventSettings"
+  [readonly]="readonly"
+  [timeScale]="timeScale"
+  [firstDayOfWeek]="weekFirstDay"
+  (actionBegin)="onBegin($event)"
+  (dataBinding)="onBinding($event)"
+>
+  <e-views>
+    <e-view option="Week" startHour="00:00" endHour="24:00"></e-view>
+    <e-view option="WorkWeek" startHour="00:00" endHour="24:00"></e-view>
+    <!-- <e-view option="Month" [showWeekend]="showWeekend"></e-view> -->
+  </e-views>
+</ejs-schedule>

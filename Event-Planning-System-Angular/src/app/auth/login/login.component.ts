@@ -52,7 +52,7 @@ export class LoginComponent {
       this.error = false;
       this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Login Successful' });
       setTimeout(() => { 
-        this.router.navigate(['/']);
+        this.router.navigate(['/events']);
       }, 6000);
       console.log(jwtDecode.jwtDecode(token));
     },(error)=>{

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Event_Planinng_System_DAL.Models;
 using Event_Planning_System.DTO;
+using Event_Planning_System.DTO.EventSchedule;
 using Event_Planning_System.Helpers;
 
 namespace Event_Planning_System.MappingProfiles
@@ -20,7 +21,8 @@ namespace Event_Planning_System.MappingProfiles
 			CreateMap<User, ProfileDTO>().ReverseMap();
 
 			CreateMap(typeof(PaginatedList<>), typeof(PaginatedList<>)).ConvertUsing(typeof(CustomPaginatedListMapper<,>));
-     }
+			CreateMap<EventSchedule, ScheduleEventData>().ReverseMap();
+		}
 
 	}
 }

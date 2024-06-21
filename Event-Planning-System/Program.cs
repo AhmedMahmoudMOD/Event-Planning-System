@@ -42,6 +42,7 @@ namespace Event_Planning_System
 			builder.Services.Configure<MailInfoDto>(builder.Configuration.GetSection("MailInfo"));
             builder.Services.AddScoped<IBlobServices, BlobService>();
             builder.Services.AddScoped<ISendEmailService, SendEmailService>();
+            builder.Services.AddScoped<IEventScheduleService ,  EventScheduleService>();
 
 			     builder.Services.AddScoped<IAuthService, AuthService>();
  

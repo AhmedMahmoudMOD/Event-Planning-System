@@ -63,6 +63,7 @@ export class AddEventComponent implements OnInit {
       eventType: ['', Validators.required],
       eventDate: ['', Validators.required],
       endDate: ['', Validators.required, this.checkDate]
+
     });
   }
 checkDate(endDate: any): boolean {

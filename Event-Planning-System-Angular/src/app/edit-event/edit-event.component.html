@@ -1,9 +1,19 @@
-<p-button
+<!-- <p-button
   icon="pi pi-pencil"
   label="Edit Event"
   class="p-button-outlined p-button-rounded p-button-primary"
   (click)="showEditModal()">
-</p-button>
+</p-button> -->
+
+<p-button
+label="Edit"
+[text]="true"
+severity="help"
+[raised]="true"
+(click)="showEditModal()"
+/>
+
+
 
 <p-dialog
   header="Edit Event"
@@ -129,6 +139,7 @@
       </div>
 <hr>
       <div class="p-dialog-footer">
+
         <p-button
           label="Cancel"
           icon="pi pi-times"

@@ -1,36 +1,55 @@
 import { CommonModule } from '@angular/common';
-import { Component , OnInit } from '@angular/core';
-import { Event , EventListRes } from "../../shared/models/eventsListRes.model";
-import { EventService } from "../../shared/services/event.service";
-import { TableLazyLoadEvent, TableModule } from 'primeng/table';
-import { LazyLoadEvent } from 'primeng/api';
+import { Component, OnInit } from '@angular/core';
+import { Event, EventType } from '../../shared/models/eventsListRes.model';
+import { ActivatedRoute, RouterLink, RouterModule } from '@angular/router';
+import { PaginatorModule } from 'primeng/paginator';
+import { EventListService } from '../../shared/services/event-list.service';
+import { FormsModule } from '@angular/forms'; 
+import { AddEventComponent } from '../../add-event/add-event.component';
+import { SidebarComponent } from '../../sidebar/sidebar.component';
+import { AccountService } from '../../shared/services/account.service';
 
 
 @Component({
   selector: 'app-event-list',
   standalone: true,
-  imports: [CommonModule,TableModule],
+  imports: [CommonModule, RouterModule, RouterLink, PaginatorModule, FormsModule,AddEventComponent,SidebarComponent],
   templateUrl: './event-list.component.html',
-  styleUrl: './event-list.component.css'
+  styleUrls: ['./event-list.component.css']
 })
-export class EventListComponent{
-  eventList: Event[]  = [];
-  total : number = 0;
-  loading : boolean = false;
+export class EventListComponent implements OnInit {
+  title = 'Events';
+  eventList: Event[] = [];
+  filteredEventList: Event[] = [];
+  searchQuery: string = '';
 
-  constructor(private eventService: EventService) {}
+  constructor(private eventListService: EventListService, private route: ActivatedRoute,private accountService:AccountService) {}
 
-  loadEvents(event:TableLazyLoadEvent) {
-    this.loading = true;
-    console.log(event);
-    let pageNum = event.first! / event.rows! + 1;
-    // Example: Accessing a specific filter value
-    this.eventService.getEvents(pageNum,event.rows??3,"").subscribe((res: EventListRes) => {
-      console.log(res);
-      this.loading = false;
-      this.eventList = res.events;
-      this.total = res.totalCount;
+  ngOnInit(): void {
+    const id = + this.accountService.extractUserID();
+    this.eventListService.getAll(id).subscribe({
+      next: d => {
+        this.eventList = d;
+        this.filteredEventList = d; // Initialize filtered list
+      }
     });
+    document.body.classList.add('event-list-body') // Add class to body
   }
 
+  ngOnDestroy(): void {
+    document.body.classList.remove('event-list-body'); // Remove class from body
+  }
+
+  getEventTypeLabel(type: EventType): string {
+    return EventType[type]; // Convert enum value to string
+  }
+
+  // Event Search
+  onSearch() {
+    const query = this.searchQuery.toLowerCase();
+    this.filteredEventList = this.eventList.filter(event =>
+      event.name.toLowerCase().includes(query) ||
+      event.location.toLowerCase().includes(query)
+    );
+  }
 }

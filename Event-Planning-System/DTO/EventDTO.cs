@@ -8,7 +8,9 @@ namespace Event_Planning_System.DTO
 {
 	public class EventDTO
 	{
-		[StringLength(50, MinimumLength = 3)]
+        public int? Id { get; set; }
+
+        [StringLength(50, MinimumLength = 3)]
 		public string Name { get; set; }
 		[MinLength(3)]
 		public string? Description { get; set; }

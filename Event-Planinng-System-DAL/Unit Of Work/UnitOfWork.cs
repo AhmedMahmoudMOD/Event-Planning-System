@@ -21,6 +21,7 @@ namespace Event_Planinng_System_DAL.Unit_Of_Work
         GenericRepo<EventImages> eventimagesRepo;
         GenericRepo<ToDoList> todolistRepo;
         GenericRepo<UserRole> userrroleRepo;
+        GenericRepo<EventSchedule> eventschedulerepo;
 
         private readonly dbContext db;
         private readonly UserManager<User> userManager;
@@ -68,6 +69,10 @@ namespace Event_Planinng_System_DAL.Unit_Of_Work
             get => userrroleRepo ??= new GenericRepo<UserRole>(db);
         }
 
+        public GenericRepo<EventSchedule> EventScheduleRepo
+        {
+            get => eventschedulerepo ??= new GenericRepo<EventSchedule> (db);
+        }
 
         public void save()
         {

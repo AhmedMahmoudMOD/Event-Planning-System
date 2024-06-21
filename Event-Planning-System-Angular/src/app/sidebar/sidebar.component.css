@@ -1,45 +1,17 @@
-::ng-deep .custom-sidebar {
-    width: 30rem !important;
-    display: flex;
-    flex-direction: column;
+/* Custom Sidebar Styles */
+::ng-deep .custom-sidebar .p-sidebar-mask {
+    background-color: transparent;
+    pointer-events: none; /* Ensure clicks pass through the mask */
 }
 
-::ng-deep .custom-sidebar .p-sidebar-content {
-    flex: 1;
-    padding: 1rem;
-    overflow-y: auto;
+::ng-deep .custom-sidebar .p-sidebar {
+    pointer-events: auto; /* Ensure the sidebar itself is still interactive */
+    min-width: 250px; /* Set your desired minimum width */
+    background-color: rgba(255, 255, 255, 0.8); /* Set the background color to white with 80% opacity */
+    color: #000; /* Ensure the text is readable */
 }
 
-.profile-section, .events-section {
-    margin-top: 1rem;
-}
-
-.profile-section ul, .events-section ul {
-    list-style: none;
-    padding: 0;
-}
-
-.profile-section ul li, .events-section ul li {
-    margin: 0.5rem 0;
-}
-
-.link-button {
-    display: inline-block;
-    color: var(--primary-color);
-    text-decoration: none;
-    cursor: pointer;
-    padding: 0.5rem 1rem;
-    border-radius: 0.25rem;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-.link-button:hover {
-    background-color: var(--primary-color);
-    color: white;
-}
-
-::ng-deep .custom-sidebar .p-sidebar-footer {
-    padding: 1rem;
-    background-color: var(--surface-b);
-    border-top: 1px solid var(--surface-d);
+/* Ensure links and other text inside the sidebar are readable */
+::ng-deep .custom-sidebar .link-button {
+    color: #000;
 }

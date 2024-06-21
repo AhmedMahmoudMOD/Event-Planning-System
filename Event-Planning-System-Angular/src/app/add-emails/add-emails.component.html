@@ -1,5 +1,11 @@
 <div class="text-center mt-2">
-    <button pButton type="button" class="btn btn-primary" label="Add Guests" (click)="openModal()">Add guests</button>
+    <p-button
+    label="Invite"
+    [text]="true"
+    severity="success"
+    [raised]="true"
+    (click)="openModal()"
+  />
 </div>
 
 <!-- Modal Dialog -->
@@ -18,7 +24,7 @@
         </div>
         <div class="text-center mt-3">
             <button pButton type="button" class="btn btn-success px-3" label="Submit Emails" (click)="submitEmails()"
-                [disabled]="loading">Submit</button>
+                [disabled]="loading"></button>
         </div>
     </div>
 </p-dialog>
