@@ -21,7 +21,7 @@
     "@coreui/coreui": "^5.0.2",
     "@syncfusion/ej2-angular-base": "^26.1.35",
     "@syncfusion/ej2-angular-buttons": "^26.1.35",
-    "@syncfusion/ej2-angular-grids": "^26.1.35",
+    "@syncfusion/ej2-angular-grids": "^26.1.38",
     "@syncfusion/ej2-angular-schedule": "^26.1.35",
     "@types/googlemaps": "^3.43.3",
     "bootstrap": "^5.3.3",
