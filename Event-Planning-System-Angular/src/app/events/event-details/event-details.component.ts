@@ -93,7 +93,7 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   value: string = 'off';
 
 
-  //delete event 
+  //delete event
   deleteEvent() {
     Swal.fire({
       title: 'Are you sure You want to delete this?',
@@ -138,7 +138,7 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  // heck the data 
+  // heck the data
   checkdate() {
     const currentDate = new Date();
     const eventDate = new Date(this.eventDetails.eventDate);
