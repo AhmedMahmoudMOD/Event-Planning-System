@@ -46,6 +46,7 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   defaultImage = '../../../assets/images/software-developer-6521720_640.jpg';
   mapsURL: string | null = null;
   // map?: google.maps.Map;
+  activeLink: string = 'about';
   // constructors
   constructor(private ActivatedRoute: ActivatedRoute,
     private eventDetailsServices: EventdetailsService,
@@ -158,7 +159,9 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
         return 'danger';
     }
   }
-
+setActiveLink(link: string): void {
+    this.activeLink = link;
+  }
 
   responsiveOptions: any[] = [
     {
