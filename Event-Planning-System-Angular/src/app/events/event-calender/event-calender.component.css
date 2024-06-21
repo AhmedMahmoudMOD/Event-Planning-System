@@ -1,0 +1,22 @@
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .calendar-filters {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+  }
+  
+  .calendar-filters label {
+    margin-right: 5px;
+  }
+  
+  .calendar-filters input,
+  .calendar-filters select,
+  .calendar-filters button {
+    margin-right: 10px;
+  }
+  
