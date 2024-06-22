@@ -19,6 +19,11 @@ export class ProfileComponent implements OnInit{
   profile: Profile | any = {};
   defaultImage = "/src/assets/images/software-developer-6521720_640.jpg";
 
+  eventList: Event[] = [];
+  // count the number of events in eventList array
+  eventCount = this.eventList.length;
+
+
   constructor(private profileService: ProfileService, private accountService:AccountService, private route: ActivatedRoute) { }
     //get profile by user id
   ngOnInit(): void {
