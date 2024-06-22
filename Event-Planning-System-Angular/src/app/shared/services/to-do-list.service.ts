@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
-import { ToDoList } from '../models/toDoList';
 import { Observable } from 'rxjs';
+import { ToDoList } from '../models/ToDoList';
 
 @Injectable({
   providedIn: 'root'
@@ -13,15 +13,15 @@ export class ToDoListService {
     private http: HttpClient
   ) { }
 
-  getToDoList():Observable<ToDoList[]>{
-    return this.http.get<ToDoList[]>(`${environment.apiUrl}/api/ToDoList`);
+  getToDoList(eventId:number):Observable<ToDoList[]>{
+    return this.http.get<ToDoList[]>(`${environment.apiUrl}/api/ToDoList/${eventId}`);
   }
 
   addTask(task: ToDoList){
     return this.http.post(`${environment.apiUrl}/api/ToDoList`, task);
   }
 
-  deleteTask(id: number){
+  deleteToDoList(id: number){
     return this.http.delete(`${environment.apiUrl}/api/ToDoList/${id}`);
   }
 
