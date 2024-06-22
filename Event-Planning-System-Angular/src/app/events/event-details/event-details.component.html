@@ -44,7 +44,10 @@
                         <a class="link-tab fw-bold" 
                         [ngClass]="{'text-info blue-nav': activeLink === 'todolist'}" 
                         (click)="setActiveLink('todolist')">ToDo List</a>
-                      <a class="link-tab text-secondary">Discussion</a>
+                        <a class="link-tab fw-bold" 
+                        [ngClass]="{'text-info blue-nav': activeLink === 'schedule'}" 
+                        (click)="setActiveLink('schedule')">Schedule</a>
+                      
           </div>
           <div class="">
             <!-- <p-button
@@ -218,6 +221,10 @@
       </div>
     </div>
   </div>
+}
+
+@if (activeLink=="schedule"){
+  <app-events-schedule [readonly]="checkEndDate()"></app-events-schedule>
 }
 
 </div>
