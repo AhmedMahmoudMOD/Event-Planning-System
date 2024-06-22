@@ -19,6 +19,7 @@ import { eventTypeMapping } from '../../shared/enums/eventstype';
 import { AddEmailsComponent } from '../../add-emails/add-emails.component';
 import Swal from 'sweetalert2';
 import { EditEventComponent } from '../../edit-event/edit-event.component';
+import { EventsScheduleComponent } from '../events-schedule/events-schedule.component';
 
 
 
@@ -26,7 +27,7 @@ import { EditEventComponent } from '../../edit-event/edit-event.component';
 @Component({
   selector: 'app-event-details',
   standalone: true,
-  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule, AddEmailsComponent,EditEventComponent],
+  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule, AddEmailsComponent,EditEventComponent,EventsScheduleComponent],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.css'
 })
@@ -120,6 +121,7 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.eventsubscription = this.eventDetailsServices.getEventById(this.id).subscribe({
       next: (res) => {
         this.eventDetails = res;
+        console.log(this.eventDetails);
         if (this.eventDetails.eventImages.length === 0) {
           this.eventDetails.eventImages.push(this.defaultImage);
         }
@@ -144,6 +146,13 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
     const currentDate = new Date();
     const eventDate = new Date(this.eventDetails.eventDate);
     return eventDate >= currentDate;
+  }
+
+  checkEndDate() {
+    const currentDate = new Date();
+    const endDate = new Date(this.eventDetails.endDate);
+    console.log(currentDate, endDate);
+    return currentDate > endDate;
   }
 
   /////////////////////////////////////////////////////////////
