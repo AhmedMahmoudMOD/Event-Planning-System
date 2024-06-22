@@ -11,7 +11,7 @@ export interface Event {
     eventDate: string;
     id: number;
   }
-  
+
 export  interface EventListRes {
     currentPage: number;
     totalPages: number;
@@ -20,7 +20,7 @@ export  interface EventListRes {
     hasNext: boolean;
     events: Event[];
   }
-  
+
   export enum EventType {
     Wedding,
     Birthday,

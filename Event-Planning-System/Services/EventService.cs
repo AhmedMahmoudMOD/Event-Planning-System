@@ -111,7 +111,7 @@ namespace Event_Planning_System.Services
 				User userToSearch = await unitOfWork.UserRepo.FindById(id);
 				if (userToSearch == null)
 					return null;
-				List<Event> userEvents = (await unitOfWork.EventRepo.GetAll()).Where(a => a.CreatorId == id && a.IsDeleted==false).ToList();
+				List<Event> userEvents = (await unitOfWork.EventRepo.GetAll()).Where(a => a.CreatorId == id && !a.IsDeleted).ToList();
 				return mapper.Map<List<EventDTO>>(userEvents);
 			}
 			catch { return null; }
@@ -124,13 +124,15 @@ namespace Event_Planning_System.Services
 			try { newEvent = mapper.Map<Event>(newEventDTO); }
 			catch { return false; }
 
-			if (newEvent == null || newEvent.EventDate <= DateTime.Today)
+			if (newEvent == null || newEvent.EventDate <= DateTime.Today || newEvent.EndDate <= newEvent.EventDate)
 				return false;
+
+
 
 			newEvent.DateOfCreation = DateOnly.FromDateTime(DateTime.Today);
 
 			// ============= CreatorId should be the id of the logged in user ============= //
-			newEvent.CreatorId = 22;
+			newEvent.CreatorId = id;
 
 			await unitOfWork.EventRepo.Add(newEvent);
 			unitOfWork.save();

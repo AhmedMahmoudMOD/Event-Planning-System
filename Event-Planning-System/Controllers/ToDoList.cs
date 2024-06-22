@@ -16,31 +16,45 @@ public class ToDoListController : ControllerBase
 	[HttpPost]
 	public async Task<IActionResult> CreateToDoList(ToDoListDTO newToDoListDTO)
 	{
-		if (ModelState.IsValid)
-		{
-			bool success = await toDoListService.CreateToDoList(newToDoListDTO);
-			if (success)
-			{
-				return CreatedAtAction(nameof(Get), new { eventId = newToDoListDTO.EventId, name = newToDoListDTO.Title }, newToDoListDTO);
-			}
-			else
-			{
-				return BadRequest("Failed to create to do list. Please ensure the data is correct and the deadline is valid.");
-			}
-		}
-		return BadRequest(ModelState);
-	}
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var result = await toDoListService.CreateToDoList(newToDoListDTO);
+        if (result.IsSuccess)
+        {
+            return Ok();
+        }
+        return BadRequest(result.Error.Description);
+    }
 
 	[HttpGet]
-	public async Task<IActionResult> Get()
+	public async Task<IActionResult> GetAll()
 	{
-		var toDoLists = await toDoListService.GetAllToDoLists();
+		var toDoLists =  toDoListService.GetAllToDoLists();
 		if (toDoLists == null)
 			return NotFound("No to do lists found.");
 		return Ok(toDoLists);
 	}
+	[HttpGet("{eventId}")]
+	public async Task<IActionResult> Get(int eventId)
+	{
+        var toDoLists =  toDoListService.GetRelatedToDoList(eventId);
+        if (toDoLists == null)
+            return NotFound("To do list not found.");
+        return Ok(toDoLists);
+    }
+	[HttpGet("{eventId}/{name}")]
+    public async Task<IActionResult> Get(int eventId, string name)
+    {
+        var toDoList = await toDoListService.GetToDoListByNameId(eventId, name);
+        if (toDoList == null)
+            return NotFound("To do list not found.");
+        return Ok(toDoList);
+    }
 
-	[HttpDelete]
+    [HttpDelete]
 	public async Task<IActionResult> Delete(int eventId, string name)
 	{
 		if (await toDoListService.DeleteToDoListSoft(eventId, name))
@@ -56,8 +70,8 @@ public class ToDoListController : ControllerBase
 			return BadRequest(ModelState);
 		}
 
-		bool success = await toDoListService.UpdateToDoList(eventId, name, newToDoList);
-		if (success)
+		var result = await toDoListService.UpdateToDoList(eventId, name, newToDoList);
+		if (result.IsSuccess)
 		{
 			return NoContent();
 		}

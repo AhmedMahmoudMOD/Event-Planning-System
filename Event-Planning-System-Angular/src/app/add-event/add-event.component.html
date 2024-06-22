@@ -66,15 +66,10 @@
           id="endDate"
           formControlName="endDate"
           [showTime]="true"
-          hourFormat="24"
+          hourFormat="12"
           [showIcon]="true"
           [minDate]="addEventForm.get('eventDate')?.value || minDate"
-          [showOtherMonths]="true"
-          [selectOtherMonths]="true"
-          [monthNavigator]="true"
-          [yearNavigator]="true"
-          
-        />
+           />
         <div *ngIf="addEventForm.get('endDate')?.invalid && addEventForm.get('endDate')?.touched" class="p-error">
           End date is required.
         </div>

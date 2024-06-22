@@ -18,6 +18,7 @@ import { AccountService } from '../../shared/services/account.service';
   styleUrls: ['./event-list.component.css']
 })
 export class EventListComponent implements OnInit {
+  title = 'Events';
   eventList: Event[] = [];
   filteredEventList: Event[] = [];
   searchQuery: string = '';

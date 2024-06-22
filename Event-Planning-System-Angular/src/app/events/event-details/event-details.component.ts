@@ -22,6 +22,7 @@ import { EditEventComponent } from '../../edit-event/edit-event.component';
 import { ToDoList } from '../../shared/models/toDoList';
 import { ToDoListService } from '../../shared/services/to-do-list.service';
 import {DataView, DataViewModule} from 'primeng/dataview';
+import { EventsScheduleComponent } from '../events-schedule/events-schedule.component';
 
 
 
@@ -29,7 +30,7 @@ import {DataView, DataViewModule} from 'primeng/dataview';
 @Component({
   selector: 'app-event-details',
   standalone: true,
-  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule, AddEmailsComponent,EditEventComponent,DataViewModule],
+  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule, AddEmailsComponent,EditEventComponent,DataViewModule,EventsScheduleComponent],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.css'
 })
@@ -76,11 +77,12 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.geAllToDoList();
   }
 
+
   ngOnDestroy(): void {
     this.idsubscripe.unsubscribe();
     this.eventsubscription.unsubscribe();
   }
-  //end of constructors
+
 
 
   renderBackgroungImage() {
@@ -101,7 +103,7 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   value: string = 'off';
 
 
-  //delete event 
+  //delete event
   deleteEvent() {
     Swal.fire({
       title: 'Are you sure You want to delete this?',
@@ -127,6 +129,7 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.eventsubscription = this.eventDetailsServices.getEventById(this.id).subscribe({
       next: (res) => {
         this.eventDetails = res;
+        console.log(this.eventDetails);
         if (this.eventDetails.eventImages.length === 0) {
           this.eventDetails.eventImages.push(this.defaultImage);
         }
@@ -146,11 +149,18 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  // heck the data 
+  // heck the data
   checkdate() {
     const currentDate = new Date();
     const eventDate = new Date(this.eventDetails.eventDate);
     return eventDate >= currentDate;
+  }
+
+  checkEndDate() {
+    const currentDate = new Date();
+    const endDate = new Date(this.eventDetails.endDate);
+    console.log(currentDate, endDate);
+    return currentDate > endDate;
   }
 
   /////////////////////////////////////////////////////////////
