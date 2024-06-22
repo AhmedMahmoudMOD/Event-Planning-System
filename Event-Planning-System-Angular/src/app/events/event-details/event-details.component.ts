@@ -26,7 +26,7 @@ import { EditEventComponent } from '../../edit-event/edit-event.component';
 @Component({
   selector: 'app-event-details',
   standalone: true,
-  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule, AddEmailsComponent,EditEventComponent],
+  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule, AddEmailsComponent, EditEventComponent],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.css'
 })
@@ -140,7 +140,7 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   // heck the data 
   checkdate() {
     const currentDate = new Date();
-    const eventDate = new Date(this.eventDetails.eventDate);
+    const eventDate = new Date(this.eventDetails.endDate);
     return eventDate >= currentDate;
   }
 
