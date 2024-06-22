@@ -33,6 +33,7 @@ export const routes: Routes = [
     { path: 'auth/confirmemail', component: EmailconfirmComponent },
     { path: 'auth/forgotpassword', component: ForgotPasswordComponent },
     { path: 'events', component:EventCalenderComponent },
+    { path: 'eventList', component:EventListComponent },
     { path: 'sidebar', component: SidebarComponent },
     //event details
     { path: 'planner/eventdetails/:id', component: EventDetailsComponent },

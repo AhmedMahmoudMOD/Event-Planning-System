@@ -21,5 +21,10 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit() {
     this.userId = +this.accountService.extractUserID();
+    this.profileService.getProfile(this.userId).subscribe({
+      next: d => {
+        this.profile = d;
+      }
+    });
   }
 }
