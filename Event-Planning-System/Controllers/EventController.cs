@@ -62,12 +62,18 @@ namespace Event_Planning_System.Controllers
 		[HttpPost]
 		public async Task<IActionResult> CreateEvent(EventDTO newEventDTO)
 		{
-            var nameIdentifierstring = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            Console.WriteLine(nameIdentifierstring);
-            var tryparse = int.TryParse(nameIdentifierstring, out int nameIdentifier);
+            var sid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (sid == null)
+            {
+                return Unauthorized();
+            }
+
+            int id = int.Parse(sid);
+
             if (ModelState.IsValid)
 			{
-				if (await eventService.CreateEvent(newEventDTO,nameIdentifier))
+				if (await eventService.CreateEvent(newEventDTO,id))
 					return Created();
 				else
 					return BadRequest("Failed to create event. Invalid data or event date is in the past.");

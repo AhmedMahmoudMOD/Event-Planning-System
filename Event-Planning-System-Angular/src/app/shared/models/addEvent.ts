@@ -7,4 +7,5 @@ export interface AddEvent {
   budget: number;
   eventType: number;
   eventDate: string;
+  endDate: string;
 }

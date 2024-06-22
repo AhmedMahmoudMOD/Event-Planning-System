@@ -4,6 +4,7 @@ using Event_Planning_System.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.Eventing.Reader;
+using System.Security.Claims;
 
 namespace Event_Planning_System.Controllers
 {
@@ -65,6 +66,15 @@ namespace Event_Planning_System.Controllers
                 }
                 return BadRequest(new JsonResult("Password not reset"));
             }
+        }
+
+        [HttpGet]
+        [Route("jwt")]
+        public async Task<IActionResult> Jwt()
+        {
+            var UserModel = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            return Ok(new JsonResult(UserModel));
         }
     }
 }

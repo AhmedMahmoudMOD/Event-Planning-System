@@ -19,6 +19,7 @@ import { eventTypeMapping } from '../../shared/enums/eventstype';
 import { AddEmailsComponent } from '../../add-emails/add-emails.component';
 import Swal from 'sweetalert2';
 import { EditEventComponent } from '../../edit-event/edit-event.component';
+import { EventsScheduleComponent } from '../events-schedule/events-schedule.component';
 
 
 
@@ -26,7 +27,7 @@ import { EditEventComponent } from '../../edit-event/edit-event.component';
 @Component({
   selector: 'app-event-details',
   standalone: true,
-  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule, AddEmailsComponent,EditEventComponent],
+  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule, AddEmailsComponent,EditEventComponent,EventsScheduleComponent],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.css'
 })
@@ -46,6 +47,7 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   defaultImage = '../../../assets/images/software-developer-6521720_640.jpg';
   mapsURL: string | null = null;
   // map?: google.maps.Map;
+  activeLink: string = 'about';
   // constructors
   constructor(private ActivatedRoute: ActivatedRoute,
     private eventDetailsServices: EventdetailsService,
@@ -67,11 +69,12 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getEventDetails();
   }
 
+
   ngOnDestroy(): void {
     this.idsubscripe.unsubscribe();
     this.eventsubscription.unsubscribe();
   }
-  //end of constructors
+
 
 
   renderBackgroungImage() {
@@ -118,6 +121,7 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.eventsubscription = this.eventDetailsServices.getEventById(this.id).subscribe({
       next: (res) => {
         this.eventDetails = res;
+        console.log(this.eventDetails);
         if (this.eventDetails.eventImages.length === 0) {
           this.eventDetails.eventImages.push(this.defaultImage);
         }
@@ -144,6 +148,13 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
     return eventDate >= currentDate;
   }
 
+  checkEndDate() {
+    const currentDate = new Date();
+    const endDate = new Date(this.eventDetails.endDate);
+    console.log(currentDate, endDate);
+    return currentDate > endDate;
+  }
+
   /////////////////////////////////////////////////////////////
   ///////////////////carsol related code //////////////////////
   /////////////////////////////////////////////////////////////
@@ -158,7 +169,9 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
         return 'danger';
     }
   }
-
+setActiveLink(link: string): void {
+    this.activeLink = link;
+  }
 
   responsiveOptions: any[] = [
     {
