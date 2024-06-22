@@ -19,6 +19,9 @@ import { eventTypeMapping } from '../../shared/enums/eventstype';
 import { AddEmailsComponent } from '../../add-emails/add-emails.component';
 import Swal from 'sweetalert2';
 import { EditEventComponent } from '../../edit-event/edit-event.component';
+import { ToDoList } from '../../shared/models/toDoList';
+import { ToDoListService } from '../../shared/services/to-do-list.service';
+import {DataView, DataViewModule} from 'primeng/dataview';
 
 
 
@@ -26,7 +29,7 @@ import { EditEventComponent } from '../../edit-event/edit-event.component';
 @Component({
   selector: 'app-event-details',
   standalone: true,
-  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule, AddEmailsComponent,EditEventComponent],
+  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule, AddEmailsComponent,EditEventComponent,DataViewModule],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.css'
 })
@@ -47,11 +50,14 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   mapsURL: string | null = null;
   // map?: google.maps.Map;
   activeLink: string = 'about';
+  toDoLists: ToDoList[] = [];
   // constructors
   constructor(private ActivatedRoute: ActivatedRoute,
     private eventDetailsServices: EventdetailsService,
     private el: ElementRef, private renderer: Renderer2,
-    private router: Router) { }
+    private router: Router,
+    private toDoListService: ToDoListService
+  ) { }
 
   ngAfterViewInit() {
     console.log(this.eventDetails);
@@ -66,6 +72,8 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     //get event details
     this.getEventDetails();
+    //get to do list
+    this.geAllToDoList();
   }
 
   ngOnDestroy(): void {
@@ -200,6 +208,13 @@ setActiveLink(link: string): void {
     return eventTypeMapping[eventTypeInt];
   }
 
+  //to do list
+  geAllToDoList() {
+    this.toDoListService.getToDoList().subscribe((res:ToDoList[]) => {
+      this.toDoLists = res;
+    });
+    console.log(this.toDoLists);
+  }
 
   ///////////////////////////google maps////////////////////////
   // initMap(): void {
