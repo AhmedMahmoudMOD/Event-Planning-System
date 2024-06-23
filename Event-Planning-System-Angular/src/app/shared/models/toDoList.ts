@@ -4,5 +4,4 @@ export interface ToDoList {
   description: string;
   deadLineTime: string;
   eventId: number;
-  
 }

@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { ProfileService } from '../shared/services/profile.service';
 import { Profile } from '../shared/models/profile';
 import { AccountService } from '../shared/services/account.service';
+import { finalize } from 'rxjs';
 
 
 @Component({
@@ -17,18 +18,21 @@ import { AccountService } from '../shared/services/account.service';
 export class ProfileComponent implements OnInit{
   title = 'Profile';
   profile: Profile | any = {};
-  defaultImage = "/src/assets/images/software-developer-6521720_640.jpg";
+  defaultImage = "assets/images/default_Image.jpg";
 
   eventList: Event[] = [];
   // count the number of events in eventList array
   eventCount = this.eventList.length;
+
+  isLoading : boolean = false;
 
 
   constructor(private profileService: ProfileService, private accountService:AccountService, private route: ActivatedRoute) { }
     //get profile by user id
   ngOnInit(): void {
     const id = + this.accountService.extractUserID();
-    this.profileService.getProfile(id).subscribe({
+    this.isLoading = true;
+    this.profileService.getProfile(id).pipe(finalize(()=> this.isLoading =false)).subscribe({
       next: d => {
         this.profile = d;
       }

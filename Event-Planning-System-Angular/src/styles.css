@@ -2,7 +2,7 @@
 
 
 
-@import "bootstrap/dist/css/bootstrap.min.css" layer(bootstrap);
+@import "bootstrap/dist/css/bootstrap.min.css";
 @import "primeng/resources/primeng.css";
 @import "primeng/resources/themes/lara-light-blue/theme.css";
 @import "primeicons/primeicons.css";
