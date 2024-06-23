@@ -17,7 +17,7 @@ namespace Event_Planning_System.MappingProfiles
 
             CreateMap<Event, EditEventDTO>().ForMember(dest => dest.EventDate, opt => opt.MapFrom(src => src.EventDate.ToString("yyyy-MM-dd'T'HH:mm"))).ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => src.EndDate.ToString("yyyy-MM-dd'T'HH:mm"))).ReverseMap();
             CreateMap<Attendance, AttendanceDTO>().ReverseMap();
-			CreateMap<ToDoListDTO, ToDoList>().ReverseMap();
+			CreateMap<ToDoList, ToDoListDTO>().ForMember(dest=> dest.DeadLineTime, opt => opt.MapFrom(src=> src.DeadLineTime.ToString("yyyy-MM-dd'T'HH:mm"))).ReverseMap();
 			CreateMap<User, ProfileDTO>().ReverseMap();
 
 			CreateMap(typeof(PaginatedList<>), typeof(PaginatedList<>)).ConvertUsing(typeof(CustomPaginatedListMapper<,>));

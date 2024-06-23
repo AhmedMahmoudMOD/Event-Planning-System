@@ -11,7 +11,7 @@ namespace Event_Planning_System.DTO
 		[MinLength(3)]
 		public string Description { get; set; }
 		[Required]
-		public DateOnly DeadLineTime { get; set; }
+		public DateTime DeadLineTime { get; set; }
 		[Required]
 		public int EventId { get; set; }
 	}

@@ -1,0 +1,101 @@
+<p-button
+  label="Add"
+  [text]="true"
+  severity="success"
+  [raised]="true"
+  (click)="displayAddModal()"
+></p-button>
+
+<p-dialog
+  header="Add To-Do List"
+  [(visible)]="display"
+  [style]="{width: '50vw'}"
+  [modal]="true"
+  [resizable]="false"
+  [baseZIndex]="10000"
+>
+  <ng-template pTemplate="content">
+    <form [formGroup]="addToDoList" (ngSubmit)="addTodo()">
+      <div class="p-fluid">
+        <div class="p-field">
+          <label for="title">Title<span class="text-danger"> *</span></label>
+          <input 
+            type="text" 
+            id="title" 
+            class="p-inputtext p-component" 
+            formControlName="title" 
+            placeholder="Enter To-Do List title"
+          />
+          <div *ngIf="addToDoList.get('title')?.invalid && addToDoList.get('title')?.touched" class="p-error">
+            Title is required.
+          </div>
+        </div>
+
+        <div class="p-field">
+          <label for="description">Description</label>
+          <textarea 
+            id="description" 
+            class="p-inputtextarea p-component" 
+            formControlName="description" 
+            rows="3" 
+            placeholder="Enter To-Do List description"
+          ></textarea>
+          <div *ngIf="addToDoList.get('description')?.invalid && addToDoList.get('description')?.touched" class="p-error">
+            Description is required.
+          </div>
+        </div>
+
+        <div class="p-field">
+          <label for="deadLineTime">Deadline<span class="text-danger"> *</span></label>
+          <p-calendar 
+            id="deadLineTime" 
+            formControlName="deadLineTime" 
+            dateFormat="yy-mm-dd" 
+            [showTime]="true" 
+            hourFormat="24" 
+            [showIcon]="true"
+            [touchUI]="false" 
+            [appendTo]="'body'" 
+          ></p-calendar>
+          <div *ngIf="addToDoList.get('deadLineTime')?.invalid && addToDoList.get('deadLineTime')?.touched" class="p-error">
+            Deadline is required.
+          </div>
+        </div>
+
+        <div class="p-field">
+          <label for="toDoListBudget">Budget<span class="text-danger"> *</span></label>
+          <input 
+            type="number" 
+            id="toDoListBudget" 
+            class="p-inputtext p-component" 
+            formControlName="toDoListBudget" 
+            placeholder="Enter To-Do List budget"
+          />
+          <div 
+            *ngIf="addToDoList.get('toDoListBudget')?.invalid && addToDoList.get('toDoListBudget')?.touched" 
+            class="p-error"
+          >
+            Budget is required.
+          </div>
+        </div>
+
+        <div class="p-d-flex p-jc-end p-mt-3">
+          <button 
+            pButton 
+            type="submit" 
+            label="Add" 
+            class="p-button-success"
+            [disabled]="addToDoList.invalid" 
+          ></button>
+          <button 
+            pButton 
+            type="button" 
+            label="Cancel" 
+            class="p-button-text p-mr-2" 
+            (click)="hideAddModal()"
+          ></button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+</p-dialog>

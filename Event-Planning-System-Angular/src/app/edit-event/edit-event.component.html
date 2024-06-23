@@ -1,19 +1,10 @@
-<!-- <p-button
-  icon="pi pi-pencil"
-  label="Edit Event"
-  class="p-button-outlined p-button-rounded p-button-primary"
-  (click)="showEditModal()">
-</p-button> -->
-
 <p-button
-label="Edit"
-[text]="true"
-severity="help"
-[raised]="true"
-(click)="showEditModal()"
+  label="Edit"
+  [text]="true"
+  severity="help"
+  [raised]="true"
+  (click)="showEditModal()"
 />
-
-
 
 <p-dialog
   header="Edit Event"
@@ -109,49 +100,50 @@ severity="help"
         <p-calendar
           id="eventDate"
           formControlName="eventDate"
-          dateFormat="yy-mm-dd"
-          [showTime]="true"
-          hourFormat="24"
           [showIcon]="true"
-          [minDate]="MinDate"
-          [defaultDate]="editForm.get('eventDate')?.value"
+          size="small"
         ></p-calendar>
         <div *ngIf="editForm.get('eventDate')?.invalid && editForm.get('eventDate')?.touched" class="p-error">
           Start date is required.
         </div>
       </div>
-      
+
       <div class="p-field">
         <label for="endDate">End Date<span class="text-danger"> *</span></label>
         <p-calendar
           id="endDate"
           formControlName="endDate"
-          dateFormat="yy-mm-dd"
-          [showTime]="true"
-          hourFormat="24"
           [showIcon]="true"
           [minDate]="editForm.get('eventDate')?.value || MinDate"
-          [defaultDate]="editForm.get('endDate')?.value"
         ></p-calendar>
         <div *ngIf="editForm.get('endDate')?.invalid && editForm.get('endDate')?.touched" class="p-error">
           End date is required.
         </div>
       </div>
-<hr>
-      <div class="p-dialog-footer">
 
+      <hr>
+      <div class="p-dialog-footer">
+        
+        <p-button
+        type="submit"
+        label="Save Changes"
+        icon="pi pi-check"
+        [text]="true"
+        [raised]="true"
+        severity="success"
+        size="small"
+        />
         <p-button
           label="Cancel"
           icon="pi pi-times"
           severity="secondary"
           (click)="hideEditModal()"
-        ></p-button>
-        <p-button
-          type="submit"
-          label="Save Changes"
-          icon="pi pi-check"
-          class="p-button-primary"
-        ></p-button>
+          class="custom-cancel-button"
+          [text]="true"
+          [raised]="true"
+          severity="secondary"
+          size="small"
+        />
       </div>
     </form>
   </ng-template>
