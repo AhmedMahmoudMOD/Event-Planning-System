@@ -22,6 +22,7 @@ import { EditEventComponent } from '../../edit-event/edit-event.component';
 import { EventsScheduleComponent } from '../events-schedule/events-schedule.component';
 import { FileSelectEvent, FileSendEvent, FileUploadEvent, FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
 import { EventImage } from '../../shared/models/eventImage.model';
+import { AccountService } from '../../shared/services/account.service';
 
 
 
@@ -54,7 +55,7 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(private ActivatedRoute: ActivatedRoute,
     private eventDetailsServices: EventdetailsService,
     private el: ElementRef, private renderer: Renderer2,
-    private router: Router) { }
+    private router: Router,public accountService:AccountService) { }
 
   ngAfterViewInit() {
     console.log(this.eventDetails);
