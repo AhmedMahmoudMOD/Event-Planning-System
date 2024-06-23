@@ -24,13 +24,13 @@ import {DataView, DataViewModule} from 'primeng/dataview';
 import { EventsScheduleComponent } from '../events-schedule/events-schedule.component';
 import { ToDoList } from '../../shared/models/ToDoList';
 import {Table, TableLazyLoadEvent, TableModule} from 'primeng/table';
-
-
+import { AddtoDoListComponent } from '../../addto-do-list/addto-do-list.component';
+import { EdittoDoListComponent } from '../../editto-do-list/editto-do-list.component';
 
 @Component({
   selector: 'app-event-details',
   standalone: true,
-  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule, AddEmailsComponent,EditEventComponent,DataViewModule,EventsScheduleComponent,TableModule],
+  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule, AddEmailsComponent,EditEventComponent,DataViewModule,EventsScheduleComponent,TableModule,AddtoDoListComponent,EdittoDoListComponent],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.css'
 })
@@ -38,9 +38,9 @@ import {Table, TableLazyLoadEvent, TableModule} from 'primeng/table';
 
 
 export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
-loadToDoList($event: TableLazyLoadEvent) {
-throw new Error('Method not implemented.');
-}
+// loadToDoList($event: TableLazyLoadEvent) {
+// throw new Error('Method not implemented.');
+// }
 
   // declration of variables
   checked: boolean = false;
@@ -239,8 +239,8 @@ setActiveLink(link: string): void {
     }
      );
   }
-  deleteToDoList(id: number) {
-    this.toDoListService.deleteToDoList(id).subscribe({
+  deleteToDoList(eventId: number,name:string) {
+    this.toDoListService.deleteToDoList(eventId,name).subscribe({
       next: (res) => {
         this.getAllToDoList();
       },
