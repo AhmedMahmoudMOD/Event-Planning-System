@@ -62,6 +62,7 @@ export class AccountService {
 
   logout(){
     this.isLoggedIn = false;
+    localStorage.removeItem('token');
   }
 
   forgotPassword(email:string){

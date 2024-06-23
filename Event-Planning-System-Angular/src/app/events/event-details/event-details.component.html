@@ -49,7 +49,7 @@
                         (click)="setActiveLink('schedule')">Schedule</a>
                       
           </div>
-          @if(checkdate()){
+          @if(checkdate()&&accountService.isLoggedIn){
           <div class="">
             <!-- <p-button
               label="Edit"
@@ -59,7 +59,7 @@
             /> -->
             <app-edit-event></app-edit-event>
             <p-button
-              label="Delete"
+              label="Cancel"
               [text]="true"
               severity="danger"
               [raised]="true"
@@ -145,6 +145,7 @@
                 />
               </ng-template>
             </p-galleria>
+            @if(checkdate()&&accountService.isLoggedIn){
             <small class="fw-light fst-italic">
               <div class="mt-1"> Formats Premitied are .jpg , .png or .jpeg (Max Size : 1 MB) </div>
           </small>
@@ -163,6 +164,7 @@
            <ng-template pTemplate="content">
         </ng-template>
           </p-fileUpload>
+        }
           </div>
         </div>
         <!-- end the carsol block -->
@@ -195,7 +197,7 @@
               </p>
               }
             </p-scrollPanel>
-            @if(checkdate()){
+            @if(checkdate()&&accountService.isLoggedIn){
             <app-add-emails></app-add-emails>
             }
           </div>
