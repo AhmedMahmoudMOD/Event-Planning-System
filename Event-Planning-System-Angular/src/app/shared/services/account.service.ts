@@ -22,7 +22,7 @@ export class AccountService {
   baseUrl = 'http://localhost:5006/api/';
   isLoggedIn : boolean = false;
 
-  constructor(private http:HttpClient,private router : Router) { 
+  constructor(private http:HttpClient,private router : Router) {
 
   }
 
@@ -61,7 +61,7 @@ export class AccountService {
 
 
   logout(){
-    this.isLoggedIn = false;
+    this.isLoggedIn = false; 
     localStorage.removeItem('token');
   }
 
@@ -72,6 +72,7 @@ export class AccountService {
   resetPassword(model:ResetPass){
     return this.http.post(this.baseUrl + 'auth/resetpassword',model);
   }
+
 
 
 }

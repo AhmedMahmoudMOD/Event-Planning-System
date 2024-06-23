@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ProfileService } from '../shared/services/profile.service';
 import { AccountService } from '../shared/services/account.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Profile } from '../shared/models/profile';
+
 
 @Component({
   selector: 'app-navbar',
@@ -17,7 +18,7 @@ export class NavbarComponent implements OnInit {
   profile: Profile | any = {};
 
 
-  constructor(private profileService: ProfileService, private accountService: AccountService, private route: ActivatedRoute) { }
+  constructor(private profileService: ProfileService, private accountService: AccountService, private route: ActivatedRoute, private router:Router) { }
 
   ngOnInit() {
     this.userId = +this.accountService.extractUserID();
@@ -26,5 +27,10 @@ export class NavbarComponent implements OnInit {
         this.profile = d;
       }
     });
+  }
+
+  logout(){
+    this.accountService.logout();
+    this.router.navigate(['/login']);
   }
 }
