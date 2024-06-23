@@ -38,8 +38,16 @@
           <div class="">
             <!-- <p-selectButton [options]="stateOptions" [(ngModel)]="value" optionLabel="label"
                         optionValue="value" /> -->
-            <a class="link-tab fw-bold text-info blue-nav">About</a>
-            <a class="link-tab text-secondary">Discussion</a>
+                        <a class="link-tab fw-bold" 
+                        [ngClass]="{'text-info blue-nav': activeLink === 'about'}" 
+                        (click)="setActiveLink('about')">About</a>
+                        <a class="link-tab fw-bold" 
+                        [ngClass]="{'text-info blue-nav': activeLink === 'todolist'}" 
+                        (click)="setActiveLink('todolist')">ToDo List</a>
+                        <a class="link-tab fw-bold" 
+                        [ngClass]="{'text-info blue-nav': activeLink === 'schedule'}" 
+                        (click)="setActiveLink('schedule')">Schedule</a>
+                      
           </div>
           @if(checkdate()){
           <div class="">
@@ -65,7 +73,7 @@
   </div>
 
   <!-- this is the about section -->
-
+@if (activeLink=="about") {
   <div class="text-start main">
     <div class="d-flex justify-content-between">
       <!-- two cloumns -->
@@ -198,4 +206,31 @@
       </div>
     </div>
   </div>
+}
+
+  <!-- this is the todo list section -->
+@if (activeLink=="todolist") {
+  <div class="text-start main">
+    <div class="d-flex justify-content-between">
+      <div class="two-col">
+        <div class="block">
+          <h6 class="mb-2">To Do List</h6>
+          <div class="mt-4">
+            <p-scrollPanel [style]="{ width: '100%', height: '150px' }">
+              <p *ngFor="let todo of eventDetails.todoList">
+                <p-chip label="{{ todo }}" icon="pi pi-check" />
+              </p>
+            </p-scrollPanel>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+
+@if (activeLink=="schedule"){
+  <app-events-schedule [readonly]="checkEndDate()"></app-events-schedule>
+}
+
 </div>
+

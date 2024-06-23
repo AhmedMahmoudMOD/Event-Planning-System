@@ -1,0 +1,67 @@
+
+<div class="profile-container">
+    <main class="main-content">
+        <header class="profile-header">
+            <div class="user-info">
+                <img [src]="defaultImage" alt="Profile Picture" class="profile-picture">
+                <div>
+                    <h2>{{ profile.fName + " " + profile.lName }}</h2>
+                    <p>{{ profile.street + ", " + profile.city + ", " + profile.region }}</p>
+                </div>
+            </div>
+            <!-- <button class="change-cover-button">Change Cover</button> -->
+        </header>
+        <!-- <section class="profile-stats">
+            <div class="stat">
+                <p>Events Created</p>
+                <p>32</p>
+            </div>
+            <div class="stat">
+                <p>Opportunities won</p>
+                <p>26</p>
+            </div>
+
+            <div class="public-profile-link">
+                <a href="https://app.hireground.com">View Public Profile</a>
+            </div>
+        </section> -->
+        <section class="profile-settings">
+            <h3 class="account-details">Account Details</h3>
+            <form class="settings-form">
+                <div class="form-group">
+                    <label for="first-name">First Name</label>
+                    <h3 id="first-name">{{ profile.fName }}</h3>
+                </div>
+                <div class="form-group">
+                    <label for="last-name">Last Name</label>
+                    <h3 id="last-name">{{ profile.lName }}</h3>
+                </div>
+                <div class="form-group">
+                    <label for="phone-number">Phone Number</label>
+                    <h3 id="phone-number">{{ profile.phoneNumber }}</h3>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <h3 id="email">{{profile.email}}</h3>
+                </div>
+                <div class="form-group">
+                    <label for="city">Street</label>
+                    <h3 id="city">{{profile.street}}</h3>
+                </div>
+                <div class="form-group">
+                    <label for="state">City</label>
+                    <h3 id="state">{{profile.city}}</h3>
+                </div>
+                <div class="form-group">
+                    <label for="country">State</label>
+                    <h3 id="country">{{profile.region}}</h3>
+                </div>
+                <div class="form-group">
+                    <label for="postcode">Postcode</label>
+                    <h3 id="postcode">{{profile.postalCode}}</h3>
+                </div>
+                <button type="submit" class="update-button">Update</button>
+            </form>
+        </section>
+    </main>
+</div>

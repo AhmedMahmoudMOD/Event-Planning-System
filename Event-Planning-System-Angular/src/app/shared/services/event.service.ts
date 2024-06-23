@@ -4,6 +4,7 @@ import { environment } from "../../../environments/environment.development";
 import { Injectable } from "@angular/core";
 import { Observable, catchError, throwError } from "rxjs";
 import { Event , EventListRes } from "../models/eventsListRes.model";
+import { calenderEvent } from "../models/calenderEvent";
 
 @Injectable({
   providedIn: 'root'
@@ -36,6 +37,8 @@ export class EventService  {
   editEvent(eventId: number, event: Event): Observable<Event> {
     return this.httpclient.put<Event>(`${environment.apiUrl}/api/Event/${eventId}`, event);
   }
-  
 
+   getEventsByUser(id:number): Observable<calenderEvent[]> {
+    return this.httpclient.get<calenderEvent[]>(environment.apiUrl + '/api/Event/user/' + id);
+  }
 }
