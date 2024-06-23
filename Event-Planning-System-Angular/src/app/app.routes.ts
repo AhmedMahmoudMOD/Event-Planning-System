@@ -17,6 +17,7 @@ import { EventDetailsComponent } from './events/event-details/event-details.comp
 
 import { EditEventComponent } from './edit-event/edit-event.component';
 import { EventsScheduleComponent } from './events/events-schedule/events-schedule.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 import { ProfileComponent } from './profile/profile.component';
 
@@ -27,12 +28,15 @@ import { AddtoDoListComponent } from './addto-do-list/addto-do-list.component';
 
 
 export const routes: Routes = [
-  { path: 'auth/login', component: LoginComponent },
-  { path: 'auth/register', component: RegisterComponent },
-   // { path: 'addevent', component: AddEventComponent },
+
+    { path: 'auth/login', component: LoginComponent },
+    { path: 'auth/register', component: RegisterComponent },
+    { path: 'addevent', component: AddEventComponent },
+
     { path: 'auth/confirmemail', component: EmailconfirmComponent },
     { path: 'auth/forgotpassword', component: ForgotPasswordComponent },
     { path: 'events', component:EventCalenderComponent },
+    { path: 'eventList', component:EventListComponent },
     { path: 'sidebar', component: SidebarComponent },
     //event details
     { path: 'planner/eventdetails/:id', component: EventDetailsComponent },
@@ -40,8 +44,11 @@ export const routes: Routes = [
 
     //end of event details
     {path: 'planner/events', component : EventCalenderComponent},
-    
 
+
+    { path: 'navbar', component: NavbarComponent},
+
+    { path: 'auth/resetpassword', component: ResetPasswordComponent },
     {path: 'auth/resetpassword', component: ResetPasswordComponent},
 
     { path: 'auth/validateemail', component: EmailConfirmCheckComponent },
