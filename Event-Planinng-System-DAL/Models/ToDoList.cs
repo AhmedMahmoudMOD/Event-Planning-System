@@ -10,7 +10,7 @@ namespace Event_Planinng_System_DAL.Models
 {
     public class ToDoList
     {
-        public DateOnly? DeadLineTime { get; set; }
+        public DateTime DeadLineTime { get; set; }
         [StringLength(50, MinimumLength = 3)]
         public string Title { get; set; }
         [Range(0, 10000000000)]

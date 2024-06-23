@@ -17,16 +17,19 @@ export class ToDoListService {
     return this.http.get<ToDoList[]>(`${environment.apiUrl}/api/ToDoList/${eventId}`);
   }
 
-  addTask(task: ToDoList){
-    return this.http.post(`${environment.apiUrl}/api/ToDoList`, task);
+  addToDo(todo: ToDoList){
+    return this.http.post<ToDoList>(`${environment.apiUrl}/api/ToDoList`, todo);
   }
 
-  deleteToDoList(id: number){
-    return this.http.delete(`${environment.apiUrl}/api/ToDoList/${id}`);
+  deleteToDoList(eventId: number,name:string){
+    return this.http.delete(`${environment.apiUrl}/api/ToDoList/${eventId}/${name}`);
   }
 
   updateTask(id: number, task: any){
     return this.http.put(`${environment.apiUrl}/api/ToDoList/${id}`, task);
+  }
+  getSpecificToDoList(id: number,name:string){
+    return this.http.get(`${environment.apiUrl}/api/ToDoList/${id}/${name}`);
   }
 
 }

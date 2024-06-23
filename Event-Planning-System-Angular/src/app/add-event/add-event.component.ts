@@ -103,7 +103,7 @@ checkDate(endDate: any): boolean {
   
     this.eventService.addEvent(event).subscribe({
       next: (response: any) => {
-        console.log("Event added successfully:", response);
+        
         this.hideAddModal();
       },
       error: (error: any) => {

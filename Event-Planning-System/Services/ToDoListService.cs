@@ -30,9 +30,10 @@ namespace Event_Planning_System.Services
 			{
                 return Result.Failure(new Error("400", "Event not found"));
             }
-            DateOnly dateNow = DateOnly.FromDateTime(DateTime.Now);
-			DateOnly eventDeadline = DateOnly.FromDateTime(eventExists.EndDate);
-            if (newToDoListDTO.DeadLineTime <= dateNow || newToDoListDTO.DeadLineTime > eventDeadline)
+            DateTime dateNow = DateTime.Now;
+			DateTime eventDeadline = eventExists.EndDate;
+			DateTime eventDate = eventExists.EventDate;
+            if (newToDoListDTO.DeadLineTime <= dateNow || newToDoListDTO.DeadLineTime > eventDeadline || newToDoListDTO.DeadLineTime < eventDate)
 			{
                 return Result.Failure(new Error("400", "Invalid deadline"));
             }
@@ -105,10 +106,10 @@ namespace Event_Planning_System.Services
 		//update to do list
 		public async Task<Result> UpdateToDoList(int eventId, string name, ToDoListDTO newToDoList)
 		{
-			if(newToDoList.DeadLineTime <= DateOnly.FromDateTime(DateTime.Now))
+			if(newToDoList.DeadLineTime <= DateTime.Now)
                 return Result.Failure(new Error("400", "Invalid deadline"));
             var currentToDoList = await db.ToDoLists.FirstOrDefaultAsync(x => x.EventId == eventId && x.Title == name);
-			if (currentToDoList.DeadLineTime <= DateOnly.FromDateTime(DateTime.Now))
+			if (currentToDoList.DeadLineTime <= DateTime.Now)
 				return Result.Failure(new Error("400", "can't edit todo list"));
 			if (currentToDoList == null)
 				return Result.Failure(new Error("400", "To do list not found"));

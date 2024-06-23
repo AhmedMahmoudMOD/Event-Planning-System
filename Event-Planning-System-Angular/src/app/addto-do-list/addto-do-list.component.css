@@ -1,0 +1,7 @@
+::ng-deep .p-calendar {
+  width: 100%;
+}
+
+::ng-deep .p-dialog .p-datepicker {
+  z-index: 1010; /* Ensure the datepicker is above the modal */
+}

@@ -22,14 +22,17 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { ProfileComponent } from './profile/profile.component';
 
 import { EventCalenderComponent } from './events/event-calender/event-calender.component';
+import { AddtoDoListComponent } from './addto-do-list/addto-do-list.component';
 
 
 
 
 export const routes: Routes = [
+
     { path: 'auth/login', component: LoginComponent },
     { path: 'auth/register', component: RegisterComponent },
     { path: 'addevent', component: AddEventComponent },
+
     { path: 'auth/confirmemail', component: EmailconfirmComponent },
     { path: 'auth/forgotpassword', component: ForgotPasswordComponent },
     { path: 'events', component:EventCalenderComponent },
