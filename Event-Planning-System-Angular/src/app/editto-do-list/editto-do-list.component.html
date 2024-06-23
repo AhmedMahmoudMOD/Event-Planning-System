@@ -76,4 +76,26 @@ Budget is required.
 </div>
 </form> 
 </ng-template>
+<ng-template pTemplate="footer">
+  <p-button
+  type="submit"
+  label="Save Changes"
+  icon="pi pi-check"
+  [text]="true"
+  [raised]="true"
+  severity="success"
+  size="small"
+  />
+  <p-button
+    label="Cancel"
+    icon="pi pi-times"
+    severity="secondary"
+    (click)="hideEditModal()"
+    class="custom-cancel-button"
+    [text]="true"
+    [raised]="true"
+    severity="secondary"
+    size="small"
+  />
+</ng-template>
 </p-dialog>

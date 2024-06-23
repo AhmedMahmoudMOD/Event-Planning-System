@@ -17,6 +17,11 @@
   <ng-template pTemplate="content">
     <form [formGroup]="addToDoList" (ngSubmit)="addTodo()">
       <div class="p-fluid">
+        <div class="p-field p-centre">
+          <div *ngIf="err"class="p-error">
+            {{ err || 'An error occurred while adding the to-do item. Please try again.' }}
+          </div>
+        </div>
         <div class="p-field">
           <label for="title">Title<span class="text-danger"> *</span></label>
           <input 
@@ -78,7 +83,7 @@
             Budget is required.
           </div>
         </div>
-
+<hr>
         <div class="p-d-flex p-jc-end p-mt-3">
           <button 
             pButton 

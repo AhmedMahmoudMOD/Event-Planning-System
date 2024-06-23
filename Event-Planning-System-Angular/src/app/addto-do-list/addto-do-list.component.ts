@@ -8,6 +8,10 @@ import { CommonModule } from '@angular/common';
 import {  CalendarModule } from 'primeng/calendar';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FloatLabel, FloatLabelModule } from 'primeng/floatlabel';
+import Swal from 'sweetalert2';
+import { EventService } from '../shared/services/event.service';
+import { eventTypes } from '../shared/models/eventTypes';
+import { Event } from '../shared/models/event';
 @Component({
   selector: 'app-addto-do-list',
   standalone: true,
@@ -21,11 +25,15 @@ display: boolean = false;
 addToDoList: FormGroup = new FormGroup({});
 submitted: boolean = false;
 minDate: Date = new Date();
+event!: Event;
+eventDeadLine: Date = new Date();
+err: string = '';
   constructor(
     private formBuilder: FormBuilder,
     private httpclient: HttpClient,
     private todoService: ToDoListService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private eventService :EventService
   ) { }
 
   ngOnInit(): void {
@@ -36,13 +44,36 @@ minDate: Date = new Date();
       deadLineTime:['', Validators.required],
       eventId:[this.route.snapshot.paramMap.get('id')]
     });
+    this.getEvent();
+    
+  }
+  getEvent(){
+    const id = this.route.snapshot.paramMap.get('id');
+
+    this.eventService.getEventById(id? parseInt(id):0).subscribe((ev:any ) => {
+      this.event = ev;
+      this.eventDeadLine = new Date(this.event.eventDate);
+      
+      });
     
   }
   displayAddModal() {
+    this.getEvent();
+    console.log(this.eventDeadLine);
+  if(new Date() > this.eventDeadLine){
+    Swal.fire({
+      title: 'Error!',
+      text: 'The event deadline has passed. You cannot add a to-do item to this event.',
+      icon: 'error',
+      confirmButtonText: 'Ok'
+    });
+    return;
+  }
   this.display = true;
   }
   hideAddModal() {
     this.display = false;
+    this.err = '';
   }
   addTodo(){
     this.submitted = true;
@@ -55,11 +86,19 @@ minDate: Date = new Date();
     this.todoService.addToDo(todo).subscribe({
       next: d => {
         this.hideAddModal();
-        console.log(d);
-        //this.router.navigate(['/to-do-list']);
+        Swal.fire({
+          title: 'Success!',
+          text: 'To-do item added successfully',
+          icon: 'success',
+          confirmButtonText: 'Ok'
+        
+        });
       },
       error: e => {
         console.log(e);
+        this.err = e.error;
+        //An error occurred while adding the to-do item. Please try again.
+        
       }
     });
   }
