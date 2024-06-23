@@ -54,7 +54,7 @@
                         >Schedule</a>
                       
           </div>
-          @if(checkdate()&&accountService.isLoggedIn){
+          @if(checkdate()){
           <div class="">
             <!-- <p-button
               label="Edit"
@@ -150,7 +150,7 @@
                 />
               </ng-template>
             </p-galleria>
-            @if(checkdate()&&accountService.isLoggedIn){
+            @if(checkdate()){
             <small class="fw-light fst-italic">
               <div class="mt-1"> Formats Premitied are .jpg , .png or .jpeg (Max Size : 1 MB) </div>
           </small>
@@ -202,7 +202,7 @@
               </p>
               }
             </p-scrollPanel>
-            @if(checkdate()&&accountService.isLoggedIn){
+            @if(checkdate()){
             <app-add-emails></app-add-emails>
             }
           </div>

@@ -246,7 +246,7 @@ setActiveLink(link: string): void {
         console.error('Error fetching to-do list:', error);
       }
     }
-     );
+    );
   }
   deleteToDoList(eventId: number,name:string) {
     this.toDoListService.deleteToDoList(eventId,name).subscribe({
@@ -258,6 +258,7 @@ setActiveLink(link: string): void {
       }
     });
   }
+
 
   showAddToDoListModal() {
   }
