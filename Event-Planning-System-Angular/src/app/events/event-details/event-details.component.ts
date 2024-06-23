@@ -19,7 +19,11 @@ import { eventTypeMapping } from '../../shared/enums/eventstype';
 import { AddEmailsComponent } from '../../add-emails/add-emails.component';
 import Swal from 'sweetalert2';
 import { EditEventComponent } from '../../edit-event/edit-event.component';
+import { ToDoListService } from '../../shared/services/to-do-list.service';
+import {DataView, DataViewModule} from 'primeng/dataview';
 import { EventsScheduleComponent } from '../events-schedule/events-schedule.component';
+import { ToDoList } from '../../shared/models/ToDoList';
+import {Table, TableLazyLoadEvent, TableModule} from 'primeng/table';
 import { FileSelectEvent, FileSendEvent, FileUploadEvent, FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
 import { EventImage } from '../../shared/models/eventImage.model';
 import { AccountService } from '../../shared/services/account.service';
@@ -30,7 +34,7 @@ import { AccountService } from '../../shared/services/account.service';
 @Component({
   selector: 'app-event-details',
   standalone: true,
-  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule, AddEmailsComponent,EditEventComponent,EventsScheduleComponent,FileUploadModule],
+  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule, AddEmailsComponent,EditEventComponent,DataViewModule,EventsScheduleComponent,TableModule,FileUploadModule],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.css'
 })
@@ -38,6 +42,9 @@ import { AccountService } from '../../shared/services/account.service';
 
 
 export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
+loadToDoList($event: TableLazyLoadEvent) {
+throw new Error('Method not implemented.');
+}
 
   // declration of variables
   checked: boolean = false;
@@ -51,14 +58,21 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   mapsURL: string | null = null;
   // map?: google.maps.Map;
   activeLink: string = 'about';
+  toDoLists: ToDoList[] = [];
+toDoList: any;
+selectionMode: any;
+selectedToDos: any;
   // constructors
   constructor(private ActivatedRoute: ActivatedRoute,
     private eventDetailsServices: EventdetailsService,
     private el: ElementRef, private renderer: Renderer2,
-    private router: Router,public accountService:AccountService) { }
+
+    private router: Router,
+    private toDoListService: ToDoListService,public accountService:AccountService
+  ) { }
 
   ngAfterViewInit() {
-    console.log(this.eventDetails);
+   // console.log(this.eventDetails);
     // this.initMap();
   }
 
@@ -70,6 +84,7 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     //get event details
     this.getEventDetails();
+   
   }
 
 
@@ -124,7 +139,7 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.eventsubscription = this.eventDetailsServices.getEventById(this.id).subscribe({
       next: (res) => {
         this.eventDetails = res;
-        console.log(this.eventDetails);
+        //console.log(this.eventDetails);
         if (this.eventDetails.eventImages.length === 0) {
           this.eventDetails.eventImages.push(this.defaultImage);
         }
@@ -133,7 +148,7 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
       },
       error: (error) => {
         // Handle error case
-        console.error('Error fetching event details:', error);
+        //console.error('Error fetching event details:', error);
         if (error.status === 400) {
           this.router.navigate(['/events']);
         } else {
@@ -154,7 +169,7 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   checkEndDate() {
     const currentDate = new Date();
     const endDate = new Date(this.eventDetails.endDate);
-    console.log(currentDate, endDate);
+    //console.log(currentDate, endDate);
     return currentDate > endDate;
   }
 
@@ -174,6 +189,9 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 setActiveLink(link: string): void {
     this.activeLink = link;
+    if(link === 'todolist' && this.id !== undefined){
+      this.getAllToDoList();
+    }
   }
 
   responsiveOptions: any[] = [
@@ -206,13 +224,43 @@ setActiveLink(link: string): void {
   //end of iFrame related code
 
   log(): any {
-    console.log(this.mapsURL);
+    //console.log(this.mapsURL);
   }
 
   getEventTypeString(eventTypeInt: number): string | undefined {
     return eventTypeMapping[eventTypeInt];
   }
 
+
+  //to do list
+  getAllToDoList() {
+    this.toDoListService.getToDoList(this.id).subscribe({
+      next: (res:ToDoList[]) => {
+        this.toDoLists = res;
+        console.log(this.toDoLists);
+      },
+      error: (error) => {
+        console.error('Error fetching to-do list:', error);
+      }
+    }
+     );
+  }
+  deleteToDoList(id: number) {
+    this.toDoListService.deleteToDoList(id).subscribe({
+      next: (res) => {
+        this.getAllToDoList();
+      },
+      error: (error) => {
+        console.error('Error deleting to-do list:', error);
+      }
+    });
+  }
+
+  showAddToDoListModal() {
+  }
+  showEditToDoListModal(toDoList: ToDoList) {
+  }
+  
   selectImage(event: FileSelectEvent): void {
     let EventImage: EventImage = {
       image: event.files[0],
@@ -236,9 +284,6 @@ setActiveLink(link: string): void {
       }
     });
   }
-
-
-
 
   ///////////////////////////google maps////////////////////////
   // initMap(): void {
