@@ -237,3 +237,6 @@
     padding-bottom: 10px;
 } 
 
+:host ::ng-deep .p-fileupload-upload{
+    border-radius: 50%;
+} 

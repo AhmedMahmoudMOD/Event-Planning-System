@@ -169,7 +169,24 @@ namespace Event_Planning_System.Controllers
 			return Ok(data);
 		}
 
+		[HttpPost("addImage")]
+        public async Task<IActionResult> AddImage([FromForm] EventImageDTO imageDTO)
+        {
+            if (imageDTO.Image == null)
+            {
+                return BadRequest("No image provided");
+            }
+            try
+            {
+                var result = await eventService.AddImage(imageDTO);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
-	}
+    }
 
 }

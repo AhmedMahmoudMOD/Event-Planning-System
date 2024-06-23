@@ -20,6 +20,8 @@ import { AddEmailsComponent } from '../../add-emails/add-emails.component';
 import Swal from 'sweetalert2';
 import { EditEventComponent } from '../../edit-event/edit-event.component';
 import { EventsScheduleComponent } from '../events-schedule/events-schedule.component';
+import { FileSelectEvent, FileSendEvent, FileUploadEvent, FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
+import { EventImage } from '../../shared/models/eventImage.model';
 
 
 
@@ -27,7 +29,7 @@ import { EventsScheduleComponent } from '../events-schedule/events-schedule.comp
 @Component({
   selector: 'app-event-details',
   standalone: true,
-  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule, AddEmailsComponent,EditEventComponent,EventsScheduleComponent],
+  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule, AddEmailsComponent,EditEventComponent,EventsScheduleComponent,FileUploadModule],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.css'
 })
@@ -209,6 +211,32 @@ setActiveLink(link: string): void {
   getEventTypeString(eventTypeInt: number): string | undefined {
     return eventTypeMapping[eventTypeInt];
   }
+
+  selectImage(event: FileSelectEvent): void {
+    let EventImage: EventImage = {
+      image: event.files[0],
+      id:this.id
+    }
+  }
+
+  onUpload(event: FileUploadHandlerEvent): void {
+    let EventImage: EventImage = {
+      image: event.files[0],
+      id:this.id
+    }
+
+    this.eventDetailsServices.UploadEventImage(EventImage).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.getEventDetails();
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    });
+  }
+
+
 
 
   ///////////////////////////google maps////////////////////////

@@ -11,6 +11,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MimeKit.Cryptography;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
+
 namespace Event_Planning_System.Services
 {
 	public class EventService : IEventService
@@ -18,12 +20,15 @@ namespace Event_Planning_System.Services
 		UnitOfWork unitOfWork;
 		private readonly IMapper mapper;
 		readonly ISendEmailService emailService;
-		public EventService(UnitOfWork _unitOfWork, IMapper _mapper, ISendEmailService _emailService)
+        private readonly IBlobServices blobServices;
+
+        public EventService(UnitOfWork _unitOfWork, IMapper _mapper, ISendEmailService _emailService,IBlobServices blobServices)
 		{
 			unitOfWork = _unitOfWork;
 			mapper = _mapper;
 			emailService = _emailService;
-		}
+            this.blobServices = blobServices;
+        }
 
 		public async Task<bool> SendEventMail(int EventId, EmailType type)
 		{
@@ -303,6 +308,23 @@ namespace Event_Planning_System.Services
 
 			return eventDTOList;
 		}
-	}
+
+        public async Task<IdentityResult> AddImage(EventImageDTO imageDTO)
+        {
+            var url = await blobServices.AddingImage(imageDTO.Image);
+
+            await Console.Out.WriteLineAsync(url);
+
+            if (url == null)
+			{
+				return IdentityResult.Failed(new IdentityError { Code = "400", Description = "Failed to upload image" });
+            }
+
+			await unitOfWork.EventImagesRepo.Add(new EventImages { EventImage = url , EventId = imageDTO.Id });
+
+            return IdentityResult.Success;
+
+        }
+    }
 
 }
