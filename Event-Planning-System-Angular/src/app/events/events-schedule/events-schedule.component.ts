@@ -204,8 +204,8 @@ export class EventsScheduleComponent implements OnInit, OnDestroy {
 
 
     if (args.requestType === 'eventCreate') {
-      const startDate = new Date(this.eventobj.eventDate);;
-      const endDate = new Date(this.eventobj.endDate);;
+      const startDate = new Date(this.eventobj.eventDate);
+      const endDate = new Date(this.eventobj.endDate);
 
       const eventStart = args.data.StartTime || args.data[0].startTime;
       const eventEnd = args.data.EndTime || args.data[0].endTime;
@@ -215,7 +215,7 @@ export class EventsScheduleComponent implements OnInit, OnDestroy {
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: `Events can only be added or edited between${eventStart} and ${eventEnd}`
+          text: `Events can only be added or edited between${this.formatDate(startDate)} and ${this.formatDate(endDate)}`
         });
         return;
       }
@@ -272,7 +272,12 @@ export class EventsScheduleComponent implements OnInit, OnDestroy {
   //////////fiels /////////////////////
 
 
-  ////////////////allowed days//////////////////////
-
+  ////////////////form date//////////////////////
+  formatDate(date: Date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
 
 }

@@ -24,13 +24,17 @@ import {DataView, DataViewModule} from 'primeng/dataview';
 import { EventsScheduleComponent } from '../events-schedule/events-schedule.component';
 import { ToDoList } from '../../shared/models/ToDoList';
 import {Table, TableLazyLoadEvent, TableModule} from 'primeng/table';
+import { FileSelectEvent, FileSendEvent, FileUploadEvent, FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
+import { EventImage } from '../../shared/models/eventImage.model';
+import { AccountService } from '../../shared/services/account.service';
+
 
 
 
 @Component({
   selector: 'app-event-details',
   standalone: true,
-  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule, AddEmailsComponent,EditEventComponent,DataViewModule,EventsScheduleComponent,TableModule],
+  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule, AddEmailsComponent,EditEventComponent,DataViewModule,EventsScheduleComponent,TableModule,FileUploadModule],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.css'
 })
@@ -62,8 +66,9 @@ selectedToDos: any;
   constructor(private ActivatedRoute: ActivatedRoute,
     private eventDetailsServices: EventdetailsService,
     private el: ElementRef, private renderer: Renderer2,
+
     private router: Router,
-    private toDoListService: ToDoListService
+    private toDoListService: ToDoListService,public accountService:AccountService
   ) { }
 
   ngAfterViewInit() {
@@ -157,7 +162,7 @@ selectedToDos: any;
   // heck the data
   checkdate() {
     const currentDate = new Date();
-    const eventDate = new Date(this.eventDetails.eventDate);
+    const eventDate = new Date(this.eventDetails.endDate);
     return eventDate >= currentDate;
   }
 
@@ -226,6 +231,7 @@ setActiveLink(link: string): void {
     return eventTypeMapping[eventTypeInt];
   }
 
+
   //to do list
   getAllToDoList() {
     this.toDoListService.getToDoList(this.id).subscribe({
@@ -255,6 +261,29 @@ setActiveLink(link: string): void {
   showEditToDoListModal(toDoList: ToDoList) {
   }
   
+  selectImage(event: FileSelectEvent): void {
+    let EventImage: EventImage = {
+      image: event.files[0],
+      id:this.id
+    }
+  }
+
+  onUpload(event: FileUploadHandlerEvent): void {
+    let EventImage: EventImage = {
+      image: event.files[0],
+      id:this.id
+    }
+
+    this.eventDetailsServices.UploadEventImage(EventImage).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.getEventDetails();
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    });
+  }
 
   ///////////////////////////google maps////////////////////////
   // initMap(): void {
