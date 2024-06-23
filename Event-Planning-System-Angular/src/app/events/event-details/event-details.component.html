@@ -145,6 +145,24 @@
                 />
               </ng-template>
             </p-galleria>
+            <small class="fw-light fst-italic">
+              <div class="mt-1"> Formats Premitied are .jpg , .png or .jpeg (Max Size : 1 MB) </div>
+          </small>
+          <p-fileUpload 
+          chooseLabel="Choose" 
+          chooseIcon="pi pi-upload"
+          mode="advanced"
+          name="image"  
+          uploadLabel="Upload"
+          cancelLabel="Clear"
+          accept=".jpg,.png,.jpeg" 
+          maxFileSize="1000000" 
+           [customUpload]="true"
+            (uploadHandler)="onUpload($event)"
+          >
+           <ng-template pTemplate="content">
+        </ng-template>
+          </p-fileUpload>
           </div>
         </div>
         <!-- end the carsol block -->
