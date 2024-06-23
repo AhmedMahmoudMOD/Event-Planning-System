@@ -248,18 +248,31 @@ setActiveLink(link: string): void {
     }
     );
   }
-  deleteToDoList(eventId: number,name:string) {
-    this.toDoListService.deleteToDoList(eventId,name).subscribe({
-      next: (res) => {
-        this.getAllToDoList();
-      },
-      error: (error) => {
-        console.error('Error deleting to-do list:', error);
+  deleteToDoList(eventId: number, name: string) {
+    Swal.fire({
+      title: 'Are you sure you want to delete this to-do list?',
+      text: `This action cannot be undone. The list named "${name}" will be permanently removed.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6', // Customize confirm button color (optional)
+      cancelButtonColor: '#d33',     // Customize cancel button color (optional)
+      confirmButtonText: 'Yes, delete'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.toDoListService.deleteToDoList(eventId, name)
+          .subscribe({
+            next: (res) => {
+              Swal.fire('Deleted!', 'The to-do list has been successfully deleted.', 'success');
+              this.getAllToDoList(); 
+            },
+            error: (error) => {
+              console.error('Error deleting to-do list:', error);
+              Swal.fire('Error!', 'An error occurred while deleting the to-do list.', 'error');
+            }
+          });
       }
     });
   }
-
-
   showAddToDoListModal() {
   }
   showEditToDoListModal(toDoList: ToDoList) {
