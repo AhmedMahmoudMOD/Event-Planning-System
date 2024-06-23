@@ -52,7 +52,7 @@ err: string = '';
 
     this.eventService.getEventById(id? parseInt(id):0).subscribe((ev:any ) => {
       this.event = ev;
-      this.eventDeadLine = new Date(this.event.eventDate);
+      this.eventDeadLine = new Date(this.event.endDate);
       
       });
     
