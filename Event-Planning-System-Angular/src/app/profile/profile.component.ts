@@ -18,7 +18,7 @@ import { finalize } from 'rxjs';
 export class ProfileComponent implements OnInit{
   title = 'Profile';
   profile: Profile | any = {};
-  defaultImage = "assets/images/software-developer-6521720_640.jpg";
+  defaultImage = "assets/images/default_Image.jpg";
 
   eventList: Event[] = [];
   // count the number of events in eventList array

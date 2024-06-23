@@ -3,7 +3,7 @@
     <main class="main-content">
         <header class="profile-header">
             <div class="user-info">
-                <img [src]="defaultImage" alt="Profile Picture" class="profile-picture">
+                <img [src]="profile.image ? profile.image : defaultImage" alt="Profile Picture" class="profile-picture">
                 <div>
                     <h2>{{ profile.fName + " " + profile.lName }}</h2>
                     <p>{{ profile.street + ", " + profile.city + ", " + profile.region }}</p>
