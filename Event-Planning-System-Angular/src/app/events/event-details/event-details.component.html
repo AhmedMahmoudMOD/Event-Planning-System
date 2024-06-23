@@ -242,13 +242,8 @@
             <div class="d-flex justify-content-between">
               <div class="d-flex"></div>
               <div>
-                <p-button
-                  label="Add"
-                  [text]="true"
-                  severity="success"
-                  [raised]="true"
-                  (click)="showAddToDoListModal()"
-                ></p-button>
+                <app-addto-do-list></app-addto-do-list>
+                
               </div>
             </div>
             <div class="mt-3">
@@ -257,7 +252,6 @@
                 [paginator]="true"
                 [rows]="5"
                 [lazy]="true"
-                (onLazyLoad)="loadToDoList($event)"
               >
                 <ng-template pTemplate="header">
                   <tr>
@@ -275,15 +269,9 @@
                     <td>{{ toDoList.deadLineTime | date: 'medium' }}</td>
                     <td>{{ toDoList.toDoListBudget | currency }}</td>
                     <td>
+                      <app-editto-do-list></app-editto-do-list>
                       <button
-                        (click)="showEditToDoListModal(toDoList)"
-                        class="btn btn-info btn-sm me-2"
-                        aria-label="Edit To-Do List"
-                      >
-                        <i class="bi bi-pencil-square"></i> Edit
-                      </button>
-                      <button
-                        (click)="deleteToDoList(toDoList.eventId)"
+                        (click)="deleteToDoList(toDoList.eventId,toDoList.title)"
                         class="btn btn-danger btn-sm"
                         aria-label="Delete To-Do List"
                       >

@@ -27,48 +27,49 @@ export class EditEventComponent implements OnInit {
   display: boolean = false;
   eventId: number = 0;
   MinDate: Date = new Date();
+  initialStartDate: Date = new Date();
+  initialEndDate: Date = new Date();
 
   constructor(
     private eventService: EventService,
     private fb: FormBuilder,
     private route: ActivatedRoute
   ) {
-  
     this.editForm = this.fb.group({
       name: ['', Validators.required],
       description: [''],
       location: ['', Validators.required],
       attendanceNumber: [0, Validators.required],
       googleMapsLocation: [''],
-      eventDate: ['', Validators.required],
+      eventDate: [null, Validators.required],
       budget: [0, Validators.required],
-      endDate: ['', Validators.required]
+      endDate: [null, Validators.required]
     });
-    
   }
 
   ngOnInit(): void {
-    var event = this.eventService.getEventById(4);
-    console.log(event);
-   const id = (this.route.snapshot.paramMap.get('id'));
+    const id = (this.route.snapshot.paramMap.get('id'));
     this.eventId = id ? parseInt(id) : 0;
     if (this.eventId) {
       this.eventService.getEventById(this.eventId).subscribe((event: any) => {
         this.oldEvent = event;
+        this.initialStartDate = new Date(this.oldEvent.eventDate);
+        this.initialEndDate = new Date(this.oldEvent.endDate);
         this.editForm.patchValue({
           name: this.oldEvent.name,
           description: this.oldEvent.description,
           location: this.oldEvent.location,
           attendanceNumber: this.oldEvent.attendanceNumber,
           googleMapsLocation: this.oldEvent.googleMapsLocation,
-          eventDate: Date.parse(this.oldEvent.eventDate),
+          eventDate: this.initialStartDate,
           budget: this.oldEvent.budget,
-          endDate: this.oldEvent.endDate
+          endDate: this.initialEndDate
         });
-        console.log(Date.parse(this.oldEvent.eventDate));
+     
       });
+    }
   }
-}
+
   showEditModal() {
     this.display = true;
   }
@@ -89,5 +90,4 @@ export class EditEventComponent implements OnInit {
       );
     }
   }
-  
 }
