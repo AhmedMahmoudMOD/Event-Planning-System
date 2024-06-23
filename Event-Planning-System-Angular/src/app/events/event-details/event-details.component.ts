@@ -144,7 +144,7 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   // heck the data
   checkdate() {
     const currentDate = new Date();
-    const eventDate = new Date(this.eventDetails.eventDate);
+    const eventDate = new Date(this.eventDetails.endDate);
     return eventDate >= currentDate;
   }
 

@@ -230,3 +230,10 @@
     background-color: #EF4444 !important;
     color: white !important;
 }
+
+ :host ::ng-deep .description {
+    height: fit-content !important; 
+    max-height: 150px;
+    padding-bottom: 10px;
+} 
+
