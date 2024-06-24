@@ -25,6 +25,7 @@ import { EventCalenderComponent } from './events/event-calender/event-calender.c
 import { AddtoDoListComponent } from './addto-do-list/addto-do-list.component';
 import { canLoginGuard } from './shared/guards/can-login.guard';
 import { logGuardGuard } from './shared/guards/log-guard.guard';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 
 
@@ -56,5 +57,6 @@ export const routes: Routes = [
 
     { path: 'edit-event', component: EditEventComponent },
 
-    { path: '', redirectTo: '/auth/login', pathMatch: 'full' }
+    { path: '', redirectTo: '/auth/login', pathMatch: 'full' },
+    {path:'**',component:NotFoundComponent}
 ];
