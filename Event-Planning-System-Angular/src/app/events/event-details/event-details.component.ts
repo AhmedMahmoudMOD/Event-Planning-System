@@ -31,13 +31,14 @@ import { EdittoDoListComponent } from '../../editto-do-list/editto-do-list.compo
 import { FileSelectEvent, FileSendEvent, FileUploadEvent, FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
 import { EventImage } from '../../shared/models/eventImage.model';
 import { AccountService } from '../../shared/services/account.service';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 
 
 @Component({
   selector: 'app-event-details',
   standalone: true,
-  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule, AddEmailsComponent,EditEventComponent,DataViewModule,EventsScheduleComponent,TableModule,AddtoDoListComponent,EdittoDoListComponent,FileUploadModule],
+  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule, AddEmailsComponent,EditEventComponent,DataViewModule,EventsScheduleComponent,TableModule,AddtoDoListComponent,EdittoDoListComponent,FileUploadModule,ProgressSpinnerModule],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.css'
 })
@@ -58,6 +59,8 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   id: any | number;
   userId:number|any;
   isOwner:boolean = false;
+  isCanceled: boolean = false;
+  loading: boolean = false;
   eventDetails: Event | any = {};
   defaultImage = '../../../assets/images/software-developer-6521720_640.jpg';
   mapsURL: string | null = null;
@@ -150,6 +153,7 @@ selectedToDos: any;
     this.eventsubscription = this.eventDetailsServices.getEventById(this.id).subscribe({
       next: (res) => {
         this.eventDetails = res;
+        this.isCanceled = this.eventDetails.isCanceled;
         //console.log(this.eventDetails);
         if (this.eventDetails.eventImages.length === 0) {
           this.eventDetails.eventImages.push(this.defaultImage);
@@ -285,6 +289,13 @@ setActiveLink(link: string): void {
   }
   showEditToDoListModal(toDoList: ToDoList) {
   }
+
+  getEventDuration(): string {
+    const startDate = new Date(this.eventDetails.eventDate);
+    const endDate = new Date(this.eventDetails.endDate);
+    const options : any = { year: 'numeric', month: 'long', day: 'numeric' };
+    return `${startDate.toLocaleDateString('en-US', options)} - ${endDate.toLocaleDateString('en-US', options)}`;
+  }
   
   selectImage(event: FileSelectEvent): void {
     let EventImage: EventImage = {
@@ -299,9 +310,12 @@ setActiveLink(link: string): void {
       id:this.id
     }
 
+    this.loading = true;
+
     this.eventDetailsServices.UploadEventImage(EventImage).subscribe({
       next: (res) => {
         console.log(res);
+        this.loading = false;
         this.getEventDetails();
       },
       error: (error) => {

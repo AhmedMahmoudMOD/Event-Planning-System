@@ -13,6 +13,7 @@ export interface Event {
     emails: Email[] | null;
     eventImages: string[] | null;
     endDate: string;
+    isDeleted: boolean;
 
 }
 
