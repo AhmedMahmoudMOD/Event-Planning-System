@@ -4,6 +4,8 @@ using Event_Planning_System.DTO;
 using Event_Planning_System.Helpers;
 using Event_Planinng_System_DAL.Enums;
 using Event_Planning_System.Custom;
+using Microsoft.AspNetCore.Identity;
+
 namespace Event_Planning_System.IServices
 {
 	public interface IEventService
@@ -22,6 +24,7 @@ namespace Event_Planning_System.IServices
 		public Task<Result> UpdateEvent(int id, EditEventDTO newEvent);
 
 		Task<PaginatedList<EventDTO>> GetWithPagination(int pageNumber, int pageSize, string? search);
-
-	}
+        Task<IdentityResult> AddImage(EventImageDTO imageDTO);
+        Task<bool> isOwnEvent(int eventId, int userId);
+    }
 }

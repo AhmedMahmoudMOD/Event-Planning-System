@@ -26,6 +26,8 @@ namespace Event_Planning_System.DTO
 		public string EventDate { get; set; }
         public string EndDate { get; set; }
 
+        public bool? IsDeleted { get; set; }
+
         public List<AttendanceDTO>? Emails { get; set; }
 		public List<string>? EventImages { get; set; }
 

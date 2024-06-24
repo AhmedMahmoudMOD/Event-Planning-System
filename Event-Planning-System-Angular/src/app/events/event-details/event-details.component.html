@@ -40,20 +40,20 @@
           <div class="">
             <!-- <p-selectButton [options]="stateOptions" [(ngModel)]="value" optionLabel="label"
                         optionValue="value" /> -->
-                        <a class="link-tab fw-bold" 
-                        [ngClass]="{'text-info blue-nav': activeLink === 'about'}" 
+                        <a class="link-tab fw-bold"
+                        [ngClass]="{'text-info blue-nav': activeLink === 'about'}"
                         (click)="setActiveLink('about')">About</a>
-                        <a class="link-tab fw-bold" 
-                        [ngClass]="{'text-info blue-nav': activeLink === 'todolist'}" 
+                        <a class="link-tab fw-bold"
+                        [ngClass]="{'text-info blue-nav': activeLink === 'todolist'}"
                         (click)="setActiveLink('todolist')"
-                        (click)="getAllToDoList()"
-                        >ToDo List</a>
-                        <a class="link-tab fw-bold" 
-                        [ngClass]="{'text-info blue-nav': activeLink === 'schedule'}" 
+                        (click)="getAllToDoList()" *ngIf="isOwner">ToDo List</a>
+                        <a class="link-tab fw-bold"
+                        [ngClass]="{'text-info blue-nav': activeLink === 'schedule'}"
                         (click)="setActiveLink('schedule')"
                         >Schedule</a>
-                      
+
           </div>
+          @if(checkdate()&&isOwner&&!isCanceled){
           <div class="">
             <!-- <p-button
               label="Edit"
@@ -63,13 +63,14 @@
             /> -->
             <app-edit-event></app-edit-event>
             <p-button
-              label="Delete"
+              label="Cancel"
               [text]="true"
               severity="danger"
               [raised]="true"
               (onClick)="deleteEvent()"
             />
           </div>
+          }
         </div>
       </div>
     </div>
@@ -87,7 +88,7 @@
           <p style="font-size: 0.9rem">
             <i class="pi pi-wallet me-2"></i>
             <span class="text-success fw-bold">{{ eventDetails.budget }}</span>
-            Dollar
+            EGP
           </p>
           <p style="font-size: 0.9rem">
             <i class="pi pi-user me-2"></i>
@@ -99,13 +100,13 @@
           <!-- location -->
           <p style="font-size: 0.9rem">
             <i class="pi pi-map-marker me-2"></i>
-            <a href="#" class="">{{ eventDetails.location }}</a>
+            <span>{{ eventDetails.location }}</span>
           </p>
           <!-- Duration -->
 
           <p style="font-size: 0.9rem">
             <i class="pi pi-clock me-2"></i>
-            Duration: 2 days
+            Duration: {{ getEventDuration() }}
           </p>
           <!-- status -->
           <p style="font-size: 0.9rem">
@@ -113,7 +114,10 @@
             Public: Anyone on or off Our App
           </p>
           <div class="contain">
-            <p-scrollPanel [style]="{ width: '100%', height: '150px' }">
+            <p-scrollPanel
+              class="description"
+              [style]="{ width: '100%', height: '120px' }"
+            >
               <p class="fw-light">
                 {{ eventDetails.description }}
               </p>
@@ -133,7 +137,7 @@
               [showIndicators]="true"
               [changeItemOnIndicatorHover]="true"
               [showThumbnails]="false"
-              [containerStyle]="{ 'max-width': '500px' }"
+              [containerStyle]="{ 'max-width': 'auto' }"
             >
               <ng-template pTemplate="item" let-item>
                 <p-image
@@ -145,6 +149,27 @@
                 />
               </ng-template>
             </p-galleria>
+            @if(checkdate()&&isOwner&&!isCanceled){
+            <small class="fw-light fst-italic">
+              <div class="mt-1"> Formats Premitied are .jpg , .png or .jpeg (Max Size : 1 MB) </div>
+          </small>
+          <p-fileUpload
+          chooseLabel="Choose"
+          chooseIcon="pi pi-upload"
+          mode="advanced"
+          name="image"
+          uploadLabel="Upload"
+          cancelLabel="Clear"
+          accept=".jpg,.png,.jpeg"
+          maxFileSize="1000000"
+           [customUpload]="true"
+            (uploadHandler)="onUpload($event)"
+          >
+           <ng-template pTemplate="content">
+            <p-progressSpinner *ngIf="loading" styleClass="custom-spinner"></p-progressSpinner>
+        </ng-template>
+          </p-fileUpload>
+        }
           </div>
         </div>
         <!-- end the carsol block -->
@@ -177,7 +202,7 @@
               </p>
               }
             </p-scrollPanel>
-            @if(checkdate()){
+            @if(checkdate()&&isOwner&&!isCanceled){
             <app-add-emails></app-add-emails>
             }
           </div>
@@ -218,7 +243,7 @@
               <div class="d-flex"></div>
               <div>
                 <app-addto-do-list></app-addto-do-list>
-                
+
               </div>
             </div>
             <div class="mt-3">
@@ -271,11 +296,11 @@
       </div>
     </div>
   </div>
-  
-  
-  
+
+
+
 @if (activeLink=="schedule"){
-  <app-events-schedule [readonly]="checkEndDate()"></app-events-schedule>
+  <app-events-schedule [readonly]="checkEndDate()||!isOwner"></app-events-schedule>
 }
 
 </div>

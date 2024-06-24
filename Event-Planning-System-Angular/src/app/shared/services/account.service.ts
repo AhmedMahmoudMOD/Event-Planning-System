@@ -22,7 +22,7 @@ export class AccountService {
   baseUrl = 'http://localhost:5006/api/';
   isLoggedIn : boolean = false;
 
-  constructor(private http:HttpClient,private router : Router) { 
+  constructor(private http:HttpClient,private router : Router) {
 
   }
 
@@ -59,9 +59,14 @@ export class AccountService {
     return decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
   }
 
+  checkOwnership(eventId:number,userId:number){
+    return this.http.get<boolean>(this.baseUrl + `Event/check/${eventId}/${userId}`);
+  }
+
 
   logout(){
-    this.isLoggedIn = false;
+    this.isLoggedIn = false; 
+    localStorage.removeItem('token');
   }
 
   forgotPassword(email:string){
@@ -70,6 +75,13 @@ export class AccountService {
 
   resetPassword(model:ResetPass){
     return this.http.post(this.baseUrl + 'auth/resetpassword',model);
+  }
+
+  LoggedIn(){
+    if(localStorage.getItem('token') != null){
+      return true;
+    }
+    return false;
   }
 
 
