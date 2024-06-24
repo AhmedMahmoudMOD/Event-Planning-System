@@ -242,3 +242,9 @@
 :host ::ng-deep .p-fileupload-upload{
     border-radius: 50%;
 } 
+
+.custom-spinner {
+    width: max-content;
+    text-align: center;
+    display: block;
+  }

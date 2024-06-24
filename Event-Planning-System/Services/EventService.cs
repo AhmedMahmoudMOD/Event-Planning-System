@@ -20,15 +20,15 @@ namespace Event_Planning_System.Services
 		UnitOfWork unitOfWork;
 		private readonly IMapper mapper;
 		readonly ISendEmailService emailService;
-        private readonly IBlobServices blobServices;
+		private readonly IBlobServices blobServices;
 
-        public EventService(UnitOfWork _unitOfWork, IMapper _mapper, ISendEmailService _emailService,IBlobServices blobServices)
+		public EventService(UnitOfWork _unitOfWork, IMapper _mapper, ISendEmailService _emailService, IBlobServices blobServices)
 		{
 			unitOfWork = _unitOfWork;
 			mapper = _mapper;
 			emailService = _emailService;
-            this.blobServices = blobServices;
-        }
+			this.blobServices = blobServices;
+		}
 
 		public async Task<bool> SendEventMail(int EventId, EmailType type)
 		{
@@ -91,7 +91,7 @@ namespace Event_Planning_System.Services
 				var AttendanceOfEvent = await unitOfWork.AttendanceRepo.GetAll();
 				var EventImages = await unitOfWork.EventImagesRepo.GetAll();
 
-				var AllEventAttendce = AttendanceOfEvent.Where(x => x.EventId == id && x.IsSent == true).Select(x=>new AttendanceDTO() { Email=x.Email});
+				var AllEventAttendce = AttendanceOfEvent.Where(x => x.EventId == id && x.IsSent == true).Select(x => new AttendanceDTO() { Email = x.Email });
 				var AllEventImages = EventImages.Where(x => x.EventId == id).Select(y => y.EventImage);
 
 				Event eventFounded = await unitOfWork.EventRepo.FindById(id);
@@ -123,7 +123,7 @@ namespace Event_Planning_System.Services
 		}
 
 		// Create new event
-		public async Task<bool> CreateEvent(EventDTO newEventDTO,int id)
+		public async Task<bool> CreateEvent(EventDTO newEventDTO, int id)
 		{
 			Event newEvent;
 			try { newEvent = mapper.Map<Event>(newEventDTO); }
@@ -170,55 +170,55 @@ namespace Event_Planning_System.Services
 			}
 			catch { return false; }
 		}
-        //edit event
-        public async Task<Result> UpdateEvent(int id, EditEventDTO newEventDTO)
-        {
-            var oldEvent = await unitOfWork.EventRepo.FindById(id);
-            if (oldEvent == null)
-                return Result.Failure(new Error("400", "Event not found"));
+		//edit event
+		public async Task<Result> UpdateEvent(int id, EditEventDTO newEventDTO)
+		{
+			var oldEvent = await unitOfWork.EventRepo.FindById(id);
+			if (oldEvent == null)
+				return Result.Failure(new Error("400", "Event not found"));
 
-            Event newEvent;
-            try { newEvent = mapper.Map<Event>(newEventDTO); }
-            catch { return Result.Failure(new Error("400", "Invalid data")); }
+			Event newEvent;
+			try { newEvent = mapper.Map<Event>(newEventDTO); }
+			catch { return Result.Failure(new Error("400", "Invalid data")); }
 
-            if (newEvent == null || newEvent.EventDate <= DateTime.Today)
-                return Result.Failure(new Error("400", "Invalid date"));
-			if(newEvent.AttendanceNumber < oldEvent.AttendanceNumber)
+			if (newEvent == null || newEvent.EventDate <= DateTime.Today)
+				return Result.Failure(new Error("400", "Invalid date"));
+			if (newEvent.AttendanceNumber < oldEvent.AttendanceNumber)
 			{
-                return Result.Failure(new Error("400", "You can't reduce the number of attendees"));
-            }
+				return Result.Failure(new Error("400", "You can't reduce the number of attendees"));
+			}
 
-            oldEvent.Name = newEvent.Name;
-            oldEvent.Description = newEvent.Description;
-            oldEvent.EventDate = newEvent.EventDate;
-            oldEvent.DateOfCreation = DateOnly.FromDateTime(DateTime.Today);
-            oldEvent.Location = newEvent.Location;
-            oldEvent.GoogleMapsLocation = newEvent.GoogleMapsLocation;
-            oldEvent.Budget = newEvent.Budget;
-            oldEvent.CreatorId = 1;
+			oldEvent.Name = newEvent.Name;
+			oldEvent.Description = newEvent.Description;
+			oldEvent.EventDate = newEvent.EventDate;
+			oldEvent.DateOfCreation = DateOnly.FromDateTime(DateTime.Today);
+			oldEvent.Location = newEvent.Location;
+			oldEvent.GoogleMapsLocation = newEvent.GoogleMapsLocation;
+			oldEvent.Budget = newEvent.Budget;
+			oldEvent.CreatorId = 1;
 			oldEvent.AttendanceNumber = newEvent.AttendanceNumber;
 			oldEvent.EndDate = newEvent.EndDate;
 
 
 
-            try
-            {
-                await unitOfWork.EventRepo.Edit(oldEvent);
-                await unitOfWork.saveAsync();
-                return Result.Success();
-            }
-            catch (Exception)
-            {
-                return Result.Failure(new Error("400", "Failed to update event"));
-            }
-        }
+			try
+			{
+				await unitOfWork.EventRepo.Edit(oldEvent);
+				await unitOfWork.saveAsync();
+				return Result.Success();
+			}
+			catch (Exception)
+			{
+				return Result.Failure(new Error("400", "Failed to update event"));
+			}
+		}
 
-        //---------------------------------------------------------------------------------------------//
-        // ------------------------------------------- Guests ----------------------------------------//
-        //-------------------------------------------------------------------------------------------//
+		//---------------------------------------------------------------------------------------------//
+		// ------------------------------------------- Guests ----------------------------------------//
+		//-------------------------------------------------------------------------------------------//
 
-        // Get all guests of the event either mail is sent or not
-        public async Task<IEnumerable<AttendanceDTO>?> GetAllGuests(int id)
+		// Get all guests of the event either mail is sent or not
+		public async Task<IEnumerable<AttendanceDTO>?> GetAllGuests(int id)
 		{
 			try
 			{
@@ -269,12 +269,13 @@ namespace Event_Planning_System.Services
 			if (ditinctEmails.Count() >= (myEvent.AttendanceNumber - attendeesno))
 				return $"You cant add more guests, you invited ({attendeesno} of total {myEvent.AttendanceNumber}, you can invite {myEvent.AttendanceNumber - attendeesno})";
 			// Add guests
-			foreach (AttendanceDTO guest in ditinctEmails)
-				if (!await AddGuest(eventId, guest))
-					return "Invalid Email";
+			foreach (AttendanceDTO guest in ditinctEmails) { 
+			if (!await AddGuest(eventId, guest))
+				return "Invalid Email";
 			await SendEventMail(eventId, EmailType.Invite);
-			return "true";
-		}
+			}
+            return "true";
+        }
 		// Delete guest from the event
 		public async Task<bool> DeleteGuest(int eventId, string email)
 		{
@@ -309,22 +310,33 @@ namespace Event_Planning_System.Services
 			return eventDTOList;
 		}
 
-        public async Task<IdentityResult> AddImage(EventImageDTO imageDTO)
-        {
-            var url = await blobServices.AddingImage(imageDTO.Image);
+		public async Task<IdentityResult> AddImage(EventImageDTO imageDTO)
+		{
+			var url = await blobServices.AddingImage(imageDTO.Image);
 
-            await Console.Out.WriteLineAsync(url);
+			await Console.Out.WriteLineAsync(url);
 
-            if (url == null)
+			if (url == null)
 			{
 				return IdentityResult.Failed(new IdentityError { Code = "400", Description = "Failed to upload image" });
+			}
+
+			await unitOfWork.EventImagesRepo.Add(new EventImages { EventImage = url, EventId = imageDTO.Id });
+
+			return IdentityResult.Success;
+
+		}
+
+		public async Task<bool> isOwnEvent(int eventId, int userId)
+		{ 
+			var model = await unitOfWork.EventRepo.FindById(eventId);
+
+			if (model.CreatorId == userId)
+			{
+                return true;
             }
-
-			await unitOfWork.EventImagesRepo.Add(new EventImages { EventImage = url , EventId = imageDTO.Id });
-
-            return IdentityResult.Success;
-
+            return false;
         }
-    }
-
+	}
 }
+
