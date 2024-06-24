@@ -37,12 +37,13 @@ export class AddEventComponent implements OnInit {
   addEventForm: FormGroup = new FormGroup({});
   submitted: boolean = false;
   minDate: Date = new Date();
+  errorMessage: string = '';
   Types : eventTypes[] = [ 
-    {id: 1, name: 'Wedding'}, 
-    {id: 2, name: 'Birthday'}, 
-    {id: 3, name: 'Corporate'}, 
-    {id: 4, name: 'Social'}, 
-    {id: 6, name: 'Other'}
+    {id: 0, name: 'Wedding'}, 
+    {id: 1, name: 'Birthday'}, 
+    {id: 2, name: 'Corporate'}, 
+    {id: 3, name: 'Social'}, 
+    {id: 4, name: 'Other'}
   ];
 
   constructor(
@@ -54,11 +55,11 @@ export class AddEventComponent implements OnInit {
 
   ngOnInit(): void {
     this.addEventForm = this.fb.group({
-      name: ['', Validators.required],
-      description: ['', Validators.required],
-      location: ['', Validators.required],
-      attendanceNumber: ['', Validators.required],
-      googleMapsLocation: ['', Validators.required],
+      name: ['', Validators.required, Validators.minLength(3)],
+      description: ['', Validators.required, Validators.minLength(3)],
+      location: ['', Validators.required, Validators.minLength(3)],
+      attendanceNumber: ['', Validators.required, Validators.min(0)],
+      googleMapsLocation: ['', Validators.minLength(3)],
       budget: ['', Validators.required],
       eventType: ['', Validators.required],
       eventDate: ['', Validators.required],
@@ -111,7 +112,9 @@ checkDate(endDate: any): boolean {
         if (error.status === 400 && error.error) {
           console.error('Validation errors:', error.error.errors);
         }
+        this.errorMessage = 'An error occurred while adding the event. Please try again.';
       }
+      
     });
   }
 }

@@ -1,7 +1,7 @@
 export enum Eventstype {
 Wedding = "Wedding",
 Birthday = "Birthday",
-Corporate = "Corporate",
+Corporate = "Corporate", 
 Social = "Social",
 Other  = "Other",
 }
