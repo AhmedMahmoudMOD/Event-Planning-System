@@ -15,4 +15,9 @@ export class ProfileService {
     return this.http.get(this.baseUrl + userId);
   }
 
+  // update profile
+  updateProfile(profile: any) {
+    return this.http.put(this.baseUrl, profile);
+  }
+
 }

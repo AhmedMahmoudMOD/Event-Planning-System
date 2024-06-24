@@ -38,4 +38,14 @@ export class ProfileComponent implements OnInit{
       }
     });
   }
+
+
+  // update profile
+  updateProfile(): void {
+    this.profileService.updateProfile(this.profile).subscribe({
+      next: d => {
+        this.profile = d;
+      }
+    });
+  }
 }
