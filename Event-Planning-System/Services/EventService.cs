@@ -269,12 +269,13 @@ namespace Event_Planning_System.Services
 			if (ditinctEmails.Count() >= (myEvent.AttendanceNumber - attendeesno))
 				return $"You cant add more guests, you invited ({attendeesno} of total {myEvent.AttendanceNumber}, you can invite {myEvent.AttendanceNumber - attendeesno})";
 			// Add guests
-			foreach (AttendanceDTO guest in ditinctEmails)
-				if (!await AddGuest(eventId, guest))
-					return "Invalid Email";
+			foreach (AttendanceDTO guest in ditinctEmails) { 
+			if (!await AddGuest(eventId, guest))
+				return "Invalid Email";
 			await SendEventMail(eventId, EmailType.Invite);
-			return "true";
-		}
+			}
+            return "true";
+        }
 		// Delete guest from the event
 		public async Task<bool> DeleteGuest(int eventId, string email)
 		{
