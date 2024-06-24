@@ -166,6 +166,7 @@
             (uploadHandler)="onUpload($event)"
           >
            <ng-template pTemplate="content">
+            <p-progressSpinner *ngIf="loading" styleClass="custom-spinner"></p-progressSpinner>
         </ng-template>
           </p-fileUpload>
         }

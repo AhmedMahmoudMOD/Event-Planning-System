@@ -31,13 +31,14 @@ import { EdittoDoListComponent } from '../../editto-do-list/editto-do-list.compo
 import { FileSelectEvent, FileSendEvent, FileUploadEvent, FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
 import { EventImage } from '../../shared/models/eventImage.model';
 import { AccountService } from '../../shared/services/account.service';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 
 
 @Component({
   selector: 'app-event-details',
   standalone: true,
-  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule, AddEmailsComponent,EditEventComponent,DataViewModule,EventsScheduleComponent,TableModule,AddtoDoListComponent,EdittoDoListComponent,FileUploadModule],
+  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule, AddEmailsComponent,EditEventComponent,DataViewModule,EventsScheduleComponent,TableModule,AddtoDoListComponent,EdittoDoListComponent,FileUploadModule,ProgressSpinnerModule],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.css'
 })
@@ -59,6 +60,7 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   userId:number|any;
   isOwner:boolean = false;
   isCanceled: boolean = false;
+  loading: boolean = false;
   eventDetails: Event | any = {};
   defaultImage = '../../../assets/images/software-developer-6521720_640.jpg';
   mapsURL: string | null = null;
@@ -308,9 +310,12 @@ setActiveLink(link: string): void {
       id:this.id
     }
 
+    this.loading = true;
+
     this.eventDetailsServices.UploadEventImage(EventImage).subscribe({
       next: (res) => {
         console.log(res);
+        this.loading = false;
         this.getEventDetails();
       },
       error: (error) => {
