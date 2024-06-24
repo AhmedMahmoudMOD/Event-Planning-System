@@ -35,7 +35,7 @@ namespace Event_Planning_System.Services
 			DateTime eventDate = eventExists.EventDate;
             if (newToDoListDTO.DeadLineTime <= dateNow || newToDoListDTO.DeadLineTime > eventDeadline || newToDoListDTO.DeadLineTime < eventDate)
 			{
-                return Result.Failure(new Error("400", "Invalid deadline"));
+                return Result.Failure(new Error("400", "Invalid Deadline, please Enter Valid Deadline"));
             }
 			ToDoList newToDoList;
 			try

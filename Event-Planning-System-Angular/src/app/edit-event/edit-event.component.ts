@@ -29,6 +29,8 @@ export class EditEventComponent implements OnInit {
   MinDate: Date = new Date();
   initialStartDate: Date = new Date();
   initialEndDate: Date = new Date();
+  submitted: boolean = false;
+  errorMessage: string = '';
 
   constructor(
     private eventService: EventService,
@@ -36,14 +38,14 @@ export class EditEventComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     this.editForm = this.fb.group({
-      name: ['', Validators.required],
-      description: [''],
-      location: ['', Validators.required],
-      attendanceNumber: [0, Validators.required],
-      googleMapsLocation: [''],
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      description: ['', [Validators.required, Validators.minLength(3)]],
+      location: ['', [Validators.required, Validators.minLength(3)]],
+      attendanceNumber: [0, [Validators.required, Validators.min(0)]],
+      googleMapsLocation: ['', Validators.minLength(3)],
       eventDate: [null, Validators.required],
       budget: [0, Validators.required],
-      endDate: [null, Validators.required]
+      endDate: [null, [Validators.required, this.checkDate.bind(this)]]
     });
   }
 
@@ -65,7 +67,6 @@ export class EditEventComponent implements OnInit {
           budget: this.oldEvent.budget,
           endDate: this.initialEndDate
         });
-     
       });
     }
   }
@@ -76,18 +77,32 @@ export class EditEventComponent implements OnInit {
 
   hideEditModal() {
     this.display = false;
+    this.errorMessage = '';
+    this.submitted = false;
+  }
+
+  checkDate(control: any): { [key: string]: boolean } | null {
+    const startDate = this.editForm?.get('eventDate')?.value;
+    const endDate = control.value;
+    if (startDate && endDate && endDate < startDate) {
+      return { 'dateMismatch': true };
+    }
+    return null;
   }
 
   saveChanges() {
-    if (this.editForm.valid) {
-      this.eventService.editEvent(this.eventId, this.editForm.value).subscribe(
-        () => {
-          this.hideEditModal();
-        },
-        (error) => {
-          console.error('Error saving event data:', error);
-        }
-      );
+    this.submitted = true;
+    if (this.editForm.invalid) {
+      return;
     }
+    this.eventService.editEvent(this.eventId, this.editForm.value).subscribe(
+      () => {
+        this.hideEditModal();
+      },
+      (error) => {
+        console.error('Error saving event data:', error);
+        this.errorMessage = 'An error occurred while saving the event. Please try again.';
+      }
+    );
   }
 }
