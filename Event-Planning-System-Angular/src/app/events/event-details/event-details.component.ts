@@ -56,6 +56,8 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   idsubscripe: Subscription = new Subscription();
   eventsubscription: Subscription = new Subscription();
   id: any | number;
+  userId:number|any;
+  isOwner:boolean = false;
   eventDetails: Event | any = {};
   defaultImage = '../../../assets/images/software-developer-6521720_640.jpg';
   mapsURL: string | null = null;
@@ -87,7 +89,13 @@ selectedToDos: any;
     });
     //get event details
     this.getEventDetails();
-   
+    this.userId = this.accountService.extractUserID();
+    console.log(this.userId, this.id);
+
+    this.accountService.checkOwnership(this.id,this.userId).subscribe(check=>{
+      console.log(check);
+      this.isOwner = check;
+    });
   }
 
 
