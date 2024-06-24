@@ -1,10 +1,10 @@
-import { AfterViewInit, Component, ElementRef, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { TabViewModule } from 'primeng/tabview';
 import { SelectButtonModule } from 'primeng/selectbutton';
-import { ActivatedRoute, Route, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { ScrollerModule } from 'primeng/scroller';
 import { TagModule } from 'primeng/tag';
@@ -20,9 +20,10 @@ import { AddEmailsComponent } from '../../add-emails/add-emails.component';
 import Swal from 'sweetalert2';
 import { EditEventComponent } from '../../edit-event/edit-event.component';
 import { ToDoListService } from '../../shared/services/to-do-list.service';
-import {DataView, DataViewModule} from 'primeng/dataview';
+import { DataViewModule } from 'primeng/dataview';
 import { EventsScheduleComponent } from '../events-schedule/events-schedule.component';
 import { ToDoList } from '../../shared/models/ToDoList';
+import { TableModule } from 'primeng/table';
 import {Table, TableLazyLoadEvent, TableModule} from 'primeng/table';
 
 import { AddtoDoListComponent } from '../../addto-do-list/addto-do-list.component';
@@ -40,10 +41,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
   standalone: true,
   imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule, AddEmailsComponent,EditEventComponent,DataViewModule,EventsScheduleComponent,TableModule,AddtoDoListComponent,EdittoDoListComponent,FileUploadModule,ProgressSpinnerModule],
   templateUrl: './event-details.component.html',
-  styleUrl: './event-details.component.css'
+  styleUrls: ['./event-details.component.css']
 })
-
-
 
 export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
 // loadToDoList($event: TableLazyLoadEvent) {
@@ -70,6 +69,8 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
 toDoList: any;
 selectionMode: any;
 selectedToDos: any;
+displayEditModal: boolean = false;
+todoTitle:string = '';
   // constructors
   constructor(private ActivatedRoute: ActivatedRoute,
     private eventDetailsServices: EventdetailsService,
@@ -245,9 +246,7 @@ setActiveLink(link: string): void {
   getEventTypeString(eventTypeInt: number): string | undefined {
     return eventTypeMapping[eventTypeInt];
   }
-
-
-  //to do list
+  
   getAllToDoList() {
     this.toDoListService.getToDoList(this.id).subscribe({
       next: (res:ToDoList[]) => {
@@ -260,6 +259,21 @@ setActiveLink(link: string): void {
     }
     );
   }
+  // loadToDoLists(event: any) {
+  //   this.toDoList = event;
+  //   this.toDoListService.getToDoList(this.id).subscribe({
+  //     next: (res:ToDoList[]) => {
+  //       this.toDoLists = res;
+  //       console.log(this.toDoLists);
+  //     },
+  //     error: (error) => {
+  //       console.error('Error fetching to-do list:', error);
+  //     }
+  //   });
+  // }
+  // openToDo(title: string) {
+  //   this.router.navigate(['/addto-do-list', this.id, title]);
+  // }
   deleteToDoList(eventId: number, name: string) {
     Swal.fire({
       title: 'Are you sure you want to delete this to-do list?',
@@ -275,7 +289,7 @@ setActiveLink(link: string): void {
           .subscribe({
             next: (res) => {
               Swal.fire('Deleted!', 'The to-do list has been successfully deleted.', 'success');
-              this.getAllToDoList(); 
+              this.getAllToDoList();
             },
             error: (error) => {
               console.error('Error deleting to-do list:', error);
@@ -285,9 +299,14 @@ setActiveLink(link: string): void {
       }
     });
   }
-  showAddToDoListModal() {
+  openEditModal(eventId: number ,title: string) {
+    this.todoTitle = title;
+    this.displayEditModal = true;
   }
-  showEditToDoListModal(toDoList: ToDoList) {
+  
+  hideEditModal() {
+    this.displayEditModal = false;
+    this.todoTitle = '';
   }
 
   getEventDuration(): string {
@@ -296,7 +315,7 @@ setActiveLink(link: string): void {
     const options : any = { year: 'numeric', month: 'long', day: 'numeric' };
     return `${startDate.toLocaleDateString('en-US', options)} - ${endDate.toLocaleDateString('en-US', options)}`;
   }
-  
+
   selectImage(event: FileSelectEvent): void {
     let EventImage: EventImage = {
       image: event.files[0],
