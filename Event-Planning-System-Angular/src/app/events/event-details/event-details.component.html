@@ -53,7 +53,7 @@
                         >Schedule</a>
                       
           </div>
-          @if(checkdate()&&isOwner){
+          @if(checkdate()&&isOwner&&!isCanceled){
           <div class="">
             <!-- <p-button
               label="Edit"
@@ -88,7 +88,7 @@
           <p style="font-size: 0.9rem">
             <i class="pi pi-wallet me-2"></i>
             <span class="text-success fw-bold">{{ eventDetails.budget }}</span>
-            Dollar
+            EGP
           </p>
           <p style="font-size: 0.9rem">
             <i class="pi pi-user me-2"></i>
@@ -100,13 +100,13 @@
           <!-- location -->
           <p style="font-size: 0.9rem">
             <i class="pi pi-map-marker me-2"></i>
-            <a href="#" class="">{{ eventDetails.location }}</a>
+            <span>{{ eventDetails.location }}</span>
           </p>
           <!-- Duration -->
 
           <p style="font-size: 0.9rem">
             <i class="pi pi-clock me-2"></i>
-            Duration: 2 days
+            Duration: {{ getEventDuration() }}
           </p>
           <!-- status -->
           <p style="font-size: 0.9rem">
@@ -149,7 +149,7 @@
                 />
               </ng-template>
             </p-galleria>
-            @if(checkdate()&&isOwner){
+            @if(checkdate()&&isOwner&&!isCanceled){
             <small class="fw-light fst-italic">
               <div class="mt-1"> Formats Premitied are .jpg , .png or .jpeg (Max Size : 1 MB) </div>
           </small>
@@ -201,7 +201,7 @@
               </p>
               }
             </p-scrollPanel>
-            @if(checkdate()&&isOwner){
+            @if(checkdate()&&isOwner&&!isCanceled){
             <app-add-emails></app-add-emails>
             }
           </div>

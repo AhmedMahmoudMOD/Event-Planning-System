@@ -58,6 +58,7 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   id: any | number;
   userId:number|any;
   isOwner:boolean = false;
+  isCanceled: boolean = false;
   eventDetails: Event | any = {};
   defaultImage = '../../../assets/images/software-developer-6521720_640.jpg';
   mapsURL: string | null = null;
@@ -150,6 +151,7 @@ selectedToDos: any;
     this.eventsubscription = this.eventDetailsServices.getEventById(this.id).subscribe({
       next: (res) => {
         this.eventDetails = res;
+        this.isCanceled = this.eventDetails.isCanceled;
         //console.log(this.eventDetails);
         if (this.eventDetails.eventImages.length === 0) {
           this.eventDetails.eventImages.push(this.defaultImage);
@@ -284,6 +286,13 @@ setActiveLink(link: string): void {
   showAddToDoListModal() {
   }
   showEditToDoListModal(toDoList: ToDoList) {
+  }
+
+  getEventDuration(): string {
+    const startDate = new Date(this.eventDetails.eventDate);
+    const endDate = new Date(this.eventDetails.endDate);
+    const options : any = { year: 'numeric', month: 'long', day: 'numeric' };
+    return `${startDate.toLocaleDateString('en-US', options)} - ${endDate.toLocaleDateString('en-US', options)}`;
   }
   
   selectImage(event: FileSelectEvent): void {
