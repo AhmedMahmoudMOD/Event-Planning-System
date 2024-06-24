@@ -39,7 +39,7 @@ export const routes: Routes = [
     { path: 'auth/confirmemail', component: EmailconfirmComponent , canActivate:[logGuardGuard] },
     { path: 'auth/forgotpassword', component: ForgotPasswordComponent , canActivate:[logGuardGuard] },
     { path: 'events', component:EventCalenderComponent , canActivate:[canLoginGuard] },
-    { path: 'eventList', component:EventListComponent , canActivate:[canLoginGuard] },
+    { path: 'eventslist', component:EventListComponent , canActivate:[canLoginGuard] },
     { path: 'sidebar', component: SidebarComponent },
     //event details
     { path: 'planner/eventdetails/:id', component: EventDetailsComponent },
