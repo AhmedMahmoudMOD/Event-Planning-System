@@ -227,6 +227,7 @@
                 [paginator]="true"
                 [rows]="5"
                 [lazy]="true"
+                [totalRecords]= "toDoLists.length"
               >
                 <ng-template pTemplate="header">
                   <tr>
@@ -244,7 +245,15 @@
                     <td>{{ toDoList.deadLineTime | date: 'medium' }}</td>
                     <td>{{ toDoList.toDoListBudget | currency }}</td>
                     <td>
-                      <app-editto-do-list></app-editto-do-list>
+
+                      <app-editto-do-list [toDoList]="toDoList"></app-editto-do-list>
+
+                         <!-- <button
+                        (click)="openToDo(toDoList.title)"
+                        class="btn btn-info btn-sm"
+                        aria-label="Edit To-Do List">
+                        <i class="bi bi-pencil-square"></i> Edit
+                      </button> -->
                       <button
                         (click)="deleteToDoList(toDoList.eventId,toDoList.title)"
                         class="btn btn-danger btn-sm"

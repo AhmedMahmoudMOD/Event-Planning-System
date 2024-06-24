@@ -1,5 +1,5 @@
 <p-button
-  label="Add"
+  label="New Event"
   [text]="true"
   severity="success"
   [raised]="true"
@@ -31,7 +31,7 @@
           placeholder="Enter event name"
         />
         <div *ngIf="(addEventForm.get('name')?.invalid && addEventForm.get('name')?.touched) || (submitted && addEventForm.get('name')?.hasError('minlength'))" class="p-error">
-          Title is required and must be at least 3 characters long.
+          Title is required and must be at least 3 characters.
         </div>
       </div>
 

@@ -25,8 +25,8 @@ export class ToDoListService {
     return this.http.delete(`${environment.apiUrl}/api/ToDoList/${eventId}/${name}`);
   }
 
-  updateTask(id: number, task: any){
-    return this.http.put(`${environment.apiUrl}/api/ToDoList/${id}`, task);
+  updateTask(eventId: number,title:string, task: any){
+    return this.http.put(`${environment.apiUrl}/api/ToDoList/${eventId}/${title}`, task);
   }
   getSpecificToDoList(id: number,name:string){
     return this.http.get(`${environment.apiUrl}/api/ToDoList/${id}/${name}`);

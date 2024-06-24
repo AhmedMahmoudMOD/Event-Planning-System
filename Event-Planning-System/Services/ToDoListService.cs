@@ -37,6 +37,11 @@ namespace Event_Planning_System.Services
 			{
                 return Result.Failure(new Error("400", "Invalid Deadline, please Enter Valid Deadline"));
             }
+			if(newToDoListDTO.ToDoListBudget > eventExists.Budget)
+			{
+                return Result.Failure(new Error("400", "Budget is more than the event budget"));
+            }
+            // Map the DTO to the model (ToDoList
 			ToDoList newToDoList;
 			try
 			{

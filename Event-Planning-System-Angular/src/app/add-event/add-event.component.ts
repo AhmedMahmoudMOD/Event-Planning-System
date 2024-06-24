@@ -39,11 +39,11 @@ export class AddEventComponent implements OnInit {
   minDate: Date = new Date();
   errorMessage: string = '';
   Types : eventTypes[] = [ 
-    {id: 1, name: 'Wedding'}, 
-    {id: 2, name: 'Birthday'}, 
-    {id: 3, name: 'Corporate'}, 
-    {id: 4, name: 'Social'}, 
-    {id: 6, name: 'Other'}
+    {id: 0, name: 'Wedding'}, 
+    {id: 1, name: 'Birthday'}, 
+    {id: 2, name: 'Corporate'}, 
+    {id: 3, name: 'Social'}, 
+    {id: 4, name: 'Other'}
   ];
 
   constructor(
@@ -51,22 +51,21 @@ export class AddEventComponent implements OnInit {
     private eventService: EventService,
     private httpclient: HttpClient,
     private router: Router
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.addEventForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3)]],
-      description: ['', [Validators.required, Validators.minLength(3)]],
-      location: ['', [Validators.required, Validators.minLength(3)]],
-      attendanceNumber: ['', [Validators.required, Validators.min(0)]],
+      name: ['', Validators.required, Validators.minLength(3)],
+      description: ['', Validators.required, Validators.minLength(3)],
+      location: ['', Validators.required, Validators.minLength(3)],
+      attendanceNumber: ['', Validators.required, Validators.min(0)],
       googleMapsLocation: ['', Validators.minLength(3)],
       budget: ['', Validators.required],
       eventType: ['', Validators.required],
       eventDate: ['', Validators.required],
-      endDate: ['', [Validators.required, this.checkDate.bind(this)]]
-    });
-  }
+      endDate: ['', Validators.required, this.checkDate]
 
-  ngOnInit(): void {
-   
+    });
   }
 checkDate(endDate: any): boolean {
   const datePipe = new DatePipe('en-US');
@@ -114,8 +113,8 @@ checkDate(endDate: any): boolean {
           console.error('Validation errors:', error.error.errors);
         }
         this.errorMessage = 'An error occurred while adding the event. Please try again.';
-
       }
+      
     });
   }
 }

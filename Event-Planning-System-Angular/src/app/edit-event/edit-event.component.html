@@ -4,7 +4,7 @@
   severity="help"
   [raised]="true"
   (click)="showEditModal()"
-></p-button>
+/>
 
 <p-dialog
   header="Edit Event"
@@ -13,13 +13,9 @@
   [style]="{ width: '50vw' }"
   [baseZIndex]="10000"
   [modal]="true"
-  class="edit-event-dialog"
->
+  class="edit-event-dialog">
   <ng-template pTemplate="content">
     <form [formGroup]="editForm" (ngSubmit)="saveChanges()" class="p-fluid">
-      <div *ngIf="errorMessage" class="p-error p-mb-3">
-        {{ errorMessage }}
-      </div>
 
       <div class="p-field">
         <label for="name">Title<span class="text-danger"> *</span></label>
@@ -28,77 +24,71 @@
           id="name"
           class="p-inputtext p-component"
           formControlName="name"
-          placeholder="Enter event name"
         />
-        <div *ngIf="(editForm.get('name')?.invalid && editForm.get('name')?.touched) || (submitted && editForm.get('name')?.hasError('minlength'))" class="p-error">
-          Title is required and must be at least 3 characters long.
+        <div *ngIf="editForm.get('name')?.invalid && editForm.get('name')?.touched" class="p-error">
+          Title is required.
         </div>
       </div>
 
       <div class="p-field">
-        <label for="description">Description<span class="text-danger"> *</span></label>
+        <label for="description">Description</label>
         <textarea
           id="description"
           class="p-inputtextarea p-component"
           formControlName="description"
           rows="3"
-          placeholder="Enter event description"
         ></textarea>
-        <div *ngIf="(editForm.get('description')?.invalid && editForm.get('description')?.touched) || (submitted && editForm.get('description')?.hasError('minlength'))" class="p-error">
-          Description is required and must be at least 3 characters long.
+        <div *ngIf="editForm.get('description')?.invalid && editForm.get('description')?.touched" class="p-error">
+          Description is required.
         </div>
       </div>
 
       <div class="p-field">
-        <label for="attendanceNumber">Attendance Number<span class="text-danger"> *</span></label>
+        <label for="attendanceNumber">Attendance Number</label>
         <input
           type="number"
           id="attendanceNumber"
           class="p-inputtext p-component"
           formControlName="attendanceNumber"
-          placeholder="Enter attendance number"
         />
-        <div *ngIf="(editForm.get('attendanceNumber')?.invalid && editForm.get('attendanceNumber')?.touched) || (submitted && editForm.get('attendanceNumber')?.hasError('min'))" class="p-error">
-          Attendance number is required and must be a non-negative number.
+        <div *ngIf="editForm.get('attendanceNumber')?.invalid && editForm.get('attendanceNumber')?.touched" class="p-error">
+          Attendance number is required.
         </div>
       </div>
 
       <div class="p-field">
-        <label for="location">Location<span class="text-danger"> *</span></label>
+        <label for="location">Location</label>
         <input
           type="text"
           id="location"
           class="p-inputtext p-component"
           formControlName="location"
-          placeholder="Enter event location"
         />
-        <div *ngIf="(editForm.get('location')?.invalid && editForm.get('location')?.touched) || (submitted && editForm.get('location')?.hasError('minlength'))" class="p-error">
-          Location is required and must be at least 3 characters long.
+        <div *ngIf="editForm.get('location')?.invalid && editForm.get('location')?.touched" class="p-error">
+          Location is required.
         </div>
       </div>
 
       <div class="p-field">
-        <label for="googleMapsLocation">Google Maps Location</label>
+        <label for="googleMapsLocation">Google Location</label>
         <input
           type="text"
           id="googleMapsLocation"
           class="p-inputtext p-component"
           formControlName="googleMapsLocation"
-          placeholder="Enter Google Maps location"
         />
         <div *ngIf="editForm.get('googleMapsLocation')?.invalid && editForm.get('googleMapsLocation')?.touched" class="p-error">
-          Google Maps location must be at least 3 characters long.
+          Google maps location is required.
         </div>
       </div>
 
       <div class="p-field">
-        <label for="budget">Budget<span class="text-danger"> *</span></label>
+        <label for="budget">Budget</label>
         <input
           type="number"
           id="budget"
           class="p-inputtext p-component"
           formControlName="budget"
-          placeholder="Enter event budget"
         />
         <div *ngIf="editForm.get('budget')?.invalid && editForm.get('budget')?.touched" class="p-error">
           Budget is required.
@@ -110,10 +100,8 @@
         <p-calendar
           id="eventDate"
           formControlName="eventDate"
-          [showTime]="true"
-          hourFormat="24"
           [showIcon]="true"
-          [minDate]="MinDate"
+          size="small"
         ></p-calendar>
         <div *ngIf="editForm.get('eventDate')?.invalid && editForm.get('eventDate')?.touched" class="p-error">
           Start date is required.
@@ -125,35 +113,37 @@
         <p-calendar
           id="endDate"
           formControlName="endDate"
-          [showTime]="true"
-          hourFormat="24"
           [showIcon]="true"
           [minDate]="editForm.get('eventDate')?.value || MinDate"
         ></p-calendar>
-        <div *ngIf="editForm.get('endDate')?.invalid && editForm.get('endDate')?.touched || editForm.get('endDate')?.hasError('dateMismatch')" class="p-error">
-          End date is required and must be after the start date.
+        <div *ngIf="editForm.get('endDate')?.invalid && editForm.get('endDate')?.touched" class="p-error">
+          End date is required.
         </div>
       </div>
 
+      <hr>
       <div class="p-dialog-footer">
+        
         <p-button
-          type="submit"
-          label="Save Changes"
-          icon="pi pi-check"
-          [text]="true"
-          [raised]="true"
-          severity="success"
-          size="small"
-        ></p-button>
+        type="submit"
+        label="Save Changes"
+        icon="pi pi-check"
+        [text]="true"
+        [raised]="true"
+        severity="success"
+        size="small"
+        />
         <p-button
           label="Cancel"
           icon="pi pi-times"
           severity="secondary"
           (click)="hideEditModal()"
+          class="custom-cancel-button"
           [text]="true"
           [raised]="true"
+          severity="secondary"
           size="small"
-        ></p-button>
+        />
       </div>
     </form>
   </ng-template>
