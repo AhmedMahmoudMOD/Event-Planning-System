@@ -33,6 +33,7 @@ body {
   border-radius: var(--border-radius);
   border: none;
   cursor: pointer;
+  text-align: center;
   transition: background-color var(--transition-speed),
     transform var(--transition-speed);
 }
@@ -43,7 +44,7 @@ body {
 }
 
 .add-btn:hover {
-  background-color: #154e45; /* Slightly darken primary color */
+  background-color: #106457; 
   transform: scale(1.05);
 }
 
@@ -53,7 +54,7 @@ body {
 }
 
 .edit-btn:hover {
-  background-color: #2e664a; /* Slightly darken secondary color */
+  background-color: #2e664a; 
   transform: scale(1.05);
 }
 
@@ -63,7 +64,7 @@ body {
 }
 
 .delete-btn:hover {
-  background-color: #cc9f00; /* Slightly darken accent color */
+  background-color: #cc9f00;
   transform: scale(1.05);
 }
 
