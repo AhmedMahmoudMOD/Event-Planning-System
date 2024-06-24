@@ -1,27 +1,27 @@
 <div class="main-container mb-5">
         <div class="calendar-header p-2">
-            <button class="btn bg-danger-subtle" (click)="goToPreviousMonth()"><i class="pi pi-angle-left" style="font-size: 2rem"></i></button>
-            <h2 class="fst-italic text-danger">{{ viewDate | date: 'MMMM yyyy' }}</h2>
-            <button class="btn bg-danger-subtle" (click)="goToNextMonth()"> <i class="pi pi-angle-right" style="font-size: 2rem"></i></button>
+            <button class="custom-btn btn-prim" (click)="goToPreviousMonth()"><i class="pi pi-angle-left" style="font-size: 2rem"></i></button>
+            <h2 class="custom-main-title">{{ viewDate | date: 'MMMM yyyy' }}</h2>
+            <button class="custom-btn btn-prim" (click)="goToNextMonth()"> <i class="pi pi-angle-right" style="font-size: 2rem"></i></button>
         </div>
 
         <div class="calendar-filters mx-2 row mt-3">
             <div class="form-group row col-6">
-                <label class="form-label col-auto my-auto">Search:</label>
+                <label class="form-label subtitle col-auto my-auto">Search:</label>
                 <input class="form-control col" type="text" [(ngModel)]="searchKeyword" (input)="filterEvents()" title="Search Keyword">
             </div>
-            <div class="form-group row col">
-                <label class="form-label col-auto my-auto">Type:</label>
+            <div class="form-group row col-6 col-md">
+                <label class="form-label subtitle col-auto my-auto">Type:</label>
                 <select class="form-control col" [(ngModel)]="selectedType" (change)="filterEvents()" title="Event Types">
                     <option *ngFor="let type of eventTypes" [value]="type">{{ type }}</option>
                 </select>
             </div>
-            <div class="form-group row col">
-                <label class="form-label col-auto my-auto">Start Date:</label>
+            <div class="form-group row col-6 col-md">
+                <label class="form-label subtitle col-auto my-auto">Start Date:</label>
                 <input class="form-control col w-25" type="date" [(ngModel)]="startDate" (change)="filterEvents()" title="Start Date">
             </div>
-            <div class="form-group row col">
-                <label class="form-label my-auto col-auto">End Date:</label>
+            <div class="form-group row col-6 col-md">
+                <label class="form-label subtitle my-auto col">End Date:</label>
                 <input class="form-control col w-25" type="date" [(ngModel)]="endDate" (change)="filterEvents()" title="End Date">
             </div>
         </div>
@@ -30,7 +30,7 @@
             <app-add-event class="col text-end"></app-add-event>
         </div>
     <div>
-        <mwl-calendar-month-view [viewDate]="viewDate" [events]="filteredEvents" (eventClicked)="eventDetails($event.event)">
+        <mwl-calendar-month-view [viewDate]="viewDate" [events]="filteredEvents" event class="fs-6 custom-main-title" (eventClicked)="eventDetails($event.event)">
         </mwl-calendar-month-view>
     </div>
 </div>
