@@ -1,23 +1,24 @@
 export const EVENT_COLORS: { [key: string]: any } = {
-    Wedding: {
-      primary: '#402E7A',
-      secondary: '#FAE3E3',
-    },
-    Birthday: {
-      primary: '#4C3BCF',
-      secondary: '#D1E8FF',
-    },
-    Corporate: {
-      primary: '#4B70F5',
-      secondary: '#FDF1BA',
-    },
-    Social: {
-      primary: '#3DC2EC',
-      secondary: '#ccffcc',
-    },
-    Other: {
-      primary: '#ff00ff',
-      secondary: '#ffccff',
-    }
-  };
+  Wedding: {
+    primary: "#1C6758",  
+    secondary: "#A3D9C8",
+  },
+  Birthday: {
+    primary: '#216399',  
+    secondary: '#A4C8E1',
+  },
+  Corporate: {
+    primary: '#46CD14',  
+    secondary: '#C4F7A3',
+  },
+  Social: {
+    primary: '#FFBF00',  
+    secondary: '#FFE680', 
+  },
+  Other: {
+    primary: '#333333',  
+    secondary: '#CCCCCC',
+  }
+};
+
   

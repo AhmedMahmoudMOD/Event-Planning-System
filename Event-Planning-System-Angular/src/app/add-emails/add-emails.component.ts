@@ -86,7 +86,7 @@ export class AddEmailsComponent implements OnDestroy, OnInit {
       .addAttendance(this.eventId, this.emails)
       .subscribe({
         next: () => {
-          this.successMessage = 'Emails added successfully';
+          this.successMessage = 'Emails submitted successfully';
           this.loading = false;
         },
         error: (error) => {
