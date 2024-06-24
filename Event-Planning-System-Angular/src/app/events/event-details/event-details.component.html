@@ -46,15 +46,14 @@
                         <a class="link-tab fw-bold" 
                         [ngClass]="{'text-info blue-nav': activeLink === 'todolist'}" 
                         (click)="setActiveLink('todolist')"
-                        (click)="getAllToDoList()"
-                        >ToDo List</a>
+                        (click)="getAllToDoList()" *ngIf="isOwner">ToDo List</a>
                         <a class="link-tab fw-bold" 
                         [ngClass]="{'text-info blue-nav': activeLink === 'schedule'}" 
                         (click)="setActiveLink('schedule')"
                         >Schedule</a>
                       
           </div>
-          @if(checkdate()){
+          @if(checkdate()&&isOwner){
           <div class="">
             <!-- <p-button
               label="Edit"
@@ -150,7 +149,7 @@
                 />
               </ng-template>
             </p-galleria>
-            @if(checkdate()){
+            @if(checkdate()&&isOwner){
             <small class="fw-light fst-italic">
               <div class="mt-1"> Formats Premitied are .jpg , .png or .jpeg (Max Size : 1 MB) </div>
           </small>
@@ -202,7 +201,7 @@
               </p>
               }
             </p-scrollPanel>
-            @if(checkdate()){
+            @if(checkdate()&&isOwner){
             <app-add-emails></app-add-emails>
             }
           </div>
@@ -291,7 +290,7 @@
   
   
 @if (activeLink=="schedule"){
-  <app-events-schedule [readonly]="checkEndDate()"></app-events-schedule>
+  <app-events-schedule [readonly]="checkEndDate()||!isOwner"></app-events-schedule>
 }
 
 </div>

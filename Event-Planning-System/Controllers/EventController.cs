@@ -187,6 +187,17 @@ namespace Event_Planning_System.Controllers
             }
         }
 
+        [HttpGet("check/{eventId:int}/{userId:int}")]
+        public async Task<IActionResult> IsOwnEvent(int eventId,int userId)
+		{
+            var result = await eventService.isOwnEvent(eventId, userId);
+			if (!result)
+				return Ok(false);
+            return Ok(true);
+
+        }
+        
+
     }
 
 }

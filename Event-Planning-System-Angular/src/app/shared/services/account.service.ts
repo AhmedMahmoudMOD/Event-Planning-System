@@ -59,6 +59,10 @@ export class AccountService {
     return decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
   }
 
+  checkOwnership(eventId:number,userId:number){
+    return this.http.get<boolean>(this.baseUrl + `Event/check/${eventId}/${userId}`);
+  }
+
 
   logout(){
     this.isLoggedIn = false; 
@@ -73,6 +77,12 @@ export class AccountService {
     return this.http.post(this.baseUrl + 'auth/resetpassword',model);
   }
 
+  LoggedIn(){
+    if(localStorage.getItem('token') != null){
+      return true;
+    }
+    return false;
+  }
 
 
 }
