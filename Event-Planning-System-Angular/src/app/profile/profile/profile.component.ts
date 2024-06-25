@@ -6,11 +6,14 @@ import { ProfileService } from '../../shared/services/profile.service';
 import { Profile } from '../../shared/models/profile';
 import { AccountService } from '../../shared/services/account.service';
 import { finalize } from 'rxjs';
+import { ButtonModule } from '@syncfusion/ej2-angular-buttons';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterLink, FormsModule],
+  imports: [CommonModule, RouterModule, RouterLink, FormsModule, ButtonModule, HttpClientModule, BrowserAnimationsModule],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css',
 })
