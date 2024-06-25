@@ -29,8 +29,8 @@ import { FormsModule } from '@angular/forms';
     RouterModule, 
     RouterLink,
     FormsModule,
-    // ConfirmationService
-    ],  
+  ],  
+  providers: [ConfirmationService, MessageService],
   templateUrl: './profile-update.component.html',
   styleUrls: ['./profile-update.component.css'],
 })
