@@ -113,9 +113,12 @@ namespace Event_Planning_System.Services
 		{
 			if(newToDoList.DeadLineTime <= DateTime.Now)
                 return Result.Failure(new Error("400", "Invalid deadline"));
+
             var currentToDoList = await db.ToDoLists.FirstOrDefaultAsync(x => x.EventId == eventId && x.Title == name);
+
 			if (currentToDoList.DeadLineTime <= DateTime.Now)
 				return Result.Failure(new Error("400", "can't edit todo list"));
+
 			if (currentToDoList == null)
 				return Result.Failure(new Error("400", "To do list not found"));
 
