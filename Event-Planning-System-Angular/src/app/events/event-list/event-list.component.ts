@@ -4,7 +4,7 @@ import { Event, EventType } from '../../shared/models/eventsListRes.model';
 import { ActivatedRoute, RouterLink, RouterModule } from '@angular/router';
 import { PaginatorModule } from 'primeng/paginator';
 import { EventListService } from '../../shared/services/event-list.service';
-import { FormsModule } from '@angular/forms'; 
+import { FormsModule } from '@angular/forms';
 import { AddEventComponent } from '../../add-event/add-event.component';
 import { SidebarComponent } from '../../sidebar/sidebar.component';
 import { AccountService } from '../../shared/services/account.service';
@@ -52,4 +52,13 @@ export class EventListComponent implements OnInit {
       event.location.toLowerCase().includes(query)
     );
   }
+
+  // count the number of events in eventList
+  
+
+
+
+
 }
+
+

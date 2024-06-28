@@ -3,7 +3,7 @@
         <form [formGroup]="registerForm" (ngSubmit)="reg()">
             <p-card header="Sign Up" subheader="Welcome to EPP 🎉" [style]="{width:'600px'}"> 
                 <small class="fw-light fst-italic">
-                    <div class="text-danger mb-4"> * <span class="text-dark">Required Fields</span></div>
+                    <div class="text-danger mb-4"> * <span class="text-dark">Required Field</span><span class="text-dark-emphasis"> (You must be over 18 to sign up) </span></div>
                 </small>
                 <div class="row">
                 <div class="col">
@@ -75,7 +75,7 @@
                 </div>
                 <div class="col">
                     <p-floatLabel>
-                        <p-calendar formControlName="dob" id="dob" class="p-fluid" name="dob" dateFormat="dd/mm/yy" showOnFocus="true" showButtonBar="true"/>
+                        <p-calendar formControlName="dob" id="dob" class="p-fluid" name="dob" dateFormat="dd/mm/yy" showOnFocus="true" showButtonBar="true" [maxDate]="eighteenYearsAgo" [defaultDate]="eighteenYearsAgo"/>
                         <label for="dob">Date of Birth<span class="text-danger"> *</span></label>
                     </p-floatLabel>
                     <small *ngIf="dobControl.invalid && (dobControl.dirty||dobControl.touched)" class="block p-error">
@@ -123,7 +123,7 @@
                 </div>
             </div>
             <small class="fw-light fst-italic">
-                <div class="mt-3"> Format is .jpg , .png or .jpeg (Max Size : 3 MB) </div>
+                <div class="mt-3"> Formats Permitted are .jpg , .png or .jpeg (Max Size : 1 MB) </div>
             </small>
             <p-fileUpload 
             mode="basic" 

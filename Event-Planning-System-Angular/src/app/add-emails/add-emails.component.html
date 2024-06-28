@@ -1,11 +1,5 @@
 <div class="text-center mt-2">
-    <p-button
-    label="Invite"
-    [text]="true"
-    severity="success"
-    [raised]="true"
-    (click)="openModal()"
-  />
+    <button class="custom-btn add-btn" (click)="openModal()">Invite</button>
 </div>
 
 <!-- Modal Dialog -->
@@ -23,7 +17,7 @@
                 text="{{ successMessage }}"></p-message>
         </div>
         <div class="text-center mt-3">
-            <button pButton type="button" class="btn btn-success px-3" label="Submit Emails" (click)="submitEmails()"
+            <button pButton type="button" class="custom-btn add-btn px-3" label="invite" (click)="submitEmails()"
                 [disabled]="loading"></button>
         </div>
     </div>

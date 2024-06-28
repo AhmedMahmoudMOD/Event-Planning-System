@@ -3,7 +3,7 @@
     <main class="main-content">
         <header class="profile-header">
             <div class="user-info">
-                <img [src]="defaultImage" alt="Profile Picture" class="profile-picture">
+                <img [src]="profile.image ? profile.image : defaultImage" alt="Profile Picture" class="profile-picture">
                 <div>
                     <h2>{{ profile.fName + " " + profile.lName }}</h2>
                     <p>{{ profile.street + ", " + profile.city + ", " + profile.region }}</p>
@@ -14,7 +14,7 @@
         <!-- <section class="profile-stats">
             <div class="stat">
                 <p>Events Created</p>
-                <p>32</p>
+                <p>{{eventCount}}</p>
             </div>
             <div class="stat">
                 <p>Opportunities won</p>
@@ -22,7 +22,7 @@
             </div>
 
             <div class="public-profile-link">
-                <a href="https://app.hireground.com">View Public Profile</a>
+                <a href="/events">View My Events</a>
             </div>
         </section> -->
         <section class="profile-settings">
