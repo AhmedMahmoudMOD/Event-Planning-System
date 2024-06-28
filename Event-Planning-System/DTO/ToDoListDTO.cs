@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Event_Planning_System.DTO
 {
@@ -14,5 +15,8 @@ namespace Event_Planning_System.DTO
 		public DateTime DeadLineTime { get; set; }
 		[Required]
 		public int EventId { get; set; }
+
+		[DefaultValue(false)]
+		public bool IsDone { get; set; }
 	}
 }
