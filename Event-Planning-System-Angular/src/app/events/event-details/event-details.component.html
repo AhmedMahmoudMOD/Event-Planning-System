@@ -218,7 +218,6 @@
               <div class="d-flex"></div>
               <div>
                 <app-addto-do-list></app-addto-do-list>
-                
               </div>
             </div>
             <div class="mt-3">
@@ -227,7 +226,7 @@
                 [paginator]="true"
                 [rows]="5"
                 [lazy]="true"
-                [totalRecords]= "toDoLists.length"
+                [totalRecords]="toDoLists.length"
               >
                 <ng-template pTemplate="header">
                   <tr>
@@ -235,28 +234,29 @@
                     <th>Description</th>
                     <th>Deadline</th>
                     <th>Budget</th>
+                    <th>Status</th>
                     <th>Actions</th>
                   </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-toDoList>
                   <tr>
+                    <td>
+                      <input type="checkbox" [(ngModel)]="toDoList.isDone" (change)="onCheckboxChange(toDoList.title,toDoList.isDone)" />
+                    </td>
                     <td>{{ toDoList.title }}</td>
                     <td>{{ toDoList.description }}</td>
                     <td>{{ toDoList.deadLineTime | date: 'medium' }}</td>
                     <td>{{ toDoList.toDoListBudget | currency }}</td>
+                    <td [style.color]="toDoList.isDone ? '#22c55e' : '#f3425f'">
+                      {{ toDoList.isDone ? 'Done' : 'Pending' }}
+                      <i [class]="toDoList.isDone ? 'bi bi-check-circle' : 'bi bi-clock'"></i>
+                    </td>
                     <td>
-
                       <app-editto-do-list [toDoList]="toDoList"></app-editto-do-list>
-
-                         <!-- <button
-                        (click)="openToDo(toDoList.title)"
-                        class="btn btn-info btn-sm"
-                        aria-label="Edit To-Do List">
-                        <i class="bi bi-pencil-square"></i> Edit
-                      </button> -->
+                     
                       <button
-                        (click)="deleteToDoList(toDoList.eventId,toDoList.title)"
-                        class="btn btn-danger btn-sm"
+                        (click)="deleteToDoList(toDoList.eventId, toDoList.title)"
+                        class="btn btn-danger btn-sm me-2"
                         aria-label="Delete To-Do List"
                       >
                         <i class="bi bi-trash"></i> Delete

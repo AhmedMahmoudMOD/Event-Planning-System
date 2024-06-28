@@ -153,8 +153,25 @@ namespace Event_Planning_System.Services
 			catch { return false; }
 		}
 
+        //update status of to do list
+        public async Task<Result> UpdateToDoListStatus(int eventId, string name, bool status)
+        {
+            var currentToDoList = await db.ToDoLists.FirstOrDefaultAsync(x => x.EventId == eventId && x.Title == name);
+            if (currentToDoList == null)
+                return Result.Failure(new Error("400", "To do list not found"));
+            currentToDoList.IsDone = status;
+            db.Entry(currentToDoList).State = EntityState.Modified;
+            try
+            {
+                await unitOfWork.saveAsync();
+                return Result.Success();
+            }
+            catch (Exception ex)
+            {
+                return Result.Failure(new Error("400", ex.Message));
+            }
+        }
 
 
-
-	}
+    }
 }

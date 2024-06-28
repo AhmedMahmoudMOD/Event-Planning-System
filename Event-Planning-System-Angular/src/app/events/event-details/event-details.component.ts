@@ -77,7 +77,6 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   toDoLists: ToDoList[] = [];
 toDoList: any;
 selectionMode: any;
-selectedToDos: any;
 displayEditModal: boolean = false;
 todoTitle:string = '';
   // constructors
@@ -255,6 +254,7 @@ setActiveLink(link: string): void {
       next: (res:ToDoList[]) => {
         this.toDoLists = res;
         console.log(this.toDoLists);
+
       },
       error: (error) => {
         console.error('Error fetching to-do list:', error);
@@ -301,6 +301,18 @@ setActiveLink(link: string): void {
           });
       }
     });
+  }
+  //change status of to do list
+  onCheckboxChange(title: string,status:boolean): void {
+    this.toDoListService.updateToDoListStatus(this.id, title, status)
+      .subscribe({
+        next: (res) => {
+          console.log(res);
+        },
+        error: (error) => {
+          console.error('Error updating to-do list status:', error);
+        }
+      });
   }
   openEditModal(eventId: number ,title: string) {
     this.todoTitle = title;

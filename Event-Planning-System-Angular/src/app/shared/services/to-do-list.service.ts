@@ -31,5 +31,8 @@ export class ToDoListService {
   getSpecificToDoList(id: number,name:string){
     return this.http.get(`${environment.apiUrl}/api/ToDoList/${id}/${name}`);
   }
+  updateToDoListStatus(eventId: number,name:string,status:boolean){
+    return this.http.put(`${environment.apiUrl}/api/ToDoList/${eventId}/${name}/${status}`,null);
+  }
 
 }
