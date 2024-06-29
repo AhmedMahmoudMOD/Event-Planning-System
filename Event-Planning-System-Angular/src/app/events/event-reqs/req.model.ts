@@ -1,6 +1,10 @@
+import { ReqStatus } from "./req.status.enum";
+
 export interface Req {
-    fullName: string;
+    fName: string;
+    lName: string;
     email: string;
     image: string;
-    status: string;
+    requestStatus: ReqStatus;
+    id: number;
 }
