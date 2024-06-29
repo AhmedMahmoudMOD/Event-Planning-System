@@ -33,7 +33,7 @@ namespace Event_Planning_System.Services
             DateTime dateNow = DateTime.Now;
 			DateTime eventDeadline = eventExists.EndDate;
 			DateTime eventDate = eventExists.EventDate;
-            if (newToDoListDTO.DeadLineTime <= dateNow || newToDoListDTO.DeadLineTime > eventDeadline || newToDoListDTO.DeadLineTime < eventDate)
+            if (newToDoListDTO.DeadLineTime <= dateNow || newToDoListDTO.DeadLineTime > eventDeadline )
 			{
                 return Result.Failure(new Error("400", "Invalid Deadline, please Enter Valid Deadline"));
             }
@@ -89,7 +89,6 @@ namespace Event_Planning_System.Services
 		//get to do list by event id && name
 		public async Task<ToDoListDTO> GetToDoListByNameId(int eventId, string name)
 		{
-<<<<<<< Updated upstream
 			var toDoList = db.ToDoLists.FirstOrDefault(x => x.EventId == eventId && x.Title == name);
 			if (toDoList == null)
 			{
@@ -136,29 +135,6 @@ namespace Event_Planning_System.Services
 				
 				return Result.Failure(new Error("400", ex.Message));
             }
-=======
-			return db.ToDoLists.FirstOrDefault(x => x.EventId == eventId && x.Title == name);
-		}
-		//update to do list
-		public async Task<bool> UpdateToDoList(int eventId, string name, ToDoListDTO newToDoList)
-		{
-			var currentToDoList =  db.ToDoLists.FirstOrDefault(x => x.EventId == eventId && x.Title == name);
-			if (currentToDoList == null)
-				return false;
-
-			// Map the properties from DTO to the existing entity
-			mapper.Map(newToDoList, currentToDoList);
-
-			// Mark the entity as modified
-			unitOfWork.ToDoListRepo.Edit(currentToDoList);
-
-			// Save changes
-			 unitOfWork.save();
-			return true;
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 		}
 
 

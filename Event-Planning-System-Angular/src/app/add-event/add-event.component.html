@@ -54,11 +54,11 @@
         <p-calendar
           id="eventDate"
           formControlName="eventDate"
-          dateFormat="yy-mm-dd"
           [showTime]="true"
-          hourFormat="24"
+          hourFormat="12"
           [showIcon]="true"
           [minDate]="minDate"
+          (mousewheel)="onScroll($event)"
         ></p-calendar>
         <div *ngIf="addEventForm.get('eventDate')?.invalid && addEventForm.get('eventDate')?.touched" class="p-error">
           Start date is required.
@@ -70,15 +70,17 @@
         <p-calendar
           id="endDate"
           formControlName="endDate"
-          [showTime]="true"
           hourFormat="12"
           [showIcon]="true"
-          [minDate]="addEventForm.get('eventDate')?.value || minDate"
+          [showTime]="true"
+          [minDate]="minDate"
+          (mousewheel)="onScroll($event)"
         ></p-calendar>
         <div *ngIf="addEventForm.get('endDate')?.invalid && addEventForm.get('endDate')?.touched" class="p-error">
-          End date is required and must be after the start date.
+          End date is required and must be at least one hour after the start date.
         </div>
       </div>
+      
 
       <div class="p-field">
         <label for="attendanceNumber">Attendance Number</label>
@@ -88,6 +90,7 @@
           class="p-inputtext p-component"
           formControlName="attendanceNumber"
           placeholder="Enter attendance number"
+          (mousewheel)="onScroll($event)"
         />
         <div *ngIf="addEventForm.get('attendanceNumber')?.invalid && addEventForm.get('attendanceNumber')?.touched" class="p-error">
           Attendance number is required and must be a non-negative number.
@@ -102,6 +105,7 @@
           class="p-inputtext p-component"
           formControlName="budget"
           placeholder="Enter event budget"
+          (mousewheel)="onScroll($event)"
         />
         <div *ngIf="addEventForm.get('budget')?.invalid && addEventForm.get('budget')?.touched" class="p-error">
           Budget is required.
@@ -112,7 +116,7 @@
         <label for="eventType">Event Type<span class="text-danger"> *</span></label>
         <select formControlName="eventType" class="form-select" name="Types" id="Type" required>
           <option value="">Select Event Type</option>
-          <option *ngFor="let event of Types" [value]="event.id | number">{{event.name}}</option>
+          <option *ngFor="let event of Types" [value]="event.id">{{event.name}}</option>
         </select>
         <div *ngIf="addEventForm.get('eventType')?.invalid && addEventForm.get('eventType')?.touched" class="p-error">
           Event Type is required.
@@ -159,6 +163,7 @@
           label="Add Event"
           icon="pi pi-check"
           class="p-button-primary"
+          [loading]="loading"
         ></p-button>
       </div>
     </form>

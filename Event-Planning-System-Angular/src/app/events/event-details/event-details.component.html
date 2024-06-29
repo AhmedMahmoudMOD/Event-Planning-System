@@ -230,6 +230,7 @@
               >
                 <ng-template pTemplate="header">
                   <tr>
+                    <th></th>
                     <th>Title</th>
                     <th>Description</th>
                     <th>Deadline</th>
@@ -246,7 +247,7 @@
                     <td>{{ toDoList.title }}</td>
                     <td>{{ toDoList.description }}</td>
                     <td>{{ toDoList.deadLineTime | date: 'medium' }}</td>
-                    <td>{{ toDoList.toDoListBudget | currency }}</td>
+                    <td>{{ toDoList.toDoListBudget }}</td>
                     <td [style.color]="toDoList.isDone ? '#22c55e' : '#f3425f'">
                       {{ toDoList.isDone ? 'Done' : 'Pending' }}
                       <i [class]="toDoList.isDone ? 'bi bi-check-circle' : 'bi bi-clock'"></i>
@@ -256,7 +257,8 @@
                      
                       <button
                         (click)="deleteToDoList(toDoList.eventId, toDoList.title)"
-                        class="btn btn-danger btn-sm me-2"
+                        class="btn-danger btn-sm me-2"
+                        style="border: none; padding: 0.2rem 0.5rem; border-radius: 5px; cursor: pointer; background-color: #ee2b4b;"
                         aria-label="Delete To-Do List"
                       >
                         <i class="bi bi-trash"></i> Delete

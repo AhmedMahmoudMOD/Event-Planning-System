@@ -37,7 +37,7 @@ export class EditEventComponent implements OnInit {
   ) {
     this.editForm = this.fb.group({
       name: ['', Validators.required],
-      description: [''],
+      description: ['', Validators.required],
       location: ['', Validators.required],
       attendanceNumber: [0, Validators.required],
       googleMapsLocation: [''],
@@ -71,6 +71,10 @@ export class EditEventComponent implements OnInit {
     }
   }
 
+  //prevent changing with the mouse wheel
+  onScroll(event: any) {
+    event.preventDefault();
+  }
   showEditModal() {
     this.display = true;
   }

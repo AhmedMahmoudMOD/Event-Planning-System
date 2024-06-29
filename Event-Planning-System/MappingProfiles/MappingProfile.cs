@@ -11,18 +11,6 @@ namespace Event_Planning_System.MappingProfiles
 		public MappingProfile()
 		{
 			CreateMap<User, UserDto>().ReverseMap().ForMember(dist => dist.UserName, opt => opt.MapFrom(src => src.Email)).ForMember(dist => dist.Image, opt => opt.Ignore());
-<<<<<<< Updated upstream
-            //map the EndDate and EventDate to a string in the format "yyyy-MM-dd'T'HH:mm" in the same line
-            CreateMap<Event, EventDTO>().ForMember(dest => dest.EventDate, opt => opt.MapFrom(src => src.EventDate.ToString("yyyy-MM-dd'T'HH:mm"))).ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => src.EndDate.ToString("yyyy-MM-dd'T'HH:mm"))).ReverseMap();
-=======
-			CreateMap<Event, EventDTO>().ForMember(dest => dest.EventDate, opt => opt.MapFrom(src => src.EventDate.ToString("yyyy-MM-dd'T'HH:mm"))).ReverseMap();
-			CreateMap<Attendance, AttendanceDTO>().ReverseMap();
-			CreateMap<ToDoListDTO, ToDoList>().ReverseMap();
-			CreateMap<ToDoListDTO, ToDoList>()
-					   .ReverseMap()
-						.ForMember(dest => dest.DeadLineTime, opt => opt.MapFrom(src => src.DeadLineTime));
->>>>>>> Stashed changes
-
 
             CreateMap<Event, EditEventDTO>().ForMember(dest => dest.EventDate, opt => opt.MapFrom(src => src.EventDate.ToString("yyyy-MM-dd'T'HH:mm"))).ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => src.EndDate.ToString("yyyy-MM-dd'T'HH:mm"))).ReverseMap();
             CreateMap<Attendance, AttendanceDTO>().ReverseMap();

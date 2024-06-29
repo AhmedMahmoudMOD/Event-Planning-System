@@ -13,7 +13,7 @@ import { ChipModule } from 'primeng/chip';
 import { GalleriaModule } from 'primeng/galleria';
 import { ImageModule } from 'primeng/image';
 import { SafePipe } from './safe.pipe';
-import { Subscription } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
 import { EventdetailsService } from '../../shared/services/events/eventdetails.service';
 import { eventTypeMapping } from '../../shared/enums/eventstype';
 import { AddEmailsComponent } from '../../add-emails/add-emails.component';
@@ -22,37 +22,24 @@ import { EditEventComponent } from '../../edit-event/edit-event.component';
 import { ToDoListService } from '../../shared/services/to-do-list.service';
 import { DataViewModule } from 'primeng/dataview';
 import { EventsScheduleComponent } from '../events-schedule/events-schedule.component';
-import { ToDoList } from '../../shared/models/ToDoList';
-import { TableModule } from 'primeng/table';
+import { ToDoList } from '../../shared/models/toDoList';
+import {Table, TableLazyLoadEvent, TableModule} from 'primeng/table';
+
 import { AddtoDoListComponent } from '../../addto-do-list/addto-do-list.component';
 import { EdittoDoListComponent } from '../../editto-do-list/editto-do-list.component';
+
+import { FileSelectEvent, FileSendEvent, FileUploadEvent, FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
+import { EventImage } from '../../shared/models/eventImage.model';
+import { AccountService } from '../../shared/services/account.service';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import swal from 'sweetalert';
+
+
 
 @Component({
   selector: 'app-event-details',
   standalone: true,
-  imports: [
-    FormsModule,
-    GalleriaModule,
-    SafePipe,
-    ImageModule,
-    ChipModule,
-    CardModule,
-    CheckboxModule,
-    ButtonModule,
-    TabViewModule,
-    SelectButtonModule,
-    RouterLink,
-    ScrollPanelModule,
-    ScrollerModule,
-    TagModule,
-    AddEmailsComponent,
-    EditEventComponent,
-    DataViewModule,
-    EventsScheduleComponent,
-    TableModule,
-    AddtoDoListComponent,
-    EdittoDoListComponent
-  ],
+  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule, AddEmailsComponent,EditEventComponent,DataViewModule,EventsScheduleComponent,TableModule,AddtoDoListComponent,EdittoDoListComponent,FileUploadModule,ProgressSpinnerModule],
   templateUrl: './event-details.component.html',
   styleUrls: ['./event-details.component.css']
 })
@@ -69,6 +56,10 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   idsubscripe: Subscription = new Subscription();
   eventsubscription: Subscription = new Subscription();
   id: any | number;
+  userId:number|any;
+  isOwner:boolean = false;
+  isCanceled: boolean = false;
+  loading: boolean = false;
   eventDetails: Event | any = {};
   defaultImage = '../../../assets/images/software-developer-6521720_640.jpg';
   mapsURL: string | null = null;
@@ -83,8 +74,9 @@ todoTitle:string = '';
   constructor(private ActivatedRoute: ActivatedRoute,
     private eventDetailsServices: EventdetailsService,
     private el: ElementRef, private renderer: Renderer2,
+
     private router: Router,
-    private toDoListService: ToDoListService
+    private toDoListService: ToDoListService,public accountService:AccountService
   ) { }
 
   ngAfterViewInit() {
@@ -100,7 +92,13 @@ todoTitle:string = '';
     });
     //get event details
     this.getEventDetails();
-   
+    this.userId = this.accountService.extractUserID();
+    console.log(this.userId, this.id);
+
+    this.accountService.checkOwnership(this.id,this.userId).subscribe(check=>{
+      console.log(check);
+      this.isOwner = check;
+    });
   }
 
 
@@ -155,6 +153,7 @@ todoTitle:string = '';
     this.eventsubscription = this.eventDetailsServices.getEventById(this.id).subscribe({
       next: (res) => {
         this.eventDetails = res;
+        this.isCanceled = this.eventDetails.isCanceled;
         //console.log(this.eventDetails);
         if (this.eventDetails.eventImages.length === 0) {
           this.eventDetails.eventImages.push(this.defaultImage);
@@ -178,7 +177,7 @@ todoTitle:string = '';
   // heck the data
   checkdate() {
     const currentDate = new Date();
-    const eventDate = new Date(this.eventDetails.eventDate);
+    const eventDate = new Date(this.eventDetails.endDate);
     return eventDate >= currentDate;
   }
 
@@ -246,9 +245,9 @@ setActiveLink(link: string): void {
   getEventTypeString(eventTypeInt: number): string | undefined {
     return eventTypeMapping[eventTypeInt];
   }
-   //        \\
-  //to do list\\
- //            \\
+  
+
+  ///////////////////////////to do list////////////////////////
   getAllToDoList() {
     this.toDoListService.getToDoList(this.id).subscribe({
       next: (res:ToDoList[]) => {
@@ -260,7 +259,7 @@ setActiveLink(link: string): void {
         console.error('Error fetching to-do list:', error);
       }
     }
-     );
+    );
   }
   // loadToDoLists(event: any) {
   //   this.toDoList = event;
@@ -307,7 +306,12 @@ setActiveLink(link: string): void {
     this.toDoListService.updateToDoListStatus(this.id, title, status)
       .subscribe({
         next: (res) => {
-          console.log(res);
+          if(res){
+            swal('Great Job!', 'To-do list accomplished successfully.', 'success',{timer: 3000});
+          }
+          else{
+            swal('pending!', 'To-do list is pending now.', 'success',{timer: 3000});
+          }
         },
         error: (error) => {
           console.error('Error updating to-do list status:', error);
@@ -323,8 +327,40 @@ setActiveLink(link: string): void {
     this.displayEditModal = false;
     this.todoTitle = '';
   }
-  
-  
+
+  getEventDuration(): string {
+    const startDate = new Date(this.eventDetails.eventDate);
+    const endDate = new Date(this.eventDetails.endDate);
+    const options : any = { year: 'numeric', month: 'long', day: 'numeric' };
+    return `${startDate.toLocaleDateString('en-US', options)} - ${endDate.toLocaleDateString('en-US', options)}`;
+  }
+
+  selectImage(event: FileSelectEvent): void {
+    let EventImage: EventImage = {
+      image: event.files[0],
+      id:this.id
+    }
+  }
+
+  onUpload(event: FileUploadHandlerEvent): void {
+    let EventImage: EventImage = {
+      image: event.files[0],
+      id:this.id
+    }
+
+    this.loading = true;
+
+    this.eventDetailsServices.UploadEventImage(EventImage).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.loading = false;
+        this.getEventDetails();
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    });
+  }
 
   ///////////////////////////google maps////////////////////////
   // initMap(): void {

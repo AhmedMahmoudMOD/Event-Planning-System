@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ToDoList } from '../shared/models/ToDoList';
+import { ToDoList } from '../shared/models/toDoList';
 import { HttpClient } from '@angular/common/http';
 import { ToDoListService } from '../shared/services/to-do-list.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -28,13 +28,14 @@ export class EdittoDoListComponent implements OnInit {
   editToDoList!: FormGroup;
   submitted: boolean = false;
   minDate: Date = new Date();
+  maxDate: Date = new Date();
   display: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private httpclient: HttpClient,
     private todoService: ToDoListService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) { 
     this.editToDoList = this.formBuilder.group({
       title: ['', Validators.required],
@@ -43,7 +44,7 @@ export class EdittoDoListComponent implements OnInit {
       deadLineTime: ['', Validators.required],
       eventId: ['']
     });
-  }
+}
 
   ngOnInit(): void {
     console.log(this.toDoList);
@@ -54,8 +55,12 @@ export class EdittoDoListComponent implements OnInit {
       deadLineTime: this.toDoList.deadLineTime,
       eventId: this.toDoList.eventId
     });
+    this.maxDate = new Date(this.toDoList.deadLineTime);
   }
 
+  onMouseWheel(event: any) {
+    event.preventDefault();
+  }
   displayEditModal() {
     this.display = true;
   }

@@ -40,19 +40,11 @@ namespace Event_Planning_System
 			builder.Services.AddScoped<IToDoListService, ToDoListService>();
 			builder.Services.Configure<AzureStorage>(builder.Configuration.GetSection("AzureStorage"));
 			builder.Services.Configure<MailInfoDto>(builder.Configuration.GetSection("MailInfo"));
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+
             builder.Services.AddScoped<IBlobServices, BlobService>();
             builder.Services.AddScoped<ISendEmailService, SendEmailService>();
             builder.Services.AddScoped<IEventScheduleService ,  EventScheduleService>();
-=======
-			builder.Services.AddScoped<IBlobServices, BlobService>();
-			builder.Services.AddScoped<ISendEmailService, SendEmailService>();
->>>>>>> Stashed changes
-=======
-			builder.Services.AddScoped<IBlobServices, BlobService>();
-			builder.Services.AddScoped<ISendEmailService, SendEmailService>();
->>>>>>> Stashed changes
+
 
 			builder.Services.AddScoped<IAuthService, AuthService>();
 
