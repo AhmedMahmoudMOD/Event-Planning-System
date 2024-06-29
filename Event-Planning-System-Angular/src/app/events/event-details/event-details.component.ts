@@ -36,6 +36,7 @@ import swal from 'sweetalert';
 
 
 
+
 @Component({
   selector: 'app-event-details',
   standalone: true,
@@ -99,6 +100,13 @@ todoTitle:string = '';
       console.log(check);
       this.isOwner = check;
     });
+    this.userId = this.accountService.extractUserID();
+    console.log(this.userId, this.id);
+
+    this.accountService.checkOwnership(this.id,this.userId).subscribe(check=>{
+      console.log(check);
+      this.isOwner = check;
+    });
   }
 
 
@@ -153,6 +161,7 @@ todoTitle:string = '';
     this.eventsubscription = this.eventDetailsServices.getEventById(this.id).subscribe({
       next: (res) => {
         this.eventDetails = res;
+        this.isCanceled = this.eventDetails.isCanceled;
         this.isCanceled = this.eventDetails.isCanceled;
         //console.log(this.eventDetails);
         if (this.eventDetails.eventImages.length === 0) {
@@ -260,6 +269,7 @@ setActiveLink(link: string): void {
       }
     }
     );
+    
   }
   // loadToDoLists(event: any) {
   //   this.toDoList = event;

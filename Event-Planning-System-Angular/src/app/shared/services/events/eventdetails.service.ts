@@ -44,3 +44,5 @@ export class EventdetailsService {
     return this.http.post(this.baseUrl + `Event/addImage`, formData);
   }
 }
+
+

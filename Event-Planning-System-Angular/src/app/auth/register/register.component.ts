@@ -59,6 +59,8 @@ export class RegisterComponent {
   cityControl = this.registerForm.controls['city'];
   regionControl = this.registerForm.controls['region'];
 
+  eighteenYearsAgo  : Date = new Date(new Date().setFullYear(new Date().getFullYear()-18));
+
   constructor(private accountService:AccountService,private router:Router,private messageService:MessageService) { 
     document.body.style.background = 'linear-gradient(to right, #f0f2f0, #000c40)';
   }
@@ -68,7 +70,7 @@ export class RegisterComponent {
   }
 
   reg(){
-    
+    console.log(this.dobControl.value);
     if(this.registerForm.valid){
       let formattedDate = format(this.dobControl.value,'yyyy-MM-dd');
       let user : UserRegister = {
@@ -92,13 +94,14 @@ export class RegisterComponent {
           this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Sign Up is Successful' });
           setTimeout(() => { 
             this.router.navigate(['auth/confirmemail']);
-          }, 6000);
+          }, 3000);
         }
         else{
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Sign Up has failed' });
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'This Email has already been signed up before' });
         }
       },(error)=>{
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
+        console.log(error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'This Email has already been signed up before' });
       })
     }
 

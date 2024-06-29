@@ -1,0 +1,134 @@
+:root {
+  --main-color: #1c6758;
+  --secondary-color: #3d6483;
+  --tertiary-color: #d6cda4;
+  --accent-color: #ffbf00;
+  --font-color: #333333;
+  --font-family: "Poppins", sans-serif;
+  --border-radius: 8px;
+  --transition-speed: 0.3s;
+}
+
+body {
+  background-color: #f7f7f9;
+  color: var(--font-color);
+  font-family: var(--font-family);
+}
+
+.custom-main-title {
+  color: var(--main-color);
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: var(--secondary-color);
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.custom-btn {
+  padding: 10px 20px;
+  border-radius: var(--border-radius);
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color var(--transition-speed),
+    transform var(--transition-speed);
+}
+
+.add-btn {
+  background-color: var(--main-color);
+  color: white;
+}
+
+.add-btn:hover {
+  background-color: #106457; 
+  transform: scale(1.05);
+}
+
+.edit-btn {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.edit-btn:hover {
+  background-color: #2e664a; 
+  transform: scale(1.05);
+}
+
+.delete-btn {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #cc9f00;
+  transform: scale(1.05);
+}
+
+.custom-card {
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.custom-card-header {
+  font-size: 1.5rem;
+  color: var(--main-color);
+}
+
+.custom-card-body {
+  font-size: 1rem;
+  color: var(--font-color);
+}
+
+.btn-prim {
+  color: var(--secondary-color);
+  font-weight: bold;
+}
+
+.btn-second {
+  color: var(--accent-color);
+  font-style: italic;
+}
+
+.custom-navbar {
+  background-color: var(--main-color);
+  color: white;
+  padding: 10px 20px;
+  border-radius: var(--border-radius);
+}
+
+.custom-navbar .navbar-brand {
+  color: white;
+  font-family: var(--font-family);
+  font-size: 1.5rem;
+}
+
+.custom-navbar .navbar-nav .nav-link {
+  color: white;
+  margin-right: 10px;
+  transition: color var(--transition-speed);
+}
+
+.custom-navbar .navbar-nav .nav-link:hover {
+  color: var(--accent-color);
+}
+
+.custom-navbar .dropdown-menu {
+  background-color: var(--main-color);
+  border-radius: var(--border-radius);
+}
+
+.custom-navbar .dropdown-item {
+  color: white;
+  transition: background-color var(--transition-speed);
+}
+
+.custom-navbar .dropdown-item:hover {
+  background-color: var(--accent-color);
+}

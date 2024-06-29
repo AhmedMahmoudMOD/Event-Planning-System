@@ -24,18 +24,8 @@ namespace Event_Planning_System.DTO
 		[Required]
 		public DateTime DeadLineTime { get; set; }
 		[Required]
-=======
 
-		[Range(0, 10000000000)]
-		public int? ToDoListBudget { get; set; }
 
-		[MinLength(3)]
-		public string Description { get; set; }
-
-		public DateOnly DeadLineTime { get; set; }
-
->>>>>>> Stashed changes
-=======
 
 		[Range(0, 10000000000)]
 		public int? ToDoListBudget { get; set; }
