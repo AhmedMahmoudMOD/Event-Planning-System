@@ -49,11 +49,15 @@ namespace Event_Planning_System
             builder.Services.AddScoped<Iregestration, Register>();
             builder.Services.AddScoped<IaccountServices, AccountServices>();
             // Add services to the container.
+            builder.Services.AddScoped<IPDFService,PDFService>();
 
             builder.Services.AddControllers();
-           
 
-			builder.Services.AddScoped<IProfileService, Profile>();
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NCaF5cXmpCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWXlceXVWRGleWUF1W0o=");
+
+
+
+            builder.Services.AddScoped<IProfileService, Profile>();
 
 			builder.Services.AddCors(Services =>
 			{
