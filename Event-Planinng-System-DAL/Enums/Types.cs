@@ -27,4 +27,11 @@ namespace Event_Planinng_System_DAL.Enums
         Cancel,
         Other,
     }
+
+    public enum RequestStatus
+    {
+        Pending,
+        Accepted,
+        Rejected
+    }
 }
