@@ -23,7 +23,6 @@ import { ToDoListService } from '../../shared/services/to-do-list.service';
 import { DataViewModule } from 'primeng/dataview';
 import { EventsScheduleComponent } from '../events-schedule/events-schedule.component';
 import { ToDoList } from '../../shared/models/ToDoList';
-import { TableModule } from 'primeng/table';
 import {Table, TableLazyLoadEvent, TableModule} from 'primeng/table';
 
 import { AddtoDoListComponent } from '../../addto-do-list/addto-do-list.component';
