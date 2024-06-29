@@ -8,7 +8,7 @@ import { DialogModule } from 'primeng/dialog';
 import { CommonModule } from '@angular/common';
 import { CalendarModule } from 'primeng/calendar';
 import { ReactiveFormsModule } from '@angular/forms'; 
-import swal from 'sweetalert';
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-editto-do-list',
@@ -72,7 +72,7 @@ export class EdittoDoListComponent implements OnInit {
     this.todoService.updateTask(this.toDoList.eventId, this.toDoList.title, this.editToDoList.value).subscribe({
       next: (res: any) => {
         this.display = false;
-        swal('Success', 'To-Do List updated successfully', 'success');
+        swal.fire('Success', 'To-Do List updated successfully', 'success');
       },
       error: (err) => {
         console.error('Error updating To-Do List:', err);

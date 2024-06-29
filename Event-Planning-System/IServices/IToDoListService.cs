@@ -13,7 +13,8 @@ namespace Event_Planning_System.IServices
 		List<ToDoListDTO>? GetRelatedToDoList(int eventId);
         Task<bool> DeleteToDoListSoft(int eventId, string name);
 		Task<Result> UpdateToDoList(int eventId, string name, ToDoListDTO newToDoList);
+		Task<Result> UpdateToDoListStatus(int eventId, string name, bool status);
 
-		// Task<PaginatedList<ToDoListDTO>> GetWithPagination(int pageNumber, int pageSize, string? search);
-	}
+        // Task<PaginatedList<ToDoListDTO>> GetWithPagination(int pageNumber, int pageSize, string? search);
+    }
 }

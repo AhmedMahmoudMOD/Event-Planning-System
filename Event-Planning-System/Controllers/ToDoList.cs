@@ -81,4 +81,18 @@ public class ToDoListController : ControllerBase
 		}
 	}
 
+    [HttpPut("{eventId}/{name}/status")]
+    public async Task<IActionResult> UpdateToDoListStatus(int eventId, string name, bool status)
+    {
+        var result = await toDoListService.UpdateToDoListStatus(eventId, name, status);
+        if (result.IsSuccess)
+        {
+            return NoContent();
+        }
+        else
+        {
+            return BadRequest("Failed to update to do list status. To do list not found.");
+        }
+    }
+
 }
