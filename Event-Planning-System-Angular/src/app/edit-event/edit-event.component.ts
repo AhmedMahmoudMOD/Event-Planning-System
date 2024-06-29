@@ -65,7 +65,8 @@ export class EditEventComponent implements OnInit {
           budget: this.oldEvent.budget,
           endDate: this.initialEndDate
         });
-     
+        console.log(this.initialStartDate);
+        console.log(this.initialEndDate);
       });
     }
   }

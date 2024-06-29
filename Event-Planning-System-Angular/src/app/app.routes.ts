@@ -44,7 +44,7 @@ export const routes: Routes = [
     //event details
     { path: 'planner/eventdetails/:id', component: EventDetailsComponent },
     { path: 'schedule/:id', component: EventsScheduleComponent },
-
+{path:'addto-do-list',component:AddtoDoListComponent},
     //end of event details
     {path: 'planner/events', component : EventCalenderComponent},
 

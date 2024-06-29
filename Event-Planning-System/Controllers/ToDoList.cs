@@ -54,7 +54,7 @@ public class ToDoListController : ControllerBase
         return Ok(toDoList);
     }
 
-    [HttpDelete]
+    [HttpDelete("{eventId}/{name}")]
 	public async Task<IActionResult> Delete(int eventId, string name)
 	{
 		if (await toDoListService.DeleteToDoListSoft(eventId, name))

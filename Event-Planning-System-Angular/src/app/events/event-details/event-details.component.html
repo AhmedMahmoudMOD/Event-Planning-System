@@ -31,12 +31,17 @@
           <div class="">
             <!-- <p-selectButton [options]="stateOptions" [(ngModel)]="value" optionLabel="label"
                         optionValue="value" /> -->
-            <a class="link-tab fw-bold" [ngClass]="{'text-info blue-nav': activeLink === 'about'}"
-              (click)="setActiveLink('about')">About</a>
-            <a class="link-tab fw-bold" [ngClass]="{'text-info blue-nav': activeLink === 'todolist'}"
-              (click)="setActiveLink('todolist')" (click)="getAllToDoList()" *ngIf="isOwner">ToDo List</a>
-            <a class="link-tab fw-bold" [ngClass]="{'text-info blue-nav': activeLink === 'schedule'}"
-              (click)="setActiveLink('schedule')">Schedule</a>
+                        <a class="link-tab fw-bold"
+                        [ngClass]="{'text-info blue-nav': activeLink === 'about'}"
+                        (click)="setActiveLink('about')">About</a>
+                        <a class="link-tab fw-bold"
+                        [ngClass]="{'text-info blue-nav': activeLink === 'todolist'}"
+                        (click)="setActiveLink('todolist')"
+                        (click)="getAllToDoList()" *ngIf="isOwner">ToDo List</a>
+                        <a class="link-tab fw-bold"
+                        [ngClass]="{'text-info blue-nav': activeLink === 'schedule'}"
+                        (click)="setActiveLink('schedule')"
+                        >Schedule</a>
 
           </div>
           @if(checkdate()&&isOwner&&!isCanceled){
@@ -114,15 +119,24 @@
             @if(checkdate()&&isOwner&&!isCanceled){
             <small class="fw-light fst-italic">
               <div class="mt-1"> Formats Premitied are .jpg , .png or .jpeg (Max Size : 1 MB) </div>
-            </small>
-            <p-fileUpload chooseLabel="Choose" chooseIcon="pi pi-upload" mode="advanced" name="image"
-              uploadLabel="Upload" cancelLabel="Clear" accept=".jpg,.png,.jpeg" maxFileSize="1000000"
-              [customUpload]="true" (uploadHandler)="onUpload($event)">
-              <ng-template pTemplate="content">
-                <p-progressSpinner *ngIf="loading" styleClass="custom-spinner"></p-progressSpinner>
-              </ng-template>
-            </p-fileUpload>
-            }
+          </small>
+          <p-fileUpload
+          chooseLabel="Choose"
+          chooseIcon="pi pi-upload"
+          mode="advanced"
+          name="image"
+          uploadLabel="Upload"
+          cancelLabel="Clear"
+          accept=".jpg,.png,.jpeg"
+          maxFileSize="1000000"
+           [customUpload]="true"
+            (uploadHandler)="onUpload($event)"
+          >
+           <ng-template pTemplate="content">
+            <p-progressSpinner *ngIf="loading" styleClass="custom-spinner"></p-progressSpinner>
+        </ng-template>
+          </p-fileUpload>
+        }
           </div>
         </div>
         <!-- end the carsol block -->
@@ -193,7 +207,13 @@
               </div>
             </div>
             <div class="mt-3">
-              <p-table [value]="toDoLists" [paginator]="true" [rows]="5" [lazy]="true">
+              <p-table
+                [value]="toDoLists"
+                [paginator]="true"
+                [rows]="5"
+                [lazy]="true"
+                [totalRecords]= "toDoLists.length"
+              >
                 <ng-template pTemplate="header">
                   <tr>
                     <th>Title</th>
@@ -210,9 +230,20 @@
                     <td>{{ toDoList.deadLineTime | date: 'medium' }}</td>
                     <td>{{ toDoList.toDoListBudget | currency }}</td>
                     <td>
-                      <app-editto-do-list></app-editto-do-list>
-                      <button (click)="deleteToDoList(toDoList.eventId,toDoList.title)" class="btn btn-danger btn-sm"
-                        aria-label="Delete To-Do List">
+
+                      <app-editto-do-list [toDoList]="toDoList"></app-editto-do-list>
+
+                         <!-- <button
+                        (click)="openToDo(toDoList.title)"
+                        class="btn btn-info btn-sm"
+                        aria-label="Edit To-Do List">
+                        <i class="bi bi-pencil-square"></i> Edit
+                      </button> -->
+                      <button
+                        (click)="deleteToDoList(toDoList.eventId,toDoList.title)"
+                        class="btn btn-danger btn-sm"
+                        aria-label="Delete To-Do List"
+                      >
                         <i class="bi bi-trash"></i> Delete
                       </button>
                     </td>
@@ -225,6 +256,12 @@
       </div>
     </div>
   </div>
+
+
+
+@if (activeLink=="schedule"){
+  <app-events-schedule [readonly]="checkEndDate()||!isOwner"></app-events-schedule>
+}
 
 
 
