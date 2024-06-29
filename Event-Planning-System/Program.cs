@@ -2,6 +2,7 @@ using Event_Planinng_System_DAL.Models;
 using Event_Planinng_System_DAL.Repos;
 using Event_Planinng_System_DAL.Unit_Of_Work;
 using Event_Planning_System.DTO.Mail;
+using Event_Planning_System.DTO.UserRequset;
 using Event_Planning_System.Helpers;
 using Event_Planning_System.IServices;
 using Event_Planning_System.Services;
@@ -43,11 +44,11 @@ namespace Event_Planning_System
             builder.Services.AddScoped<IBlobServices, BlobService>();
             builder.Services.AddScoped<ISendEmailService, SendEmailService>();
             builder.Services.AddScoped<IEventScheduleService ,  EventScheduleService>();
-
-			     builder.Services.AddScoped<IAuthService, AuthService>();
- 
+		    builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<Iregestration, Register>();
             builder.Services.AddScoped<IaccountServices, AccountServices>();
+            builder.Services.AddScoped<IUserRequestService,UsersRequestService>();
+
             // Add services to the container.
 
             builder.Services.AddControllers();
