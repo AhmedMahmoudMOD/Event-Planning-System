@@ -1,5 +1,5 @@
 <div class="text-center mt-2">
-    <button class="custom-btn add-btn" (click)="openModal()">Invite</button>
+    <button class="custom-btn add-btn" (click)="openModal()">Invite <i class="pi pi-users ms-3 fs-4"></i></button>
 </div>
 
 <!-- Modal Dialog -->
@@ -7,8 +7,7 @@
     (onHide)="closeModal()">
     <div class="ms-2">
         <div class="text-center my-2">
-            <p-chips [showClear]="true" [(ngModel)]="emails" placeholder="Enter emails"></p-chips>
-            <br />
+            <p-chips [showClear]="true" [(ngModel)]="emails"  placeholder="Enter emails"></p-chips>
             <p-progressSpinner *ngIf="loading" styleClass="custom-spinner"></p-progressSpinner>
             <br />
             <p-message styleClass="alert alert-danger" *ngIf="errorMessage != null" severity="danger"
@@ -17,8 +16,8 @@
                 text="{{ successMessage }}"></p-message>
         </div>
         <div class="text-center mt-3">
-            <button pButton type="button" class="custom-btn add-btn px-3" label="invite" (click)="submitEmails()"
-                [disabled]="loading"></button>
+            <button type="button" class="custom-btn add-btn px-3" (click)="submitEmails()"
+                [disabled]="loading">Submit</button>
         </div>
     </div>
 </p-dialog>

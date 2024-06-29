@@ -1,6 +1,6 @@
 <button
  (click)="displayEditModal()"
-  class="btn btn-info btn-sm me-2"
+  class="me-2 custom-btn edit-btn"
    aria-label="Edit To-Do List">
   <i class="bi bi-pencil-square"></i> Edit
 </button>
@@ -11,15 +11,15 @@
       <div class="p-fluid">
         <div class="p-field">
           <label for="title">Title<span class="text-danger"> *</span></label>
-          <input type="text" id="title" class="p-inputtext p-component" formControlName="title" placeholder="Enter To-Do List title" />
-          <div *ngIf="submitted && editToDoList.get('title')?.invalid" class="p-error">
+          <input type="text" id="title" class="p-inputtext p-component custom-input" formControlName="title" placeholder="Enter To-Do List title" />
+          <div *ngIf="submitted && editToDoList.get('title')?.invalid" class="error-title">
             Title is required.
           </div>
         </div>
         <div class="p-field">
           <label for="description">Description</label>
           <textarea id="description" class="p-inputtextarea p-component" formControlName="description" rows="3" placeholder="Enter To-Do List description"></textarea>
-          <div *ngIf="submitted && editToDoList.get('description')?.invalid" class="p-error">
+          <div *ngIf="submitted && editToDoList.get('description')?.invalid" class="error-title">
             Description is required.
           </div>
         </div>
@@ -31,22 +31,22 @@
               [minDate]="minDate"
              >
             </p-calendar>
-          <div *ngIf="submitted && editToDoList.get('deadLineTime')?.invalid" class="p-error">
+          <div *ngIf="submitted && editToDoList.get('deadLineTime')?.invalid" class="error-title">
             Deadline is required.
           </div>
         </div>
         <div class="p-field">
           <label for="toDoListBudget">Budget</label>
-          <input type="number" id="toDoListBudget" class="p-inputtext p-component" formControlName="toDoListBudget" placeholder="Enter To-Do List budget" />
-          <div *ngIf="submitted && editToDoList.get('toDoListBudget')?.invalid" class="p-error">
+          <input type="number" id="toDoListBudget" class="p-inputtext p-component custom-input" formControlName="toDoListBudget" placeholder="Enter To-Do List budget" />
+          <div *ngIf="submitted && editToDoList.get('toDoListBudget')?.invalid" class="error-title">
             Budget is required.
           </div>
         </div>
       </div>
     </form> 
   </ng-template>
-  <ng-template pTemplate="footer">
-    <p-button type="submit" label="Save Changes" icon="pi pi-check" (click)="editToDoListmod()" severity="success" size="small" />
-    <p-button label="Cancel" icon="pi pi-times" (click)="hideEditModal()" class="custom-cancel-button" severity="secondary" size="small" />
-  </ng-template>
+  <div class="justify-content-around">
+    <button class="custom-btn add-btn col mx-3" type="submit" (click)="editToDoListmod()" size="small">Save Changes <i class="pi pi-check ms-3"></i></button>
+    <button class="custom-btn delete-btn col mx-3" (click)="hideEditModal()" class="custom-btn delete-btn" size="small">Cancel <i class="pi pi-times ms-3"></i></button>
+  </div>
 </p-dialog>
