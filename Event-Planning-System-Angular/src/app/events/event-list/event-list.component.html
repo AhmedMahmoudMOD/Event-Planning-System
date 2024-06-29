@@ -21,11 +21,11 @@
 <div class="container">
   <div class="main-content">
     <div class="header">
-      <input type="text" class="search-bar" placeholder="Start typing to search for an Event" [(ngModel)]="searchQuery" (input)="onSearch()">
+      <input type="text" class="search-bar custom-input" placeholder="Start typing to search for an Event" [(ngModel)]="searchQuery" (input)="onSearch()">
       <app-add-event></app-add-event>
     </div>
     <div class="event-list">
-      <div *ngFor="let item of filteredEventList; let i = index" class="event-item">
+      <div *ngFor="let item of filteredEventList; let i = index" class="event-item main-bg">
         <!-- <div [ngClass]="{
                       'approved': item.status === 'approved',
                       'pending': item.status === 'pending',
@@ -34,7 +34,7 @@
           {{ item.status | titlecase }}
         </div> -->
         <div class="event-details">
-          <h3>{{ item.name }}</h3>
+          <h3 class="subtitle">{{ item.name }}</h3>
           <div class="eventLocation">
             <img class="locationImg" src="assets/images/location.png" alt="Event Location">
             <p>{{ item.location }}</p>
@@ -54,7 +54,7 @@
             </div>
           </div>
         </div>
-        <button class="btn btn-info h-25" routerLink="/planner/eventdetails/{{item.id}}">Details</button>
+        <button class="custom-btn btn-second h-25" routerLink="/planner/eventdetails/{{item.id}}">Details</button>
       </div>
     </div>
   </div>
