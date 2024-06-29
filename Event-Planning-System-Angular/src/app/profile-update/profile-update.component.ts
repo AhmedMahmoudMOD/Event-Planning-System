@@ -14,22 +14,23 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { catchError, of } from 'rxjs';
 
 
 @Component({
   selector: 'app-profile-update',
   standalone: true,
   imports: [
-    ButtonModule, 
-    DialogModule, 
-    InputTextModule, 
-    ToastModule, 
-    ConfirmDialogModule, 
+    ButtonModule,
+    DialogModule,
+    InputTextModule,
+    ToastModule,
+    ConfirmDialogModule,
     CommonModule,
-    RouterModule, 
+    RouterModule,
     RouterLink,
     FormsModule,
-  ],  
+  ],
   providers: [ConfirmationService, MessageService],
   templateUrl: './profile-update.component.html',
   styleUrls: ['./profile-update.component.css'],
@@ -48,13 +49,18 @@ export class ProfileUpdateComponent implements OnInit {
 
   ngOnInit() {
     const id = +this.accountService.extractUserID();
-    this.profileService.getProfile(id).subscribe({
-      next: (d) => {
-        this.profile = d;
+    this.profileService.getProfile(id).pipe(
+      catchError(err => {
+        console.error('Error fetching profile:', err);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to load profile' });
+        return of({});
+      })
+    ).subscribe({
+      next: (data) => {
+        this.profile = data;
       },
       error: (err) => {
         console.error('Error fetching profile:', err);
-        // Optionally handle errors here
       },
     });
   }
@@ -67,18 +73,18 @@ export class ProfileUpdateComponent implements OnInit {
     this.displayEditModal = false;
   }
 
-  confirm() {
+
+  confirmUpdate() {
     this.confirmationService.confirm({
       message: 'Are you sure you want to save changes?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.updateProfile(this.profile);
-        this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Profile Updated Successfully' });
         this.displayEditModal = false;
       },
       reject: () => {
-        this.messageService.add({ severity: 'info', summary: 'Rejected', detail: 'You have rejected' });
+        this.messageService.add({ severity: 'info', summary: 'Cancelled', detail: 'You have cancelled the update' });
       },
     });
   }
