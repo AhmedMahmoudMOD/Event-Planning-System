@@ -5,6 +5,7 @@ using Event_Planning_System.Helpers;
 using Event_Planinng_System_DAL.Enums;
 using Event_Planning_System.Custom;
 using Microsoft.AspNetCore.Identity;
+using Event_Planinng_System_DAL.ViewModel;
 
 namespace Event_Planning_System.IServices
 {
@@ -18,7 +19,7 @@ namespace Event_Planning_System.IServices
 		public Task<IEnumerable<AttendanceDTO>?> GetAllGuests(int id);
 		public Task<bool> CheckIfGuestExists(int eventId, string email);
 		public Task<bool> AddGuest(int eventId, AttendanceDTO newAttendanceDTO);
-		public Task<string> AddGuests(int eventId, List<AttendanceDTO> newAttendance);
+		public Task<AddGuestsResponseModelView> AddGuests(int eventId, List<AttendanceDTO> newAttendance);
 		public Task<bool> SendEventMail(int EventId, EmailType type);
 		public Task<bool> DeleteGuest(int eventId, string email);
 		public Task<Result> UpdateEvent(int id, EditEventDTO newEvent);

@@ -12,6 +12,10 @@ using Microsoft.Extensions.Logging;
 using MimeKit.Cryptography;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using Event_Planinng_System_DAL.ViewModel;
+using System.Net.Mail;
+using Azure;
+using System.Text.RegularExpressions;
 
 namespace Event_Planning_System.Services
 {
@@ -235,6 +239,12 @@ namespace Event_Planning_System.Services
 			var guests = await unitOfWork.AttendanceRepo.GetAll();
 			return guests.Any(g => g.EventNavigation.Id == eventId && g.Email == email);
 		}
+		// Check if mail is valid
+		private bool IsValidEmail(string email)
+		{
+			var emailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+			return emailRegex.IsMatch(email);
+		}
 		public async Task<bool> AddGuest(int eventId, AttendanceDTO newAttendanceDTO)
 		{
 			Attendance newAttendance;
@@ -244,38 +254,73 @@ namespace Event_Planning_System.Services
 				newAttendance.EventNavigation = await unitOfWork.EventRepo.FindById(eventId);
 			}
 			catch { return false; }
+			if (!IsValidEmail(newAttendanceDTO.Email)) { return false; }
 
-			if (await CheckIfGuestExists(eventId, newAttendance.Email)) // Check if guest already exists
-			{
-				await SendEventMail(eventId, EmailType.Invite);
-				return true;
-			}
+			//if (!await CheckIfGuestExists(eventId, newAttendance.Email)) // Check if guest already exists
+			//{
+			//	await SendEventMail(eventId, EmailType.Invite);
+			//	return true;
+			//}
 			await unitOfWork.AttendanceRepo.Add(newAttendance);
 			unitOfWork.save();
 			return true;
 		}
 		// Add multiple guests to the event
-		public async Task<string> AddGuests(int eventId, List<AttendanceDTO> newAttendancesDTO)
+		public async Task<AddGuestsResponseModelView> AddGuests(int eventId, List<AttendanceDTO> newAttendancesDTO)
 		{
+			var res = new AddGuestsResponseModelView();
+			res.Success = false;
 			if (newAttendancesDTO == null)
-				return "Invalid data, Sent an empty list";
+			{
+				res.Message = "Invalid data, Sent an empty list";
+				res.Success = false;
+				return res;
+			}
 			// Check if the event exists
 			Event myEvent;
 			try { myEvent = await unitOfWork.EventRepo.FindById(eventId); }
-			catch { return "Invalid Event Id"; }
+			catch
+			{
+				res.Message = "Invalid Event Id";
+				return res;
+			}
 			// Check if the number of attendees is less than the remaining number of attendees
 			int attendeesno = (await unitOfWork.AttendanceRepo.GetAll()).Where(a => a.EventId == eventId).Count();
-			List<AttendanceDTO> ditinctEmails = newAttendancesDTO.Distinct().ToList(); // to get distinct emails
-			if (ditinctEmails.Count() >= (myEvent.AttendanceNumber - attendeesno))
-				return $"You cant add more guests, you invited ({attendeesno} of total {myEvent.AttendanceNumber}, you can invite {myEvent.AttendanceNumber - attendeesno})";
-			// Add guests
-			foreach (AttendanceDTO guest in ditinctEmails)
+			List<AttendanceDTO> distinctEmails = newAttendancesDTO.Distinct().ToList(); // to get distinct emails
+
+			if (distinctEmails.Count() >= (myEvent.AttendanceNumber - attendeesno))
 			{
-				if (!await AddGuest(eventId, guest))
-					return "Invalid Email";
-				await SendEventMail(eventId, EmailType.Invite);
+				res.Message = $"You cant add more guests, you invited ({attendeesno} of total {myEvent.AttendanceNumber}, you can invite {myEvent.AttendanceNumber - attendeesno})";
+				return res;
 			}
-			return "true";
+			// Add guests
+
+			foreach (var guest in distinctEmails)
+			{
+				if (!IsValidEmail(guest.Email))
+				{
+					res.InvalidEmails.Add(guest.Email);
+					continue;
+				}
+
+				if (await CheckIfGuestExists(eventId, guest.Email))
+				{
+					res.DuplicateEmails.Add(guest.Email);
+					continue;
+				}
+
+				if (!await AddGuest(eventId, guest))
+				{
+					res.InvalidEmails.Add(guest.Email);
+					continue;
+				}
+
+				await SendEventMail(eventId, EmailType.Invite);
+				res.SuccessfulEmails.Add(guest.Email);
+			}
+			res.Success = res.SuccessfulEmails.Any();
+			res.Message = res.Success ? "Some guests were added successfully." : "All provided emails were invalid or duplicates.";
+			return res;
 		}
 		// Delete guest from the event
 		public async Task<bool> DeleteGuest(int eventId, string email)
