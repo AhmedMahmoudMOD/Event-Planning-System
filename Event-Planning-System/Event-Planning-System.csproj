@@ -11,9 +11,13 @@
 
   <ItemGroup>
     <Compile Remove="Helper\**" />
+    <Compile Remove="NewFolder\**" />
     <Content Remove="Helper\**" />
+    <Content Remove="NewFolder\**" />
     <EmbeddedResource Remove="Helper\**" />
+    <EmbeddedResource Remove="NewFolder\**" />
     <None Remove="Helper\**" />
+    <None Remove="NewFolder\**" />
   </ItemGroup>
 
   <ItemGroup>

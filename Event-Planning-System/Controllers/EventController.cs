@@ -125,14 +125,14 @@ namespace Event_Planning_System.Controllers
 		[SwaggerOperation(Summary = "Add list of attendees", Description = "Add new list of attendees to the Event.")]
 		[SwaggerResponse(200, "Attendance was added successfully")]
 		[HttpPost("Attendance/{eventId:int}")]
-		public async Task<IActionResult> AddAttendace(int eventId, List<AttendanceDTO> newAttendancesDTO)
+		public async Task<IActionResult> AddAttendace(int eventId,[FromBodyAttribute] List<AttendanceDTO> newAttendancesDTO)
 		{
 			if (ModelState.IsValid)
 			{
-				string res = await eventService.AddGuests(eventId, newAttendancesDTO);
-				if (res == "true")
-					return Created();
-				else
+				var res = await eventService.AddGuests(eventId, newAttendancesDTO);
+				if (res.Success)
+					return Ok(res);
+				else 
 					return BadRequest(res);
 			}
 			return BadRequest(ModelState);
