@@ -2,6 +2,7 @@ using Event_Planinng_System_DAL.Models;
 using Event_Planinng_System_DAL.Repos;
 using Event_Planinng_System_DAL.Unit_Of_Work;
 using Event_Planning_System.DTO.Mail;
+using Event_Planning_System.DTO.UserRequset;
 using Event_Planning_System.Helpers;
 using Event_Planning_System.IServices;
 using Event_Planning_System.Services;
@@ -44,6 +45,7 @@ namespace Event_Planning_System
             builder.Services.AddScoped<IBlobServices, BlobService>();
             builder.Services.AddScoped<ISendEmailService, SendEmailService>();
             builder.Services.AddScoped<IEventScheduleService ,  EventScheduleService>();
+<<<<<<< HEAD
 
 
 			builder.Services.AddScoped<IAuthService, AuthService>();
@@ -54,8 +56,23 @@ namespace Event_Planning_System
 
 			builder.Services.AddControllers();
 
+=======
+		    builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<Iregestration, Register>();
+            builder.Services.AddScoped<IaccountServices, AccountServices>();
+            builder.Services.AddScoped<IUserRequestService,UsersRequestService>();
 
-			builder.Services.AddScoped<IProfileService, Profile>();
+            // Add services to the container.
+            builder.Services.AddScoped<IPDFService,PDFService>();
+
+            builder.Services.AddControllers();
+>>>>>>> 0b03a3ecfd961dd80246e7cc09303550880fdbb8
+
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NCaF5cXmpCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWXlceXVWRGleWUF1W0o=");
+
+
+
+            builder.Services.AddScoped<IProfileService, Profile>();
 
 			builder.Services.AddCors(Services =>
 			{

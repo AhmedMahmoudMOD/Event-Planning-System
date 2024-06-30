@@ -1,24 +1,49 @@
 <div class="text-center mt-2">
-    <button class="custom-btn add-btn" (click)="openModal()">Invite</button>
+    <button class="custom-btn add-btn" (click)="openModal()">Invite <i class="pi pi-users ms-3 fs-4"></i></button>
 </div>
 
 <!-- Modal Dialog -->
-<p-dialog header="Add Guests" [style]="{ 'width': '60%' }" [(visible)]="displayModal" [modal]="true" [closable]="true"
-    (onHide)="closeModal()">
+<p-dialog header="Add Guests" [style]="{ 'width': '60%' }" [(visible)]="displayModal" [modal]="true" [closable]="true" (onHide)="closeModal()">
     <div class="ms-2">
-        <div class="text-center my-2">
-            <p-chips [showClear]="true" [(ngModel)]="emails" placeholder="Enter emails"></p-chips>
-            <br />
-            <p-progressSpinner *ngIf="loading" styleClass="custom-spinner"></p-progressSpinner>
-            <br />
-            <p-message styleClass="alert alert-danger" *ngIf="errorMessage != null" severity="danger"
-                text="{{ errorMessage }}"></p-message>
-            <p-message styleClass="alert alert-success" *ngIf="successMessage != null" severity="success"
-                text="{{ successMessage }}"></p-message>
-        </div>
-        <div class="text-center mt-3">
-            <button pButton type="button" class="custom-btn add-btn px-3" label="invite" (click)="submitEmails()"
-                [disabled]="loading"></button>
-        </div>
+      <div class="text-center my-2">
+        <p-chips id=" "  [showClear]="true" [(ngModel)]="emails" placeholder="Enter emails"></p-chips>
+        <p-progressSpinner *ngIf="loading" styleClass="custom-spinner text-center col-12"></p-progressSpinner>
+        <br />
+        <p-message styleClass="alert alert-danger" *ngIf="errorMessage != null" severity="danger" [text]="errorMessage"></p-message>
+        <table *ngIf="errorMessage || successMessage" class="table table-primary w-75 mx-auto table-hover table-borderless table-responsive mt-3">
+          <thead class="">
+            <tr>
+              <th>Status</th>
+              <th>Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let email of invitedEmails">
+              <tr class="table-success">
+                <td>Invited</td>
+                <td>{{email}}</td>
+              </tr>
+            </ng-container>
+            <ng-container *ngFor="let email of invalidEmails">
+              <tr class="table-danger">
+                <td>Invalid</td>
+                <td>{{email}}</td>
+              </tr>
+            </ng-container>
+            <ng-container *ngFor="let email of DuplicateEmails">
+              <tr class="table-warning">
+                <td>Duplicate</td>
+                <td>{{email}}</td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+        
+        <!-- <p-message styleClass="alert alert-success" *ngIf="successMessage != null" severity="success" [innerHtml] ="successMessage"></p-message> -->
+      </div>
+      <div class="text-center mt-3">
+        <button type="button" class="custom-btn add-btn px-3" (click)="submitEmails()" [disabled]="loading">Submit</button>
+      </div>
     </div>
-</p-dialog>
+  </p-dialog>
+  

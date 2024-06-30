@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ToDoList } from '../shared/models/toDoList';
+import { ToDoList } from '../shared/models/ToDoList';
 import { HttpClient } from '@angular/common/http';
 import { ToDoListService } from '../shared/services/to-do-list.service';
 import { ActivatedRoute, Router } from '@angular/router';

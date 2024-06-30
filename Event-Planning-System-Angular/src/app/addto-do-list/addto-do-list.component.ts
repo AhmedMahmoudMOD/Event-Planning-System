@@ -11,7 +11,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import Swal from 'sweetalert2';
 import { EventService } from '../shared/services/event.service';
 import { Event } from '../shared/models/event';
-import { ToDoList } from '../shared/models/toDoList';
+import { ToDoList } from '../shared/models/ToDoList';
 
 @Component({
   selector: 'app-addto-do-list',

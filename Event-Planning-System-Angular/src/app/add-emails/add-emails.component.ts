@@ -29,6 +29,9 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class AddEmailsComponent implements OnDestroy, OnInit {
   emails: string[] = [];
+  invalidEmails: string[] = [];
+  invitedEmails: string[] = [];
+  DuplicateEmails: string[] = [];
   errorMessage: string | null = null;
   successMessage: string | null = null;
   loading: boolean = false;
@@ -53,14 +56,10 @@ export class AddEmailsComponent implements OnDestroy, OnInit {
     this.EmailSub?.unsubscribe();
   }
 
-  checkEmails(emailsToCheck: string[]): boolean {
+  checkEmail(email: string): boolean {
     let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    for (let email of emailsToCheck) {
-      if (!emailRegex.test(email)) {
-        return false;
-      }
-    }
-    return true;
+    if (emailRegex.test(email)) return true;
+    return false;
   }
 
   openModal() {
@@ -69,32 +68,66 @@ export class AddEmailsComponent implements OnDestroy, OnInit {
 
   closeModal() {
     this.displayModal = false;
+    this.emails = [];
+    this.errorMessage = null;
+    this.successMessage = null;  
   }
 
   submitEmails() {
     this.errorMessage = null;
     this.successMessage = null;
 
-    if (!this.checkEmails(this.emails) || this.emails.length === 0) {
-      this.errorMessage = 'Invalid email address';
-      return;
-    }
+    this.invalidEmails = this.emails.filter((email) => !this.checkEmail(email));
 
     this.loading = true;
 
     this.EmailSub = this.eventService
-      .addAttendance(this.eventId, this.emails)
+      .addAttendance(this.eventId, this.emails.filter(this.checkEmail))
       .subscribe({
-        next: () => {
-          this.successMessage = 'Emails submitted successfully';
+        next: (response) => {
+          if (response.success) {
+            this.invitedEmails = response.successfulEmails;
+            this.DuplicateEmails = response.duplicateEmails;
+            this.successMessage = `
+            <div>Emails submitted successfully.<br>
+              <br/>Invited: ${response.successfulEmails.join(', ')}.
+              <br/><div class="alert alert-danger">Invalid: ${this.invalidEmails.join(
+                ', '
+              )}.</div>
+              <br/><div class="alert alert-info">Duplicates: ${response.duplicateEmails.join(
+                ', '
+              )}.</div>
+            </div>`;            
+          } else {
+            this.invitedEmails = response.successfulEmails;
+            this.DuplicateEmails = response.duplicateEmails;
+            this.errorMessage =
+              response.message || 'An error occurred while adding emails';
+            if (this.invalidEmails) {
+              this.errorMessage += ` Invalid: ${this.invalidEmails.join(
+                ', '
+              )}.`;
+            }
+          }
           this.loading = false;
         },
         error: (error) => {
           console.log(error);
           this.errorMessage =
-            error.error || 'An error occurred while adding emails';
+            error.error?.message || 'An error occurred while adding emails';
+          this.invitedEmails = error.error?.successfulEmails;
+          this.DuplicateEmails = error.error?.duplicateEmails;
+          this.invalidEmails?.length > 0
+            ? (this.errorMessage += ` Invalid: ${this.invalidEmails.join(
+                ', '
+              )}.`)
+            : '';
+          error.error?.duplicateEmails.length > 0
+            ? (this.errorMessage += `Duplicate: ${error.error.duplicateEmails.join(
+                ', '
+              )}.`)
+            : '';
           this.loading = false;
-          console.log(error);
         },
       });
   }

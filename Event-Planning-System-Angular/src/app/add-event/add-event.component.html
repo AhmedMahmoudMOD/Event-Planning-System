@@ -1,10 +1,4 @@
-<p-button
-  label="New Event"
-  [text]="true"
-  severity="success"
-  [raised]="true"
-  (click)="showAddModal()"
-></p-button>
+<button class="custom-btn add-btn" (click)="showAddModal()">New Event</button>
 
 <p-dialog
   header="Add Event"
@@ -17,7 +11,7 @@
 >
   <ng-template pTemplate="content">
     <form [formGroup]="addEventForm" (ngSubmit)="addEvent()" class="p-fluid">
-      <div *ngIf="errorMessage" class="p-error p-mb-3">
+      <div *ngIf="errorMessage" class="p-mb-3 error-title">
         {{ errorMessage }}
       </div>
       
@@ -26,11 +20,11 @@
         <input
           type="text"
           id="name"
-          class="p-inputtext p-component"
+          class="p-inputtext p-component custom-input"
           formControlName="name"
           placeholder="Enter event name"
         />
-        <div *ngIf="(addEventForm.get('name')?.invalid && addEventForm.get('name')?.touched) || (submitted && addEventForm.get('name')?.hasError('minlength'))" class="p-error">
+        <div *ngIf="(addEventForm.get('name')?.invalid && addEventForm.get('name')?.touched) || (submitted && addEventForm.get('name')?.hasError('minlength'))" class="error-title">
           Title is required and must be at least 3 characters.
         </div>
       </div>
@@ -39,12 +33,12 @@
         <label for="description">Description<span class="text-danger"> *</span></label>
         <textarea
           id="description"
-          class="p-inputtextarea p-component"
+          class="p-inputtextarea p-component custom-input"
           formControlName="description"
           rows="3"
           placeholder="Enter event description"
         ></textarea>
-        <div *ngIf="(addEventForm.get('description')?.invalid && addEventForm.get('description')?.touched) || (submitted && addEventForm.get('description')?.hasError('minlength'))" class="p-error">
+        <div *ngIf="(addEventForm.get('description')?.invalid && addEventForm.get('description')?.touched) || (submitted && addEventForm.get('description')?.hasError('minlength'))" class="p-error error-title">
           Description is required and must be at least 3 characters long.
         </div>
       </div>
@@ -56,11 +50,12 @@
           formControlName="eventDate"
           [showTime]="true"
           hourFormat="12"
+          hourFormat="12"
           [showIcon]="true"
           [minDate]="minDate"
           (mousewheel)="onScroll($event)"
         ></p-calendar>
-        <div *ngIf="addEventForm.get('eventDate')?.invalid && addEventForm.get('eventDate')?.touched" class="p-error">
+        <div *ngIf="addEventForm.get('eventDate')?.invalid && addEventForm.get('eventDate')?.touched" class="error-title">
           Start date is required.
         </div>
       </div>
@@ -87,12 +82,12 @@
         <input
           type="number"
           id="attendanceNumber"
-          class="p-inputtext p-component"
+          class="p-inputtext p-component custom-input"
           formControlName="attendanceNumber"
           placeholder="Enter attendance number"
           (mousewheel)="onScroll($event)"
         />
-        <div *ngIf="addEventForm.get('attendanceNumber')?.invalid && addEventForm.get('attendanceNumber')?.touched" class="p-error">
+        <div *ngIf="addEventForm.get('attendanceNumber')?.invalid && addEventForm.get('attendanceNumber')?.touched" class="error-title">
           Attendance number is required and must be a non-negative number.
         </div>
       </div>
@@ -102,23 +97,23 @@
         <input
           type="number"
           id="budget"
-          class="p-inputtext p-component"
+          class="p-inputtext p-component custom-input"
           formControlName="budget"
           placeholder="Enter event budget"
           (mousewheel)="onScroll($event)"
         />
-        <div *ngIf="addEventForm.get('budget')?.invalid && addEventForm.get('budget')?.touched" class="p-error">
+        <div *ngIf="addEventForm.get('budget')?.invalid && addEventForm.get('budget')?.touched" class="error-title">
           Budget is required.
         </div>
       </div>
 
       <div class="p-field">
         <label for="eventType">Event Type<span class="text-danger"> *</span></label>
-        <select formControlName="eventType" class="form-select" name="Types" id="Type" required>
+        <select formControlName="eventType" class="form-select custom-select" name="Types" id="Type" required>
           <option value="">Select Event Type</option>
           <option *ngFor="let event of Types" [value]="event.id">{{event.name}}</option>
         </select>
-        <div *ngIf="addEventForm.get('eventType')?.invalid && addEventForm.get('eventType')?.touched" class="p-error">
+        <div *ngIf="addEventForm.get('eventType')?.invalid && addEventForm.get('eventType')?.touched" class="error-title">
           Event Type is required.
         </div>
       </div>
@@ -128,11 +123,11 @@
         <input
           type="text"
           id="location"
-          class="p-inputtext p-component"
+          class="p-inputtext p-component custom-input"
           formControlName="location"
           placeholder="Enter event location"
         />
-        <div *ngIf="addEventForm.get('location')?.invalid && addEventForm.get('location')?.touched" class="p-error">
+        <div *ngIf="addEventForm.get('location')?.invalid && addEventForm.get('location')?.touched" class="error-title">
           Location is required and must be at least 3 characters long.
         </div>
       </div>
@@ -142,29 +137,28 @@
         <input
           type="text"
           id="googleMapsLocation"
-          class="p-inputtext p-component"
+          class="p-inputtext p-component custom-input"
           formControlName="googleMapsLocation"
           placeholder="Enter Google Maps location"
         />
-        <div *ngIf="addEventForm.get('googleMapsLocation')?.invalid && addEventForm.get('googleMapsLocation')?.touched" class="p-error">
+        <div *ngIf="addEventForm.get('googleMapsLocation')?.invalid && addEventForm.get('googleMapsLocation')?.touched" class="error-title">
           Google Maps location must be at least 3 characters long.
         </div>
       </div>
 
-      <div class="p-dialog-footer">
-        <p-button
-          label="Cancel"
-          icon="pi pi-times"
+      <div class="p-dialog-footer mt-2">
+        <button
+          class="custom-btn delete-btn col mx-3"
           severity="secondary"
           (click)="hideAddModal()"
-        ></p-button>
-        <p-button
+        >Cancel <i class="pi pi-times ms-3"></i></button>
+        <button
           type="submit"
           label="Add Event"
           icon="pi pi-check"
           class="p-button-primary"
-          [loading]="loading"
-        ></p-button>
+          [disabled]="addEventForm.invalid"
+        ></button>
       </div>
     </form>
   </ng-template>
