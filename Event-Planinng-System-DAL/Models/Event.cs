@@ -41,5 +41,7 @@ namespace Event_Planinng_System_DAL.Models
         public virtual List<EventImages> EventImagesNavigation { get; set; } = new List<EventImages>();
         public virtual List<Attendance> AttendanceNavigation { get; set; } = new List<Attendance>(); 
         public virtual List<EventSchedule> EventScheduleNavigation { get; set; } = new List<EventSchedule> ();
+        public virtual List<UserEventsRequests> UserEventRequestsNavigation { get; set; } = new List<UserEventsRequests>();
+
     }
 }
