@@ -181,11 +181,8 @@ namespace Event_Planning_System.Services
 			try { newEvent = mapper.Map<Event>(newEventDTO); }
 			catch { return Result.Failure(new Error("400", "Invalid data")); }
 
-<<<<<<< HEAD
 			if (newEvent == null || newEvent.EndDate <= DateTime.Today)
-=======
-			if (newEvent == null || newEvent.EventDate <= DateTime.Today)
->>>>>>> 32500675bbccff28f4ade46127a833863f90d29e
+
 				return Result.Failure(new Error("400", "Invalid date"));
 			if (newEvent.AttendanceNumber < oldEvent.AttendanceNumber)
 			{

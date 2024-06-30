@@ -63,19 +63,11 @@ namespace Event_Planinng_System_DAL.Unit_Of_Work
         //    get => roleRepo ??= new GenericRepoForId<Role>(db);
         //}
       
-<<<<<<< Updated upstream
-
-<<<<<<< Updated upstream
         public GenericRepo<EventSchedule> EventScheduleRepo
         {
             get => eventschedulerepo ??= new GenericRepo<EventSchedule> (db);
         }
 
-        public void save()
-=======
-=======
-
->>>>>>> Stashed changes
       public GenericRepo<ToDoList> ToDoListRepo
 		{
 			get => todolistRepo ??= new GenericRepo<ToDoList>(db);
@@ -94,10 +86,7 @@ namespace Event_Planinng_System_DAL.Unit_Of_Work
 		}
 
 		public async Task save()
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+
         {
            await db.SaveChangesAsync();
         }
