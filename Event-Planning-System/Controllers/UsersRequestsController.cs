@@ -58,7 +58,7 @@ namespace Event_Planning_System.Controllers
         public async Task<IActionResult> ChangeRequestStatus(UserRequestDTO userRequest)
         {
             var model = await UserRequestServices.ChangeStatus(userRequest);
-            return model ? Ok("Changed") : NotFound("not found");
+            return model ? Ok() : NotFound();
         }
     }
 }
