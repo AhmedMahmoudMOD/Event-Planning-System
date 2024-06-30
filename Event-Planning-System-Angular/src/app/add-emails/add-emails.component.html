@@ -6,7 +6,7 @@
 <p-dialog header="Add Guests" [style]="{ 'width': '60%' }" [(visible)]="displayModal" [modal]="true" [closable]="true" (onHide)="closeModal()">
     <div class="ms-2">
       <div class="text-center my-2">
-        <p-chips id="EmailChips"  [showClear]="true" [(ngModel)]="emails" placeholder="Enter emails"></p-chips>
+        <p-chips id=" "  [showClear]="true" [(ngModel)]="emails" placeholder="Enter emails"></p-chips>
         <p-progressSpinner *ngIf="loading" styleClass="custom-spinner text-center col-12"></p-progressSpinner>
         <br />
         <p-message styleClass="alert alert-danger" *ngIf="errorMessage != null" severity="danger" [text]="errorMessage"></p-message>
