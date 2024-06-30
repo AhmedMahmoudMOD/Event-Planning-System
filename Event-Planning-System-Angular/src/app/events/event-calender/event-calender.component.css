@@ -13,7 +13,7 @@
 
 .calendar-filters label {
   padding:0 3px;
-  background-color: rgba(255, 255, 255, 0.515) ;
+  background-color: rgba(178, 207, 189, 0.342) ;
   border-radius: 10%;
   margin-right: 5px;
   text-wrap: nowrap;
@@ -24,14 +24,7 @@
 .calendar-filters button {
   margin-right: 10px;
 }
-input ,select{
-  padding: 5px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  background-color:#3D8361 ;
-  color: white;
-  font-size: large;
-}
+
 .main-container {
   padding:0 15px ;
   background-image: url("../../../../src/assets/images/Welcome-pana.svg");

@@ -1,10 +1,4 @@
-<p-button
-  label="Edit"
-  [text]="true"
-  severity="help"
-  [raised]="true"
-  (click)="showEditModal()"
-/>
+<button class="custom-btn edit-btn" (click)="showEditModal()">Edit</button>
 
 <p-dialog
   header="Edit Event"
@@ -22,7 +16,7 @@
         <input
           type="text"
           id="name"
-          class="p-inputtext p-component"
+          class="p-inputtext p-component custom-input"
           formControlName="name"
         />
         <div *ngIf="editForm.get('name')?.invalid && editForm.get('name')?.touched" class="p-error">
@@ -48,7 +42,7 @@
         <input
           type="number"
           id="attendanceNumber"
-          class="p-inputtext p-component"
+          class="p-inputtext p-component custom-input"
           formControlName="attendanceNumber"
           (mousewheel)="onScroll($event)"
 
@@ -63,7 +57,7 @@
         <input
           type="text"
           id="location"
-          class="p-inputtext p-component"
+          class="p-inputtext p-component custom-input"
           formControlName="location"
         />
         <div *ngIf="editForm.get('location')?.invalid && editForm.get('location')?.touched" class="p-error">
@@ -76,7 +70,7 @@
         <input
           type="text"
           id="googleMapsLocation"
-          class="p-inputtext p-component"
+          class="p-inputtext p-component custom-input"
           formControlName="googleMapsLocation"
         />
         <!-- <div *ngIf="editForm.get('googleMapsLocation')?.invalid && editForm.get('googleMapsLocation')?.touched" class="p-error">
@@ -89,7 +83,7 @@
         <input
           type="number"
           id="budget"
-          class="p-inputtext p-component"
+          class="p-inputtext p-component custom-input"
           formControlName="budget"
           (mousewheel)="onScroll($event)"
 
@@ -132,26 +126,23 @@
       <hr>
       <div class="p-dialog-footer">
         
-        <p-button
+        <button
         type="submit"
-        label="Save Changes"
+        label=""
+        class="custom-btn add-btn w-100 mt-2"
         icon="pi pi-check"
-        [text]="true"
-        [raised]="true"
         severity="success"
         size="small"
-        />
-        <p-button
+        >Save Changes</button>
+        <button
           label="Cancel"
           icon="pi pi-times"
           severity="secondary"
           (click)="hideEditModal()"
-          class="custom-cancel-button"
-          [text]="true"
-          [raised]="true"
+          class="custom-btn delete-btn w-100 mt-2"
           severity="secondary"
           size="small"
-        />
+        >Cancel</button>
       </div>
     </form>
   </ng-template>

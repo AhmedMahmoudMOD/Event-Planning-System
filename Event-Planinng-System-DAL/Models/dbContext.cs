@@ -22,6 +22,7 @@ namespace Event_Planinng_System_DAL.Models
         public virtual DbSet<EventImages> EventsImages { get; set; }
         public virtual DbSet<EventSchedule> EventSchedules { get; set; }
         public virtual DbSet<ToDoList> ToDoLists { get; set; }
+        public virtual DbSet<UserEventsRequests> UserEventsRequests { get; set; }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
@@ -80,6 +81,18 @@ namespace Event_Planinng_System_DAL.Models
             modelBuilder.Entity<ToDoList>(entity =>
             {
                 entity.HasKey(e => new { e.Title, e.EventId });                
+            });
+
+            //user Event Requset 
+            modelBuilder.Entity<UserEventsRequests>(entity =>
+            {
+                entity.HasKey(e=>new { e.UserId, e.EventId });
+                entity.Property(e=>e.RequestStatus).HasConversion<string>();
+
+                entity.HasOne(e=>e.EventNavigation)
+                .WithMany(e=>e.UserEventRequestsNavigation)
+                .HasForeignKey(e=>e.EventId)
+                .OnDelete(DeleteBehavior.NoAction);
             });
 
             

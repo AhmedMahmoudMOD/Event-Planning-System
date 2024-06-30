@@ -1,8 +1,8 @@
 :root {
-  --main-color: #1c6758;
+  --main-color: #237a69; /*1c6758*/
   --secondary-color: #3d6483;
-  --tertiary-color: #d6cda4;
-  --accent-color: #ffbf00;
+  --tertiary-color: #9ee57a50;
+  --accent-color: #d75125;
   --font-color: #333333;
   --font-family: "Poppins", sans-serif;
   --border-radius: 8px;
@@ -21,13 +21,28 @@ body {
   font-weight: bold;
   margin-bottom: 10px;
 }
+.custom-main-title-red {
+  color: var(--accent-color);
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
 
 .subtitle {
   color: var(--secondary-color);
   font-size: 1.5rem;
   margin-bottom: 10px;
 }
+.error-title {
+  color: red;
+  margin-bottom: 10px;
+}
 
+
+.main-bg{
+  background-image: linear-gradient(to left, var(--main-color), var(--tertiary-color));
+  color: white;
+}
 .custom-btn {
   padding: 10px 20px;
   border-radius: var(--border-radius);
@@ -44,7 +59,7 @@ body {
 }
 
 .add-btn:hover {
-  background-color: #106457; 
+  background-color: #106457;
   transform: scale(1.05);
 }
 
@@ -54,7 +69,7 @@ body {
 }
 
 .edit-btn:hover {
-  background-color: #2e664a; 
+  background-color: #2e664a;
   transform: scale(1.05);
 }
 
@@ -67,7 +82,28 @@ body {
   background-color: #cc9f00;
   transform: scale(1.05);
 }
-
+.btn-prim {
+  color: var(--secondary-color);
+  font-weight: bold;
+  font-style: italic;
+  background-color: rgba(255, 255, 255, 0.764);
+}
+.btn-prim:hover {
+  background-color: var(--secondary-color);
+  color: white;
+  transform: scale(1.05);
+}
+.btn-second {
+  color: var(--accent-color);
+  font-style: italic;
+  font-weight: bold;
+  background-color: rgba(255, 255, 255, 0.764);
+}
+.btn-second:hover {
+  background-color: var(--accent-color);
+  color: black;
+  transform: scale(1.05);
+}
 .custom-card {
   background-color: white;
   border-radius: var(--border-radius);
@@ -84,16 +120,6 @@ body {
 .custom-card-body {
   font-size: 1rem;
   color: var(--font-color);
-}
-
-.btn-prim {
-  color: var(--secondary-color);
-  font-weight: bold;
-}
-
-.btn-second {
-  color: var(--accent-color);
-  font-style: italic;
 }
 
 .custom-navbar {
@@ -131,4 +157,13 @@ body {
 
 .custom-navbar .dropdown-item:hover {
   background-color: var(--accent-color);
+}
+
+.custom-input ,.custom-select{
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color:var(--tertiary-color); ;
+  color: var(--font-color);
+  font-size: large;
 }

@@ -8,21 +8,21 @@
         <div class="calendar-filters mx-2 row mt-3">
             <div class="form-group row col-6">
                 <label class="form-label subtitle col-auto my-auto">Search:</label>
-                <input class="form-control col" type="text" [(ngModel)]="searchKeyword" (input)="filterEvents()" title="Search Keyword">
+                <input class="form-control col custom-input" type="text" [(ngModel)]="searchKeyword" (input)="filterEvents()" title="Search Keyword">
             </div>
             <div class="form-group row col-6 col-md">
                 <label class="form-label subtitle col-auto my-auto">Type:</label>
-                <select class="form-control col" [(ngModel)]="selectedType" (change)="filterEvents()" title="Event Types">
+                <select class="form-control col custom-select" [(ngModel)]="selectedType" (change)="filterEvents()" title="Event Types">
                     <option *ngFor="let type of eventTypes" [value]="type">{{ type }}</option>
                 </select>
             </div>
             <div class="form-group row col-6 col-md">
                 <label class="form-label subtitle col-auto my-auto">Start Date:</label>
-                <input class="form-control col w-25" type="date" [(ngModel)]="startDate" (change)="filterEvents()" title="Start Date">
+                <input class="form-control col w-25 custom-input" type="date" [(ngModel)]="startDate" (change)="filterEvents()" title="Start Date">
             </div>
             <div class="form-group row col-6 col-md">
                 <label class="form-label subtitle my-auto col">End Date:</label>
-                <input class="form-control col w-25" type="date" [(ngModel)]="endDate" (change)="filterEvents()" title="End Date">
+                <input class="form-control col w-25 custom-input" type="date" [(ngModel)]="endDate" (change)="filterEvents()" title="End Date">
             </div>
         </div>
         <div class="row align-items-center container">

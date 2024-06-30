@@ -1,76 +1,76 @@
-<div class="d-flex justify-content-center align-content-center mt-3 mb-3">
+<div class="main-bg d-flex justify-content-center align-content-center py-3">
     <div class="d-flex justify-content-center align-items-center">
         <form [formGroup]="registerForm" (ngSubmit)="reg()">
             <p-card header="Sign Up" subheader="Welcome to EPP 🎉" [style]="{width:'600px'}"> 
                 <small class="fw-light fst-italic">
-                    <div class="text-danger mb-4"> * <span class="text-dark">Required Field</span><span class="text-dark-emphasis"> (You must be over 18 to sign up) </span></div>
+                    <div class="mb-4"> * <span class="text-dark">Required Field</span><span class="error-title"> (You must be over 18 to sign up) </span></div>
                 </small>
                 <div class="row">
                 <div class="col">
                     <p-floatLabel>
-                        <input id="fname" type="text" class="w-100"  pInputText  name="fname" formControlName="firstName">
+                        <input id="fname" type="text" class="w-100 custom-input"  pInputText  name="fname" formControlName="firstName">
                         <label for="fname">First Name<span class="text-danger"> *</span></label>
                     </p-floatLabel>
                     <small *ngIf="firstNameControl.invalid && (firstNameControl.dirty||firstNameControl.touched)" class="block p-error mb-3">
-                        <div *ngIf="firstNameControl.errors?.['required']">First Name is Required</div>
-                        <div *ngIf="firstNameControl.errors?.['minlength']||firstNameControl?.errors?.['maxlength']">First Name must be between 3 and 50 letters</div>
+                        <div class="error-title" *ngIf="firstNameControl.errors?.['required']">First Name is Required</div>
+                        <div class="error-title" *ngIf="firstNameControl.errors?.['minlength']||firstNameControl?.errors?.['maxlength']">First Name must be between 3 and 50 letters</div>
                     </small>
                 </div>
                 <div class="col">
                     <p-floatLabel>
-                        <input id="lname" type="text" class="w-100"  pInputText  name="lname" formControlName="lastName">
+                        <input id="lname" type="text" class="w-100 custom-input"  pInputText  name="lname" formControlName="lastName">
                         <label for="lastName">Last Name<span class="text-danger"> *</span></label>
                     </p-floatLabel>
                     <small *ngIf="lastNameControl.invalid && (lastNameControl.dirty||lastNameControl.touched)" class="block p-error mb-3">
-                        <div *ngIf="lastNameControl.errors?.['required']">Last Name is Required</div>
-                        <div *ngIf="lastNameControl.errors?.['minlength']||lastNameControl?.errors?.['maxlength']">Last Name must be between 3 and 50 letters</div>
+                        <div class="error-title" *ngIf="lastNameControl.errors?.['required']">Last Name is Required</div>
+                        <div class="error-title" *ngIf="lastNameControl.errors?.['minlength']||lastNameControl?.errors?.['maxlength']">Last Name must be between 3 and 50 letters</div>
                     </small>
                 </div>
             </div>
             <div class="mt-4">
                 <p-floatLabel>
-                    <input id="email" type="text" class="w-100"  pInputText  name="email" formControlName="email">
+                    <input id="email" type="text" class="w-100 custom-input"  pInputText  name="email" formControlName="email">
                     <label for="email">Email<span class="text-danger"> *</span></label>
                 </p-floatLabel>
                 
                 <small *ngIf="emailControl.invalid && (emailControl.dirty||emailControl.touched)" class="block p-error mb-3">
-                    <div *ngIf="emailControl.errors?.['required']">Email is Required</div>
-                    <div *ngIf="emailControl.errors?.['email']">Email must be Valid</div>
+                    <div class="error-title" *ngIf="emailControl.errors?.['required']">Email is Required</div>
+                    <div class="error-title" *ngIf="emailControl.errors?.['email']">Email must be Valid</div>
                 </small>
             </div>
             <div class="row mt-4">
             <div class="col">
                 <p-floatLabel>
-                    <input id="password" type="password" class="w-100"  pInputText name="password" formControlName="password">
+                    <input id="password" type="password" class="w-100 custom-input"  pInputText name="password" formControlName="password">
                     <label for="password">Password<span class="text-danger"> *</span></label>
                 </p-floatLabel>
                 <small *ngIf="passwordControl.invalid && (passwordControl.dirty||passwordControl.touched)" class="block p-error">
-                    <div *ngIf="passwordControl.errors?.['required']">Password is Required</div>
-                    <div *ngIf="passwordControl.errors?.['pattern']">Password must be valid</div>
+                    <div class="error-title" *ngIf="passwordControl.errors?.['required']">Password is Required</div>
+                    <div class="error-title" *ngIf="passwordControl.errors?.['pattern']">Password must be valid</div>
                 </small>
             </div>
                 <div class="col">
                     <p-floatLabel>
-                        <input id="confirmPassword" type="password" class="w-100" pInputText name="confirmPassword" formControlName="confirmPassword">
+                        <input id="confirmPassword" type="password" class="w-100 custom-input" pInputText name="confirmPassword" formControlName="confirmPassword">
                         <label for="confirmPassword">Confirm Password<span class="text-danger"> *</span></label>
                     </p-floatLabel>
                     <small *ngIf="confirmPasswordControl.invalid && (confirmPasswordControl.dirty||confirmPasswordControl.touched)" class="block p-error">
-                        <div *ngIf="confirmPasswordControl.errors?.['required']">Confirm Password is Required</div>
+                        <div class="error-title" *ngIf="confirmPasswordControl.errors?.['required']">Confirm Password is Required</div>
                     </small>
                     <small class="block p-error">
-                        <div *ngIf="registerForm.errors?.['passwordMismatch']&&passwordControl.valid&&confirmPasswordControl.valid">Passwords must match</div>
+                        <div class="error-title" *ngIf="registerForm.errors?.['passwordMismatch']&&passwordControl.valid&&confirmPasswordControl.valid">Passwords must match</div>
                     </small>
                 </div>
             </div>
             <div class="row mt-4">
                 <div class="col">
                     <p-floatLabel>
-                        <input id="phone" type="text" class="w-100" pInputText name="phone" formControlName="phoneNumber">
+                        <input id="phone" type="text" class="w-100 custom-input" pInputText name="phone" formControlName="phoneNumber">
                         <label for="phone">Phone Number<span class="text-danger"> *</span></label>
                     </p-floatLabel>
                     <small *ngIf="phoneNumberControl.invalid && (phoneNumberControl.dirty||phoneNumberControl.touched)" class="block p-error">
-                        <div *ngIf="phoneNumberControl.errors?.['required']">Phone is Required</div>
-                        <div *ngIf="phoneNumberControl.errors?.['pattern']">Phone must be valid</div>
+                        <div class="error-title" *ngIf="phoneNumberControl.errors?.['required']">Phone is Required</div>
+                        <div class="error-title" *ngIf="phoneNumberControl.errors?.['pattern']">Phone must be valid</div>
                     </small>
                 </div>
                 <div class="col">
@@ -79,51 +79,51 @@
                         <label for="dob">Date of Birth<span class="text-danger"> *</span></label>
                     </p-floatLabel>
                     <small *ngIf="dobControl.invalid && (dobControl.dirty||dobControl.touched)" class="block p-error">
-                        <div *ngIf="dobControl.errors?.['required']">Date of Birth is Required</div>
+                        <div class="error-title" *ngIf="dobControl.errors?.['required']">Date of Birth is Required</div>
                     </small>
                 </div>
             </div>
             <div class="row mt-4">
                 <div class="col">
                     <p-floatLabel>
-                        <input id="street" type="text" class="w-100"  pInputText  name="street" formControlName="street">
+                        <input id="street" type="text" class="w-100 custom-input"  pInputText  name="street" formControlName="street">
                         <label for="street">Street</label>
                     </p-floatLabel>
                     <small *ngIf="streetControl.invalid && (streetControl.dirty||streetControl.touched)" class="block p-error mb-3">
-                        <div *ngIf="streetControl.errors?.['minlength']||streetControl?.errors?.['maxlength']">Street must be between 3 and 50 characters</div>
+                        <div class="error-title" *ngIf="streetControl.errors?.['minlength']||streetControl?.errors?.['maxlength']">Street must be between 3 and 50 characters</div>
                     </small>
                 </div>
                 <div class="col">
                     <p-floatLabel>
-                        <input id="postal" type="number" class="w-100"  pInputText  name="postal" formControlName="postalCode">
+                        <input id="postal" type="number" class="w-100 custom-input"  pInputText  name="postal" formControlName="postalCode">
                         <label for="postal">Postal Code</label>
                     </p-floatLabel>
                     <small *ngIf="postalCodeControl.invalid && (postalCodeControl.dirty||postalCodeControl.touched)" class="block p-error mb-3">
-                        <div *ngIf="postalCodeControl.errors?.['pattern']">Postal Code must be exaxtly 5 digits</div>
+                        <div class="error-title" *ngIf="postalCodeControl.errors?.['pattern']">Postal Code must be exaxtly 5 digits</div>
                     </small>
                 </div>
             </div>
             <div class="row mt-4">
                 <div class="col">
                     <p-floatLabel>
-                        <input id="city" type="text" class="w-100"  pInputText  name="city" formControlName="city">
+                        <input id="city" type="text" class="w-100 custom-input"  pInputText  name="city" formControlName="city">
                         <label for="city">City</label>
                     </p-floatLabel>
                     <small *ngIf="cityControl.invalid && (cityControl.dirty||cityControl.touched)" class="block p-error mb-3">
-                        <div *ngIf="cityControl.errors?.['minlength']||cityControl?.errors?.['maxlength']">City must be between 3 and 50 characters</div>
+                        <div class="error-title" *ngIf="cityControl.errors?.['minlength']||cityControl?.errors?.['maxlength']">City must be between 3 and 50 characters</div>
                     </small>
                 </div>
                 <div class="col">
                     <p-floatLabel>
-                        <input id="region" type="text" class="w-100"  pInputText  name="region" formControlName="region">
+                        <input id="region" type="text" class="w-100 custom-input"  pInputText  name="region" formControlName="region">
                         <label for="region">Region</label>
                     </p-floatLabel>
-                    <small *ngIf="regionControl.invalid && (regionControl.dirty||regionControl.touched)" class="block p-error mb-3">
+                    <small class="error-title" *ngIf="regionControl.invalid && (regionControl.dirty||regionControl.touched)" class="block p-error mb-3">
                     </small>
                 </div>
             </div>
             <small class="fw-light fst-italic">
-                <div class="mt-3"> Formats Permitted are .jpg , .png or .jpeg (Max Size : 1 MB) </div>
+                <div  class="mt-3 error-title"> Formats Permitted are .jpg , .png or .jpeg (Max Size : 1 MB) </div>
             </small>
             <p-fileUpload 
             mode="basic" 
@@ -131,11 +131,13 @@
             chooseIcon="pi pi-upload"
             name="image"  
             accept=".jpg,.png,.jpeg" 
-            maxFileSize="3000000" 
+            maxFileSize="3000000"
              (onSelect)="selectImage($event)"/>
-                <button pButton label="Register" type="submit" icon="pi pi-arrow-right" iconPos="right" class="p-button-success w-100 mt-2" [style]="{borderRadius: '6px'}"  [disabled]="registerForm.invalid"></button>
+                <button type="submit" class="custom-btn add-btn w-100 mt-2"  [disabled]="registerForm.invalid">
+                        Register <i class="ms-2 pi pi-arrow-right"></i>
+                </button>
                 <!-- <p-button label="Register"   class="p-fluid" styleClass="p-button-success w-100  mt-3"  [disabled]="registerForm.invalid"></p-button> -->
-                <div class="mt-3">
+                <div class="mt-3 text-success">
                     Already a member ? <a routerLink="/auth/login">Login</a>
             </div>
             </p-card>

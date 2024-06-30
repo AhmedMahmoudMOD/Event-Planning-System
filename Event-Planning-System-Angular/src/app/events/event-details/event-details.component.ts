@@ -32,7 +32,7 @@ import { FileSelectEvent, FileSendEvent, FileUploadEvent, FileUploadHandlerEvent
 import { EventImage } from '../../shared/models/eventImage.model';
 import { AccountService } from '../../shared/services/account.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import swal from 'sweetalert';
+import { EventReqsComponent } from '../event-reqs/event-reqs.component';
 
 
 
@@ -40,7 +40,7 @@ import swal from 'sweetalert';
 @Component({
   selector: 'app-event-details',
   standalone: true,
-  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule, AddEmailsComponent,EditEventComponent,DataViewModule,EventsScheduleComponent,TableModule,AddtoDoListComponent,EdittoDoListComponent,FileUploadModule,ProgressSpinnerModule],
+  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule, AddEmailsComponent,EditEventComponent,DataViewModule,EventsScheduleComponent,TableModule,AddtoDoListComponent,EdittoDoListComponent,FileUploadModule,ProgressSpinnerModule,EventReqsComponent],
   templateUrl: './event-details.component.html',
   styleUrls: ['./event-details.component.css']
 })
