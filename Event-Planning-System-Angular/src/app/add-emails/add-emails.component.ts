@@ -30,6 +30,8 @@ import { ActivatedRoute } from '@angular/router';
 export class AddEmailsComponent implements OnDestroy, OnInit {
   emails: string[] = [];
   invalidEmails: string[] = [];
+  invitedEmails: string[] = [];
+  DuplicateEmails: string[] = [];
   errorMessage: string | null = null;
   successMessage: string | null = null;
   loading: boolean = false;
@@ -66,6 +68,9 @@ export class AddEmailsComponent implements OnDestroy, OnInit {
 
   closeModal() {
     this.displayModal = false;
+    this.emails = [];
+    this.errorMessage = null;
+    this.successMessage = null;  
   }
 
   submitEmails() {
@@ -80,9 +85,9 @@ export class AddEmailsComponent implements OnDestroy, OnInit {
       .addAttendance(this.eventId, this.emails.filter(this.checkEmail))
       .subscribe({
         next: (response) => {
-          console.log(response);
-
           if (response.success) {
+            this.invitedEmails = response.successfulEmails;
+            this.DuplicateEmails = response.duplicateEmails;
             this.successMessage = `
             <div>Emails submitted successfully.<br>
               <br/>Invited: ${response.successfulEmails.join(', ')}.
@@ -92,8 +97,10 @@ export class AddEmailsComponent implements OnDestroy, OnInit {
               <br/><div class="alert alert-info">Duplicates: ${response.duplicateEmails.join(
                 ', '
               )}.</div>
-            </div>`;
+            </div>`;            
           } else {
+            this.invitedEmails = response.successfulEmails;
+            this.DuplicateEmails = response.duplicateEmails;
             this.errorMessage =
               response.message || 'An error occurred while adding emails';
             if (this.invalidEmails) {
@@ -108,7 +115,8 @@ export class AddEmailsComponent implements OnDestroy, OnInit {
           console.log(error);
           this.errorMessage =
             error.error?.message || 'An error occurred while adding emails';
-
+          this.invitedEmails = error.error?.successfulEmails;
+          this.DuplicateEmails = error.error?.duplicateEmails;
           this.invalidEmails?.length > 0
             ? (this.errorMessage += ` Invalid: ${this.invalidEmails.join(
                 ', '
