@@ -46,10 +46,6 @@ export class ProfileUpdateComponent implements OnInit {
     private messageService: MessageService
   ) {}
 
-  getProfile() {
-
-  }
-
   ngOnInit() {
     const id = +this.accountService.extractUserID();
     this.profileService
@@ -94,7 +90,6 @@ export class ProfileUpdateComponent implements OnInit {
           detail: 'Profile Updated Successfully',
         });
         // get updated profile
-        // this.getProfile();
 
         setTimeout(() => {
           this.hideEditModal();
