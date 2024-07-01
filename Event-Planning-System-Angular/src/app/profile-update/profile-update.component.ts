@@ -16,7 +16,6 @@ import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { catchError, of } from 'rxjs';
 
-
 @Component({
   selector: 'app-profile-update',
   standalone: true,
@@ -47,22 +46,33 @@ export class ProfileUpdateComponent implements OnInit {
     private messageService: MessageService
   ) {}
 
+  getProfile() {
+
+  }
+
   ngOnInit() {
     const id = +this.accountService.extractUserID();
-    this.profileService.getProfile(id).pipe(
-      catchError(err => {
-        console.error('Error fetching profile:', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to load profile' });
-        return of({});
-      })
-    ).subscribe({
-      next: (data) => {
-        this.profile = data;
-      },
-      error: (err) => {
-        console.error('Error fetching profile:', err);
-      },
-    });
+    this.profileService
+      .getProfile(id)
+      .pipe(
+        catchError((err) => {
+          console.error('Error fetching profile:', err);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Failed to load profile',
+          });
+          return of({});
+        })
+      )
+      .subscribe({
+        next: (data) => {
+          this.profile = data;
+        },
+        error: (err) => {
+          console.error('Error fetching profile:', err);
+        },
+      });
   }
 
   showEditModal() {
@@ -73,31 +83,30 @@ export class ProfileUpdateComponent implements OnInit {
     this.displayEditModal = false;
   }
 
-
-  confirmUpdate() {
-    this.confirmationService.confirm({
-      message: 'Are you sure you want to save changes?',
-      header: 'Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.updateProfile(this.profile);
-        this.displayEditModal = false;
-      },
-      reject: () => {
-        this.messageService.add({ severity: 'info', summary: 'Cancelled', detail: 'You have cancelled the update' });
-      },
-    });
-  }
-
   updateProfile(profile: Profile) {
-    this.profileService.updateProfile(profile).subscribe(
+    const id = +this.accountService.extractUserID();
+    this.profileService.updateProfile(id, profile).subscribe(
       (data) => {
         console.log('Profile update response:', data);
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Profile Updated Successfully' });
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Profile Updated Successfully',
+        });
+        // get updated profile
+        // this.getProfile();
+
+        setTimeout(() => {
+          this.hideEditModal();
+        }, 1000);
       },
       (error) => {
         console.error('Error updating profile:', error);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Profile Update Failed' });
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Profile Update Failed',
+        });
       }
     );
   }

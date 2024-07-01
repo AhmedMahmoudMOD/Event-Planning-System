@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Profile } from '../models/profile';
+
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +14,15 @@ export class ProfileService {
 
   // get profile by user id
   getProfile(userId: number) {
-    return this.http.get(this.baseUrl + userId);
+    return this.http.get<Profile>(this.baseUrl + userId);
   }
 
   // update profile
-  updateProfile(profile: any) {
-    return this.http.put(this.baseUrl, profile);
+  // request url example http://localhost:5006/api/Profile/id
+  updateProfile(userId: number ,profile: Profile) {
+    return this.http.put<Profile>(this.baseUrl + userId, profile);
   }
+
+
 
 }

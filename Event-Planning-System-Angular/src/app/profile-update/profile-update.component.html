@@ -1,6 +1,4 @@
-<p>profile-update works!</p>
-
-<p-button (click)="showEditModal()" label="Update Profile"></p-button>
+<p-button (click)="showEditModal()" label="Update Profile" styleClass="custom-button"></p-button>
 
 <p-dialog header="Edit Profile" [(visible)]="displayEditModal" [style]="{ width: '25rem' }">
     <span class="p-text-secondary block mb-5">Update your information.</span>
@@ -38,8 +36,7 @@
     </div>
     <div class="flex justify-content-end gap-2">
         <p-button label="Cancel" severity="secondary" (click)="hideEditModal()"></p-button>
-        <!-- <p-button label="Save" (click)="confirm()"></p-button> -->
-        <p-button label="Save" (click)="confirmUpdate()"></p-button>
+        <p-button label="Save" (click)="updateProfile(profile)></p-button>
 
     </div>
 </p-dialog>
