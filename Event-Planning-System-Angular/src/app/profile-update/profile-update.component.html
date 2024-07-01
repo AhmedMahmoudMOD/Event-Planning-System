@@ -1,42 +1,42 @@
 <p-button (click)="showEditModal()" label="Update Profile" styleClass="custom-button"></p-button>
 
-<p-dialog header="Edit Profile" [(visible)]="displayEditModal" [style]="{ width: '25rem' }">
-  <span class="p-text-secondary block mb-5">Update your information.</span>
-  <div class="flex align-items-center gap-3 mb-3">
-    <label for="fName" class="font-semibold w-6rem">First Name</label>
-    <input pInputText id="fName" [(ngModel)]="profile.fName" class="flex-auto" autocomplete="off" />
+<p-dialog header="Edit Profile" [(visible)]="displayEditModal" [style]="{ width: '30rem' }" modal="true">
+  <span class="p-text-secondary block mb-3 modal-description">Update your information.</span>
+  <div class="form-group">
+    <label for="fName" class="form-label">First Name</label>
+    <input pInputText id="fName" [(ngModel)]="profile.fName" class="form-input" autocomplete="off" />
   </div>
-  <div class="flex align-items-center gap-3 mb-5">
-    <label for="lName" class="font-semibold w-6rem">Last Name</label>
-    <input pInputText id="lName" [(ngModel)]="profile.lName" class="flex-auto" autocomplete="off" />
+  <div class="form-group">
+    <label for="lName" class="form-label">Last Name</label>
+    <input pInputText id="lName" [(ngModel)]="profile.lName" class="form-input" autocomplete="off" />
   </div>
-  <div class="flex align-items-center gap-3 mb-5">
-    <label for="email" class="font-semibold w-6rem">Email</label>
-    <input pInputText id="email" [(ngModel)]="profile.email" class="flex-auto" autocomplete="off" />
+  <div class="form-group">
+    <label for="email" class="form-label">Email</label>
+    <input pInputText id="email" [(ngModel)]="profile.email" class="form-input" autocomplete="off" />
   </div>
-  <div class="flex align-items-center gap-3 mb-5">
-    <label for="phoneNumber" class="font-semibold w-6rem">Phone Number</label>
-    <input pInputText id="phoneNumber" [(ngModel)]="profile.phoneNumber" class="flex-auto" autocomplete="off" />
+  <div class="form-group">
+    <label for="phoneNumber" class="form-label">Phone Number</label>
+    <input pInputText id="phoneNumber" [(ngModel)]="profile.phoneNumber" class="form-input" autocomplete="off" />
   </div>
-  <div class="flex align-items-center gap-3 mb-5">
-    <label for="street" class="font-semibold w-6rem">Street</label>
-    <input pInputText id="street" [(ngModel)]="profile.street" class="flex-auto" autocomplete="off" />
+  <div class="form-group">
+    <label for="street" class="form-label">Street</label>
+    <input pInputText id="street" [(ngModel)]="profile.street" class="form-input" autocomplete="off" />
   </div>
-  <div class="flex align-items-center gap-3 mb-5">
-    <label for="city" class="font-semibold w-6rem">City</label>
-    <input pInputText id="city" [(ngModel)]="profile.city" class="flex-auto" autocomplete="off" />
+  <div class="form-group">
+    <label for="city" class="form-label">City</label>
+    <input pInputText id="city" [(ngModel)]="profile.city" class="form-input" autocomplete="off" />
   </div>
-  <div class="flex align-items-center gap-3 mb-5">
-    <label for="region" class="font-semibold w-6rem">Region</label>
-    <input pInputText id="region" [(ngModel)]="profile.region" class="flex-auto" autocomplete="off" />
+  <div class="form-group">
+    <label for="region" class="form-label">Region</label>
+    <input pInputText id="region" [(ngModel)]="profile.region" class="form-input" autocomplete="off" />
   </div>
-  <div class="flex align-items-center gap-3 mb-5">
-    <label for="postalCode" class="font-semibold w-6rem">Postal Code</label>
-    <input pInputText id="postalCode" [(ngModel)]="profile.postalCode" class="flex-auto" autocomplete="off" />
+  <div class="form-group">
+    <label for="postalCode" class="form-label">Postal Code</label>
+    <input pInputText id="postalCode" [(ngModel)]="profile.postalCode" class="form-input" autocomplete="off" />
   </div>
-  <div class="flex justify-content-end gap-2">
-    <p-button label="Cancel" severity="secondary" (click)="hideEditModal()"></p-button>
-    <p-button label="Save" (click)="updateProfile(profile)"></p-button>
+  <div class="modal-footer">
+    <p-button label="Cancel" severity="secondary" (click)="hideEditModal()" styleClass="modal-cancel-button"></p-button>
+    <p-button label="Save" (click)="updateProfile(profile)" styleClass="modal-save-button"></p-button>
   </div>
 </p-dialog>
 

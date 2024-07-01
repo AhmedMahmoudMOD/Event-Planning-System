@@ -37,6 +37,7 @@ import { catchError, of } from 'rxjs';
 export class ProfileUpdateComponent implements OnInit {
   profile: Profile | any = {};
   displayEditModal = false;
+  id = +this.accountService.extractUserID();
 
   constructor(
     private profileService: ProfileService,
@@ -46,10 +47,9 @@ export class ProfileUpdateComponent implements OnInit {
     private messageService: MessageService
   ) {}
 
-  ngOnInit() {
-    const id = +this.accountService.extractUserID();
+  getProfile() {
     this.profileService
-      .getProfile(id)
+      .getProfile(this.id)
       .pipe(
         catchError((err) => {
           console.error('Error fetching profile:', err);
@@ -71,6 +71,11 @@ export class ProfileUpdateComponent implements OnInit {
       });
   }
 
+
+  ngOnInit() {
+    this.getProfile();
+  }
+
   showEditModal() {
     this.displayEditModal = true;
   }
@@ -80,8 +85,7 @@ export class ProfileUpdateComponent implements OnInit {
   }
 
   updateProfile(profile: Profile) {
-    const id = +this.accountService.extractUserID();
-    this.profileService.updateProfile(id, profile).subscribe(
+    this.profileService.updateProfile(this.id, profile).subscribe(
       (data) => {
         console.log('Profile update response:', data);
         this.messageService.add({
@@ -89,11 +93,15 @@ export class ProfileUpdateComponent implements OnInit {
           summary: 'Success',
           detail: 'Profile Updated Successfully',
         });
-        // get updated profile
 
         setTimeout(() => {
           this.hideEditModal();
         }, 1000);
+
+        // get updated profile
+        this.getProfile();
+
+
       },
       (error) => {
         console.error('Error updating profile:', error);
