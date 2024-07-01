@@ -23,6 +23,4 @@ export class ProfileService {
     return this.http.put<Profile>(this.baseUrl + userId, profile);
   }
 
-
-
 }
