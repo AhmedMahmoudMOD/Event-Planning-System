@@ -13,7 +13,7 @@ import { ChipModule } from 'primeng/chip';
 import { GalleriaModule } from 'primeng/galleria';
 import { ImageModule } from 'primeng/image';
 import { SafePipe } from './safe.pipe';
-import { Subscription } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
 import { EventdetailsService } from '../../shared/services/events/eventdetails.service';
 import { eventTypeMapping } from '../../shared/enums/eventstype';
 import { AddEmailsComponent } from '../../add-emails/add-emails.component';
@@ -32,6 +32,8 @@ import { FileSelectEvent, FileSendEvent, FileUploadEvent, FileUploadHandlerEvent
 import { EventImage } from '../../shared/models/eventImage.model';
 import { AccountService } from '../../shared/services/account.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import swal from 'sweetalert';
+
 import { EventReqsComponent } from '../event-reqs/event-reqs.component';
 
 
@@ -99,6 +101,13 @@ todoTitle:string = '';
       console.log(check);
       this.isOwner = check;
     });
+    this.userId = this.accountService.extractUserID();
+    console.log(this.userId, this.id);
+
+    this.accountService.checkOwnership(this.id,this.userId).subscribe(check=>{
+      console.log(check);
+      this.isOwner = check;
+    });
   }
 
 
@@ -153,6 +162,7 @@ todoTitle:string = '';
     this.eventsubscription = this.eventDetailsServices.getEventById(this.id).subscribe({
       next: (res) => {
         this.eventDetails = res;
+        this.isCanceled = this.eventDetails.isCanceled;
         this.isCanceled = this.eventDetails.isCanceled;
         //console.log(this.eventDetails);
         if (this.eventDetails.eventImages.length === 0) {
@@ -246,6 +256,8 @@ setActiveLink(link: string): void {
     return eventTypeMapping[eventTypeInt];
   }
   
+
+  ///////////////////////////to do list////////////////////////
   getAllToDoList() {
     this.toDoListService.getToDoList(this.id).subscribe({
       next: (res:ToDoList[]) => {
@@ -258,6 +270,7 @@ setActiveLink(link: string): void {
       }
     }
     );
+    
   }
   // loadToDoLists(event: any) {
   //   this.toDoList = event;
@@ -304,7 +317,12 @@ setActiveLink(link: string): void {
     this.toDoListService.updateToDoListStatus(this.id, title, status)
       .subscribe({
         next: (res) => {
-          console.log(res);
+          if(res){
+            swal('Great Job!', 'To-do list accomplished successfully.', 'success',{timer: 3000});
+          }
+          else{
+            swal('pending!', 'To-do list is pending now.', 'success',{timer: 3000});
+          }
         },
         error: (error) => {
           console.error('Error updating to-do list status:', error);

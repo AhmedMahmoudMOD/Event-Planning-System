@@ -1,4 +1,4 @@
 export interface EventImage {
-    id: number;
-    image:File;
+  id: number;
+  image:File;
 }
