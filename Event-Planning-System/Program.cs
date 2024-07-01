@@ -143,7 +143,7 @@ namespace Event_Planning_System
 			{
 				app.UseDeveloperExceptionPage();
 				app.UseSwagger();
-				app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Abdellatief was here"));
+				app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Yousry & Abdellatief was here"));
 			}
 			app.UseCors("CorsPolicy");
 			app.UseAuthorization();
