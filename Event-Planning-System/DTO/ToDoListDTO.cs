@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+
 
 namespace Event_Planning_System.DTO
 {
@@ -6,6 +9,7 @@ namespace Event_Planning_System.DTO
 	{
 		[StringLength(50, MinimumLength = 3)]
 		public string Title { get; set; }
+
 		[Range(0, 10000000000)]
 		public int? ToDoListBudget { get; set; }
 		[MinLength(3)]
@@ -13,6 +17,10 @@ namespace Event_Planning_System.DTO
 		[Required]
 		public DateTime DeadLineTime { get; set; }
 		[Required]
+
 		public int EventId { get; set; }
+
+		[DefaultValue(false)]
+		public bool IsDone { get; set; }
 	}
 }

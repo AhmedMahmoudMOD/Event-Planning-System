@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToDoList } from '../shared/models/ToDoList';
 import { HttpClient } from '@angular/common/http';
 import { ToDoListService } from '../shared/services/to-do-list.service';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DialogModule } from 'primeng/dialog';
 import { CommonModule } from '@angular/common';
 import { CalendarModule } from 'primeng/calendar';
 import { ReactiveFormsModule } from '@angular/forms'; 
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-editto-do-list',
@@ -16,55 +17,71 @@ import { ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     ReactiveFormsModule,
     DialogModule,
-    RouterModule,
-    CalendarModule,
+    CalendarModule
   ],
   templateUrl: './editto-do-list.component.html',
-  styleUrl: './editto-do-list.component.css'
+  styleUrls: ['./editto-do-list.component.css']
 })
 export class EdittoDoListComponent implements OnInit {
+  @Input() toDoList! : ToDoList;
   oldToDoList!: ToDoList;
   editToDoList!: FormGroup;
-submitted: boolean = false;
-minDate: Date = new Date();
-display: boolean = false;
-
+  submitted: boolean = false;
+  minDate: Date = new Date();
+  maxDate: Date = new Date();
+  display: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private httpclient: HttpClient,
-    private todoService: ToDoListService
+    private todoService: ToDoListService,
+    private route: ActivatedRoute,
   ) { 
     this.editToDoList = this.formBuilder.group({
-      title:[''],
-      toDoLiistBudjet:[''],
-      description:[''],
-      deadLineTime:[''],
-      eventId:['']
+      title: ['', Validators.required],
+      toDoListBudget: ['', Validators.required],
+      description: ['', Validators.required],
+      deadLineTime: ['', Validators.required],
+      eventId: ['']
     });
-  }
+}
 
   ngOnInit(): void {
-    // this.todoService.getSpecificToDoList().subscribe((todo: any) => {
-    //   this.oldToDoList = todo;
-    //   this.editToDoList.patchValue({
-    //     title: this.oldToDoList.title,
-    //     toDoLiistBudjet: this.oldToDoList.toDoListBudget,
-    //     description: this.oldToDoList.description,
-    //     deadLineTime: this.oldToDoList.deadLineTime,
-    //     eventId: this.oldToDoList.eventId
-    //   });
-    // });
+    console.log(this.toDoList);
+    this.editToDoList.patchValue({
+      title: this.toDoList.title,
+      toDoListBudget: this.toDoList.toDoListBudget,
+      description: this.toDoList.description,
+      deadLineTime: this.toDoList.deadLineTime,
+      eventId: this.toDoList.eventId
+    });
+    this.maxDate = new Date(this.toDoList.deadLineTime);
+  }
+
+  onMouseWheel(event: any) {
+    event.preventDefault();
   }
   displayEditModal() {
     this.display = true;
   }
+
   hideEditModal() {
     this.display = false;
   }
 
-  editToDoListmod(){
-   
+  editToDoListmod() {
+    this.submitted = true;
+    if (this.editToDoList.invalid) {
+      return;
+    }
+    this.todoService.updateTask(this.toDoList.eventId, this.toDoList.title, this.editToDoList.value).subscribe({
+      next: (res: any) => {
+        this.display = false;
+        swal.fire('Success', 'To-Do List updated successfully', 'success');
+      },
+      error: (err) => {
+        console.error('Error updating To-Do List:', err);
+      }
+    });
   }
-
 }

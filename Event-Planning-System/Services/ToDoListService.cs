@@ -33,10 +33,15 @@ namespace Event_Planning_System.Services
             DateTime dateNow = DateTime.Now;
 			DateTime eventDeadline = eventExists.EndDate;
 			DateTime eventDate = eventExists.EventDate;
-            if (newToDoListDTO.DeadLineTime <= dateNow || newToDoListDTO.DeadLineTime > eventDeadline || newToDoListDTO.DeadLineTime < eventDate)
+            if (newToDoListDTO.DeadLineTime <= dateNow || newToDoListDTO.DeadLineTime > eventDeadline )
 			{
-                return Result.Failure(new Error("400", "Invalid deadline"));
+                return Result.Failure(new Error("400", "Invalid Deadline, please Enter Valid Deadline"));
             }
+			if(newToDoListDTO.ToDoListBudget > eventExists.Budget)
+			{
+                return Result.Failure(new Error("400", "Budget is more than the event budget"));
+            }
+            // Map the DTO to the model (ToDoList
 			ToDoList newToDoList;
 			try
 			{
@@ -108,9 +113,12 @@ namespace Event_Planning_System.Services
 		{
 			if(newToDoList.DeadLineTime <= DateTime.Now)
                 return Result.Failure(new Error("400", "Invalid deadline"));
+
             var currentToDoList = await db.ToDoLists.FirstOrDefaultAsync(x => x.EventId == eventId && x.Title == name);
+
 			if (currentToDoList.DeadLineTime <= DateTime.Now)
 				return Result.Failure(new Error("400", "can't edit todo list"));
+
 			if (currentToDoList == null)
 				return Result.Failure(new Error("400", "To do list not found"));
 
@@ -145,8 +153,25 @@ namespace Event_Planning_System.Services
 			catch { return false; }
 		}
 
+        //update status of to do list
+        public async Task<Result> UpdateToDoListStatus(int eventId, string name, bool status)
+        {
+            var currentToDoList = await db.ToDoLists.FirstOrDefaultAsync(x => x.EventId == eventId && x.Title == name);
+            if (currentToDoList == null)
+                return Result.Failure(new Error("400", "To do list not found"));
+            currentToDoList.IsDone = status;
+            db.Entry(currentToDoList).State = EntityState.Modified;
+            try
+            {
+                await unitOfWork.saveAsync();
+                return Result.Success();
+            }
+            catch (Exception ex)
+            {
+                return Result.Failure(new Error("400", ex.Message));
+            }
+        }
 
 
-
-	}
+    }
 }

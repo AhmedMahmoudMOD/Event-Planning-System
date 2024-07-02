@@ -18,10 +18,13 @@ namespace Event_Planning_System.Controllers
 	public class EventController : ControllerBase
 	{
 		private readonly IEventService eventService;
-		public EventController(IEventService _eventService, IMapper _mapper)
+        private readonly IPDFService pDFService;
+
+        public EventController(IEventService _eventService, IMapper _mapper,IPDFService PDFService)
 		{
 			eventService = _eventService;
-		}
+            pDFService = PDFService;
+        }
 
 		// Get All Event for a user
 		[SwaggerOperation(Summary = "Get all events", Description = "Get all events by user's ID.")]
@@ -73,7 +76,8 @@ namespace Event_Planning_System.Controllers
 
             if (ModelState.IsValid)
 			{
-				if (await eventService.CreateEvent(newEventDTO,id))
+				var res = await eventService.CreateEvent(newEventDTO, id);
+                if(res.IsSuccess)
 					return Created();
 				else
 					return BadRequest("Failed to create event. Invalid data or event date is in the past.");
@@ -122,14 +126,14 @@ namespace Event_Planning_System.Controllers
 		[SwaggerOperation(Summary = "Add list of attendees", Description = "Add new list of attendees to the Event.")]
 		[SwaggerResponse(200, "Attendance was added successfully")]
 		[HttpPost("Attendance/{eventId:int}")]
-		public async Task<IActionResult> AddAttendace(int eventId, List<AttendanceDTO> newAttendancesDTO)
+		public async Task<IActionResult> AddAttendace(int eventId,[FromBodyAttribute] List<AttendanceDTO> newAttendancesDTO)
 		{
 			if (ModelState.IsValid)
 			{
-				string res = await eventService.AddGuests(eventId, newAttendancesDTO);
+				var res = await eventService.AddGuests(eventId, newAttendancesDTO);
 				if (res == "true")
-					return Created();
-				else
+					return Ok(res);
+				else 
 					return BadRequest(res);
 			}
 			return BadRequest(ModelState);
@@ -196,7 +200,17 @@ namespace Event_Planning_System.Controllers
             return Ok(true);
 
         }
-        
+
+        [HttpGet("print/{eventId:int}")]
+        public async Task<IActionResult> PrintEvent(int eventId)
+        {
+            var result = await pDFService.PrintPDF(eventId);
+            if (result != null)
+                return result;
+            return BadRequest();
+
+        }
+
 
     }
 

@@ -1,10 +1,4 @@
-<p-button
-  label="Edit"
-  [text]="true"
-  severity="help"
-  [raised]="true"
-  (click)="showEditModal()"
-/>
+<button class="custom-btn edit-btn" (click)="showEditModal()">Edit</button>
 
 <p-dialog
   header="Edit Event"
@@ -22,7 +16,7 @@
         <input
           type="text"
           id="name"
-          class="p-inputtext p-component"
+          class="p-inputtext p-component custom-input"
           formControlName="name"
         />
         <div *ngIf="editForm.get('name')?.invalid && editForm.get('name')?.touched" class="p-error">
@@ -31,7 +25,7 @@
       </div>
 
       <div class="p-field">
-        <label for="description">Description</label>
+        <label for="description">Description<span class="text-danger"> *</span></label>
         <textarea
           id="description"
           class="p-inputtextarea p-component"
@@ -48,8 +42,10 @@
         <input
           type="number"
           id="attendanceNumber"
-          class="p-inputtext p-component"
+          class="p-inputtext p-component custom-input"
           formControlName="attendanceNumber"
+          (mousewheel)="onScroll($event)"
+
         />
         <div *ngIf="editForm.get('attendanceNumber')?.invalid && editForm.get('attendanceNumber')?.touched" class="p-error">
           Attendance number is required.
@@ -57,11 +53,11 @@
       </div>
 
       <div class="p-field">
-        <label for="location">Location</label>
+        <label for="location">Location<span class="text-danger"> *</span></label>
         <input
           type="text"
           id="location"
-          class="p-inputtext p-component"
+          class="p-inputtext p-component custom-input"
           formControlName="location"
         />
         <div *ngIf="editForm.get('location')?.invalid && editForm.get('location')?.touched" class="p-error">
@@ -74,12 +70,12 @@
         <input
           type="text"
           id="googleMapsLocation"
-          class="p-inputtext p-component"
+          class="p-inputtext p-component custom-input"
           formControlName="googleMapsLocation"
         />
-        <div *ngIf="editForm.get('googleMapsLocation')?.invalid && editForm.get('googleMapsLocation')?.touched" class="p-error">
+        <!-- <div *ngIf="editForm.get('googleMapsLocation')?.invalid && editForm.get('googleMapsLocation')?.touched" class="p-error">
           Google maps location is required.
-        </div>
+        </div> -->
       </div>
 
       <div class="p-field">
@@ -87,8 +83,10 @@
         <input
           type="number"
           id="budget"
-          class="p-inputtext p-component"
+          class="p-inputtext p-component custom-input"
           formControlName="budget"
+          (mousewheel)="onScroll($event)"
+
         />
         <div *ngIf="editForm.get('budget')?.invalid && editForm.get('budget')?.touched" class="p-error">
           Budget is required.
@@ -102,6 +100,8 @@
           formControlName="eventDate"
           [showIcon]="true"
           size="small"
+          (mousewheel)="onScroll($event)"
+
         ></p-calendar>
         <div *ngIf="editForm.get('eventDate')?.invalid && editForm.get('eventDate')?.touched" class="p-error">
           Start date is required.
@@ -114,7 +114,9 @@
           id="endDate"
           formControlName="endDate"
           [showIcon]="true"
-          [minDate]="editForm.get('eventDate')?.value || MinDate"
+          [minDate]="initialStartDate"
+          (mousewheel)="onScroll($event)"
+
         ></p-calendar>
         <div *ngIf="editForm.get('endDate')?.invalid && editForm.get('endDate')?.touched" class="p-error">
           End date is required.
@@ -124,26 +126,23 @@
       <hr>
       <div class="p-dialog-footer">
         
-        <p-button
+        <button
         type="submit"
-        label="Save Changes"
+        label=""
+        class="custom-btn add-btn w-100 mt-2"
         icon="pi pi-check"
-        [text]="true"
-        [raised]="true"
         severity="success"
         size="small"
-        />
-        <p-button
+        >Save Changes</button>
+        <button
           label="Cancel"
           icon="pi pi-times"
           severity="secondary"
           (click)="hideEditModal()"
-          class="custom-cancel-button"
-          [text]="true"
-          [raised]="true"
+          class="custom-btn delete-btn w-100 mt-2"
           severity="secondary"
           size="small"
-        />
+        >Cancel</button>
       </div>
     </form>
   </ng-template>

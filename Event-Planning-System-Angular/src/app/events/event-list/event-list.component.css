@@ -19,7 +19,7 @@
   top: 0;
   left: 0;
   right: 0;
-  background: #ddd;
+  /* background: #ddd; */
 }
 
 .search-bar {
@@ -103,7 +103,7 @@
 .event-details p {
   margin: 5px 0;
   font-size: 14px;
-  color: #666;
+  color: #434343;
 }
 
 .locationImg {

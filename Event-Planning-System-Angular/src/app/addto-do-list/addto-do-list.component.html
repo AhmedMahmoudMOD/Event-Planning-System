@@ -1,10 +1,4 @@
-<p-button
-  label="Add"
-  [text]="true"
-  severity="success"
-  [raised]="true"
-  (click)="displayAddModal()"
-></p-button>
+<button class="custom-btn add-btn" (click)="displayAddModal()">New To-Do List</button>
 
 <p-dialog
   header="Add To-Do List"
@@ -18,7 +12,7 @@
     <form [formGroup]="addToDoList" (ngSubmit)="addTodo()">
       <div class="p-fluid">
         <div class="p-field p-centre">
-          <div *ngIf="err"class="p-error">
+          <div *ngIf="err" class="p-error error-title">
             {{ err || 'An error occurred while adding the to-do item. Please try again.' }}
           </div>
         </div>
@@ -27,17 +21,17 @@
           <input 
             type="text" 
             id="title" 
-            class="p-inputtext p-component" 
+            class="p-inputtext p-component custom-input" 
             formControlName="title" 
             placeholder="Enter To-Do List title"
           />
-          <div *ngIf="addToDoList.get('title')?.invalid && addToDoList.get('title')?.touched" class="p-error">
-            Title is required.
-          </div>
+          <span *ngIf="submitted && addToDoList.get('title')?.hasError('required')" class="error-title">Title is required</span>
+          <span *ngIf="submitted && addToDoList.get('title')?.hasError('minlength')" class="error-title">Title must be at least 3 characters</span>
+          <span *ngIf="submitted && addToDoList.get('title')?.hasError('maxlength')" class="error-title">Title cannot exceed 40 characters</span>
         </div>
 
         <div class="p-field">
-          <label for="description">Description</label>
+          <label for="description">Description <span class="error-title">*</span></label>
           <textarea 
             id="description" 
             class="p-inputtextarea p-component" 
@@ -45,13 +39,12 @@
             rows="3" 
             placeholder="Enter To-Do List description"
           ></textarea>
-          <div *ngIf="addToDoList.get('description')?.invalid && addToDoList.get('description')?.touched" class="p-error">
-            Description is required.
-          </div>
+          <span *ngIf="submitted && addToDoList.get('description')?.hasError('required')" class="error-title">Description is required</span>
+          <span *ngIf="submitted && addToDoList.get('description')?.hasError('minlength')" class="error-title">Description must be at least 3 characters</span>
         </div>
 
         <div class="p-field">
-          <label for="deadLineTime">Deadline<span class="text-danger"> *</span></label>
+          <label for="deadLineTime">Deadline<span class="error-title"> *</span></label>
           <p-calendar 
             id="deadLineTime" 
             formControlName="deadLineTime" 
@@ -61,10 +54,11 @@
             [showIcon]="true"
             [touchUI]="false" 
             [appendTo]="'body'" 
+            [minDate]="minDate"
+            [maxDate]="eventDeadLine"
           ></p-calendar>
-          <div *ngIf="addToDoList.get('deadLineTime')?.invalid && addToDoList.get('deadLineTime')?.touched" class="p-error">
-            Deadline is required.
-          </div>
+          <span class="error-title" *ngIf="submitted && addToDoList.get('deadLineTime')?.hasError('required')" >Deadline is required</span>
+          <span class="error-title" *ngIf="addToDoList.get('deadLineTime')?.errors?.['pastDate']">The deadline date cannot be in the past.</span>
         </div>
 
         <div class="p-field">
@@ -72,33 +66,25 @@
           <input 
             type="number" 
             id="toDoListBudget" 
-            class="p-inputtext p-component" 
+            class="p-inputtext p-component custom-input" 
             formControlName="toDoListBudget" 
             placeholder="Enter To-Do List budget"
           />
-          <div 
-            *ngIf="addToDoList.get('toDoListBudget')?.invalid && addToDoList.get('toDoListBudget')?.touched" 
-            class="p-error"
-          >
-            Budget is required.
-          </div>
+          <span class="error-title" *ngIf="submitted && addToDoList.get('toDoListBudget')?.hasError('required')">Budget is required</span>
+          <span class="error-title" *ngIf="addToDoList.get('toDoListBudget')?.errors?.['budgetExceeded']">The to-do list budget is higher than the event budget. Please enter a lower budget.</span>
         </div>
-<hr>
-        <div class="p-d-flex p-jc-end p-mt-3">
+        <hr>
+        <div class=" d-flex justify-content-between">
           <button 
-            pButton 
-            type="submit" 
-            label="Add" 
-            class="p-button-success"
+            type="submit"  
+            class="p-button-success custom-btn add-btn col mx-3"
             [disabled]="addToDoList.invalid" 
-          ></button>
+          >Add</button>
           <button 
-            pButton 
             type="button" 
-            label="Cancel" 
-            class="p-button-text p-mr-2" 
+            class="p-button-text p-mr-2 custom-btn delete-btn col mx-3" 
             (click)="hideAddModal()"
-          ></button>
+          >Cancel</button>
         </div>
       </div>
     </form>

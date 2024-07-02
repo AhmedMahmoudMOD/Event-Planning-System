@@ -260,6 +260,9 @@ namespace Event_Planning_System.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDone")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("ToDoListBudget")
                         .HasColumnType("int");
 
@@ -374,6 +377,25 @@ namespace Event_Planning_System.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Event_Planinng_System_DAL.Models.UserEventsRequests", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RequestStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "EventId");
+
+                    b.HasIndex("EventId");
+
+                    b.ToTable("UserEventsRequests");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -564,6 +586,25 @@ namespace Event_Planning_System.Migrations
                     b.Navigation("EventNavigation");
                 });
 
+            modelBuilder.Entity("Event_Planinng_System_DAL.Models.UserEventsRequests", b =>
+                {
+                    b.HasOne("Event_Planinng_System_DAL.Models.Event", "EventNavigation")
+                        .WithMany("UserEventRequestsNavigation")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Event_Planinng_System_DAL.Models.User", "UserNavigation")
+                        .WithMany("UserEventRequestsNavigation")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("EventNavigation");
+
+                    b.Navigation("UserNavigation");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("Event_Planinng_System_DAL.Models.Role", null)
@@ -628,6 +669,8 @@ namespace Event_Planning_System.Migrations
                     b.Navigation("EventScheduleNavigation");
 
                     b.Navigation("ToDoListsNavigation");
+
+                    b.Navigation("UserEventRequestsNavigation");
                 });
 
             modelBuilder.Entity("Event_Planinng_System_DAL.Models.User", b =>
@@ -635,6 +678,8 @@ namespace Event_Planning_System.Migrations
                     b.Navigation("CommentsNavigation");
 
                     b.Navigation("CreateEventNavigation");
+
+                    b.Navigation("UserEventRequestsNavigation");
                 });
 #pragma warning restore 612, 618
         }

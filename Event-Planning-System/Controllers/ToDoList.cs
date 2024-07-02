@@ -54,7 +54,7 @@ public class ToDoListController : ControllerBase
         return Ok(toDoList);
     }
 
-    [HttpDelete]
+    [HttpDelete("{eventId}/{name}")]
 	public async Task<IActionResult> Delete(int eventId, string name)
 	{
 		if (await toDoListService.DeleteToDoListSoft(eventId, name))
@@ -80,5 +80,22 @@ public class ToDoListController : ControllerBase
 			return BadRequest("Failed to update to do list. Invalid data or to do list does not exist.");
 		}
 	}
+
+    [HttpPut("{eventId}/{name}/{status}")]
+    public async Task<IActionResult> UpdateToDoListStatus(int eventId, string name, bool status)
+    {
+        var result = await toDoListService.UpdateToDoListStatus(eventId, name, status);
+        if (result.IsSuccess)
+        {
+            if(status)
+                return Ok(1);
+            else
+                return Ok(0);
+        }
+        else
+        {
+            return BadRequest("Failed to update to do list status. To do list not found.");
+        }
+    }
 
 }

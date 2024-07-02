@@ -26,6 +26,7 @@ import { AddtoDoListComponent } from './addto-do-list/addto-do-list.component';
 import { canLoginGuard } from './shared/guards/can-login.guard';
 import { logGuardGuard } from './shared/guards/log-guard.guard';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { ProfileUpdateComponent } from './profile-update/profile-update.component';
 
 
 
@@ -44,7 +45,7 @@ export const routes: Routes = [
     //event details
     { path: 'planner/eventdetails/:id', component: EventDetailsComponent },
     { path: 'schedule/:id', component: EventsScheduleComponent },
-
+{path:'addto-do-list',component:AddtoDoListComponent},
     //end of event details
     {path: 'planner/events', component : EventCalenderComponent},
 
@@ -54,6 +55,8 @@ export const routes: Routes = [
     { path: 'event/addEmails', component: AddEmailsComponent , canActivate:[canLoginGuard] },
 
     {path: 'profile/:id', component: ProfileComponent},
+    {path: 'update-profile/:id', component: ProfileUpdateComponent},
+    
 
     { path: 'edit-event', component: EditEventComponent },
 

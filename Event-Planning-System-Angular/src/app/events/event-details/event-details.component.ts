@@ -1,10 +1,10 @@
-import { AfterViewInit, Component, ElementRef, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { TabViewModule } from 'primeng/tabview';
 import { SelectButtonModule } from 'primeng/selectbutton';
-import { ActivatedRoute, Route, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { ScrollerModule } from 'primeng/scroller';
 import { TagModule } from 'primeng/tag';
@@ -13,14 +13,14 @@ import { ChipModule } from 'primeng/chip';
 import { GalleriaModule } from 'primeng/galleria';
 import { ImageModule } from 'primeng/image';
 import { SafePipe } from './safe.pipe';
-import { Subscription } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
 import { EventdetailsService } from '../../shared/services/events/eventdetails.service';
 import { eventTypeMapping } from '../../shared/enums/eventstype';
 import { AddEmailsComponent } from '../../add-emails/add-emails.component';
 import Swal from 'sweetalert2';
 import { EditEventComponent } from '../../edit-event/edit-event.component';
 import { ToDoListService } from '../../shared/services/to-do-list.service';
-import {DataView, DataViewModule} from 'primeng/dataview';
+import { DataViewModule } from 'primeng/dataview';
 import { EventsScheduleComponent } from '../events-schedule/events-schedule.component';
 import { ToDoList } from '../../shared/models/ToDoList';
 import {Table, TableLazyLoadEvent, TableModule} from 'primeng/table';
@@ -32,18 +32,19 @@ import { FileSelectEvent, FileSendEvent, FileUploadEvent, FileUploadHandlerEvent
 import { EventImage } from '../../shared/models/eventImage.model';
 import { AccountService } from '../../shared/services/account.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import swal from 'sweetalert';
+
+import { EventReqsComponent } from '../event-reqs/event-reqs.component';
 
 
 
 @Component({
   selector: 'app-event-details',
   standalone: true,
-  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule, AddEmailsComponent,EditEventComponent,DataViewModule,EventsScheduleComponent,TableModule,AddtoDoListComponent,EdittoDoListComponent,FileUploadModule,ProgressSpinnerModule],
+  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule, AddEmailsComponent,EditEventComponent,DataViewModule,EventsScheduleComponent,TableModule,AddtoDoListComponent,EdittoDoListComponent,FileUploadModule,ProgressSpinnerModule,EventReqsComponent],
   templateUrl: './event-details.component.html',
-  styleUrl: './event-details.component.css'
+  styleUrls: ['./event-details.component.css']
 })
-
-
 
 export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
 // loadToDoList($event: TableLazyLoadEvent) {
@@ -69,7 +70,8 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   toDoLists: ToDoList[] = [];
 toDoList: any;
 selectionMode: any;
-selectedToDos: any;
+displayEditModal: boolean = false;
+todoTitle:string = '';
   // constructors
   constructor(private ActivatedRoute: ActivatedRoute,
     private eventDetailsServices: EventdetailsService,
@@ -92,6 +94,13 @@ selectedToDos: any;
     });
     //get event details
     this.getEventDetails();
+    this.userId = this.accountService.extractUserID();
+    console.log(this.userId, this.id);
+
+    this.accountService.checkOwnership(this.id,this.userId).subscribe(check=>{
+      console.log(check);
+      this.isOwner = check;
+    });
     this.userId = this.accountService.extractUserID();
     console.log(this.userId, this.id);
 
@@ -153,6 +162,7 @@ selectedToDos: any;
     this.eventsubscription = this.eventDetailsServices.getEventById(this.id).subscribe({
       next: (res) => {
         this.eventDetails = res;
+        this.isCanceled = this.eventDetails.isCanceled;
         this.isCanceled = this.eventDetails.isCanceled;
         //console.log(this.eventDetails);
         if (this.eventDetails.eventImages.length === 0) {
@@ -247,19 +257,36 @@ setActiveLink(link: string): void {
   }
 
 
-  //to do list
+  ///////////////////////////to do list////////////////////////
   getAllToDoList() {
     this.toDoListService.getToDoList(this.id).subscribe({
       next: (res:ToDoList[]) => {
         this.toDoLists = res;
         console.log(this.toDoLists);
+
       },
       error: (error) => {
         console.error('Error fetching to-do list:', error);
       }
     }
     );
+
   }
+  // loadToDoLists(event: any) {
+  //   this.toDoList = event;
+  //   this.toDoListService.getToDoList(this.id).subscribe({
+  //     next: (res:ToDoList[]) => {
+  //       this.toDoLists = res;
+  //       console.log(this.toDoLists);
+  //     },
+  //     error: (error) => {
+  //       console.error('Error fetching to-do list:', error);
+  //     }
+  //   });
+  // }
+  // openToDo(title: string) {
+  //   this.router.navigate(['/addto-do-list', this.id, title]);
+  // }
   deleteToDoList(eventId: number, name: string) {
     Swal.fire({
       title: 'Are you sure you want to delete this to-do list?',
@@ -275,7 +302,7 @@ setActiveLink(link: string): void {
           .subscribe({
             next: (res) => {
               Swal.fire('Deleted!', 'The to-do list has been successfully deleted.', 'success');
-              this.getAllToDoList(); 
+              this.getAllToDoList();
             },
             error: (error) => {
               console.error('Error deleting to-do list:', error);
@@ -285,9 +312,31 @@ setActiveLink(link: string): void {
       }
     });
   }
-  showAddToDoListModal() {
+  //change status of to do list
+  onCheckboxChange(title: string,status:boolean): void {
+    this.toDoListService.updateToDoListStatus(this.id, title, status)
+      .subscribe({
+        next: (res) => {
+          if(res){
+            swal('Great Job!', 'To-do list accomplished successfully.', 'success',{timer: 3000});
+          }
+          else{
+            swal('pending!', 'To-do list is pending now.', 'success',{timer: 3000});
+          }
+        },
+        error: (error) => {
+          console.error('Error updating to-do list status:', error);
+        }
+      });
   }
-  showEditToDoListModal(toDoList: ToDoList) {
+  openEditModal(eventId: number ,title: string) {
+    this.todoTitle = title;
+    this.displayEditModal = true;
+  }
+
+  hideEditModal() {
+    this.displayEditModal = false;
+    this.todoTitle = '';
   }
 
   getEventDuration(): string {
@@ -296,7 +345,7 @@ setActiveLink(link: string): void {
     const options : any = { year: 'numeric', month: 'long', day: 'numeric' };
     return `${startDate.toLocaleDateString('en-US', options)} - ${endDate.toLocaleDateString('en-US', options)}`;
   }
-  
+
   selectImage(event: FileSelectEvent): void {
     let EventImage: EventImage = {
       image: event.files[0],

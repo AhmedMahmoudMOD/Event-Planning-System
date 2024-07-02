@@ -32,6 +32,7 @@ namespace Event_Planinng_System_DAL.Models
         public string? Image { get; set; }
         public virtual List<Comments> CommentsNavigation { get; set; } = new List<Comments>();
         public virtual List<Event> CreateEventNavigation { get; set; } = new List<Event>();
+        public virtual List<UserEventsRequests> UserEventRequestsNavigation { get; set; } = new List<UserEventsRequests>();
 
 
     }

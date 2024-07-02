@@ -1,0 +1,35 @@
+<div class="card">
+    <p-dataView #dv [value]="reqs">
+        <ng-template pTemplate="header">
+            <div class="d-flex flex-column flex-md-row-reverse justify-content-md-end">
+                <p-dropdown [options]="filters" [(ngModel)]="selectedFilter"  (onChange)="changeFilter($event)" [placeholder]="selectedFilter.label" />
+            </div>
+        </ng-template>
+        <ng-template pTemplate="list" let-reqs>
+            <div class="row g-0">
+                <div *ngFor="let item of reqs; let first = first" class="col-12">
+                    <div class="d-flex flex-column flex-sm-row align-items-center p-2 gap-3" [ngClass]="{ 'border-top': !first }">
+                        <div class="col-md-3 position-relative">
+                            <img class="img-fluid rounded-3 mx-auto h-25 d-block w-50" [src]="item.image" [alt]="item.name" />
+                            <p-tag [value]="getStatusString(item.requestStatus)" [severity]="getSeverity(item) || 'secondary'" class="position-absolute" [style.left.px]="4" [style.top.px]="4" />
+                        </div>
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center flex-grow-1 gap-4">
+                            <div class="d-flex flex-row flex-md-column justify-content-between align-items-start gap-2">
+                                <div>
+                                    <span class="fw-medium text-muted small">{{ item.fName + "" + item.lName }}</span>
+                                    <div class="h5 fw-medium text-dark mt-2">{{ item.email }}</div>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-column align-items-end gap-3">
+                                <div class="d-flex flex-row-reverse flex-md-row gap-2" *ngIf="item.requestStatus===0">
+                                    <p-button icon="pi pi-ban" label="Reject" [outlined]="true" styleClass="custom-btn delete-btn" (onClick)="RejectReq(item.id)"></p-button>
+                                    <p-button icon="pi pi-check" styleClass="flex-grow-1 flex-md-grow-0 white-space-nowrap custom-btn add-btn" label="Accept" (onClick)="AcceptReq(item.id)"></p-button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </p-dataView>
+</div>

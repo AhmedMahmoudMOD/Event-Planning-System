@@ -1,6 +1,8 @@
 ﻿using Event_Planinng_System_DAL.Models;
 using Event_Planinng_System_DAL.Repos;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Update.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +24,7 @@ namespace Event_Planinng_System_DAL.Unit_Of_Work
         GenericRepo<ToDoList> todolistRepo;
         GenericRepo<UserRole> userrroleRepo;
         GenericRepo<EventSchedule> eventschedulerepo;
+        GenericRepo<UserEventsRequests> userrequests;
 
         private readonly dbContext db;
         private readonly UserManager<User> userManager;
@@ -60,23 +63,38 @@ namespace Event_Planinng_System_DAL.Unit_Of_Work
         //{
         //    get => roleRepo ??= new GenericRepoForId<Role>(db);
         //}
-        public GenericRepo<ToDoList> ToDoListRepo
-        {
-            get => todolistRepo ??= new GenericRepo<ToDoList>(db);
-        }
-        public GenericRepo<UserRole> UserRoleRepo
-        {
-            get => userrroleRepo ??= new GenericRepo<UserRole>(db);
-        }
-
+      
         public GenericRepo<EventSchedule> EventScheduleRepo
         {
             get => eventschedulerepo ??= new GenericRepo<EventSchedule> (db);
         }
-
-        public void save()
+        public GenericRepo<UserEventsRequests> UserRequests
         {
-            db.SaveChangesAsync();
+            get => userrequests ??= new GenericRepo<UserEventsRequests>(db);
+        }
+
+
+      public GenericRepo<ToDoList> ToDoListRepo
+		{
+			get => todolistRepo ??= new GenericRepo<ToDoList>(db);
+		}
+		public async Task Add<T>(T entity) where T : class
+		{
+			await db.Set<T>().AddAsync(entity);
+		}
+		public void Update<T>(T entity) where T : class
+		{
+			db.Set<T>().Update(entity);
+		}
+		public void Delete<T>(T entity) where T : class
+		{
+			db.Set<T>().Remove(entity);
+		}
+
+		public async Task save()
+
+        {
+           await db.SaveChangesAsync();
         }
         public async Task saveAsync()
 		{
