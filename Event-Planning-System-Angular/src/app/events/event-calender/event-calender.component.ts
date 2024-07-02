@@ -27,8 +27,8 @@ export class EventCalenderComponent implements OnInit, OnDestroy {
   filteredEvents: MyCalendarEvent[] = [];
   searchKeyword: string = '';
   selectedType: string = 'all';
-  startDate: string = ''; 
-  endDate: string = ''; 
+  startDate: Date | undefined;
+  endDate: Date | undefined;
   eventTypes: string[] = ['all', 'Wedding', 'Birthday', 'Corporate', 'Social', 'Other'];
   id: number = 0;
   idSubscription: Subscription | null = null;
@@ -38,16 +38,16 @@ export class EventCalenderComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.fetchEvents();
   }
-  
+
   ngOnDestroy(): void {
     this.idSubscription?.unsubscribe();
   }
 
   fetchEvents(): void {
-    this.id = Number.parseInt(this.accountService.extractUserID());    
+    this.id = Number.parseInt(this.accountService.extractUserID());
     this.idSubscription = this.eventService.getEventsByUser(this.id).subscribe((events: calenderEvent[]) => {
       console.log(events);
-      
+
       this.events = events.map(event => {
         const isPast = new Date(event.endDate) < new Date();
         const color = EVENT_COLORS[eventTypeMapping[parseInt(event.eventType)]] || EVENT_COLORS['Other'];
@@ -97,27 +97,27 @@ export class EventCalenderComponent implements OnInit, OnDestroy {
   goToPreviousMonth(): void {
     this.viewDate = new Date(this.viewDate.setMonth(this.viewDate.getMonth() - 1));
   }
-  
+
   goToNextMonth(): void {
     this.viewDate = new Date(this.viewDate.setMonth(this.viewDate.getMonth() + 1));
   }
 
   filterEvents(): void {
-    this.filteredEvents = this.events.filter(event => { 
+    this.filteredEvents = this.events.filter(event => {
       const matchesKeyword = event.title.toLowerCase().includes(this.searchKeyword.toLowerCase());
       const matchesType = this.selectedType === 'all' || eventTypeMapping[parseInt(event.eventType)] === this.selectedType;
 
       // Filter by date range
-      const matchesDateRange = (!this.startDate || new Date(event.start).getDate() >= new Date(this.startDate).getDate()) 
-                            &&(!this.endDate || new Date(event.end).getDate() <= new Date(this.endDate).getDate())
-                            &&(!this.startDate || new Date(event.start).getMonth() == new Date(this.startDate).getMonth())
-                            &&(!this.endDate || new Date(event.end).getMonth() == new Date(this.endDate).getMonth());
-      
+      const matchesDateRange = (!this.startDate || (event.start && new Date(event.start).getDate() >= new Date(this.startDate).getDate()))
+                            &&(!this.endDate || (event.end && new Date(event.end).getDate() <= new Date(this.endDate).getDate()))
+                            &&(!this.startDate || (event.start && new Date(event.start).getMonth() == new Date(this.startDate).getMonth()))
+                            &&(!this.endDate || (event.end && new Date(event.end).getMonth() == new Date(this.endDate).getMonth()));
+
       return matchesKeyword && matchesType && matchesDateRange;
     });
   }
   eventDetails(event:CalendarEvent):void{
     console.log("Clicked"+ event.id);
-    this.router.navigate(['/planner/eventdetails/',event.id]);    
+    this.router.navigate(['/planner/eventdetails/',event.id]);
   }
 }
