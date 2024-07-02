@@ -23,9 +23,4 @@ export class ProfileService {
     return this.http.put<Profile>(this.baseUrl + userId, profile);
   }
 
-  // update profile
-  updateProfile(profile: any) {
-    return this.http.put(this.baseUrl, profile);
-  }
-
 }
