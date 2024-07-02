@@ -18,6 +18,7 @@ export class NavbarComponent implements OnInit {
   userId!: number;
   profile: Profile | any = {};
   defaultImage = "assets/images/default_Image.jpg";
+  logoImage = "assets/images/logo.png";
 
   constructor(private profileService: ProfileService, public accountService: AccountService, private route: ActivatedRoute, private router:Router) { }
 
