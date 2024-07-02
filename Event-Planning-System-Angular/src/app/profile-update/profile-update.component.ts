@@ -101,7 +101,6 @@ export class ProfileUpdateComponent implements OnInit {
         // get updated profile
         this.getProfile();
 
-
       },
       (error) => {
         console.error('Error updating profile:', error);
