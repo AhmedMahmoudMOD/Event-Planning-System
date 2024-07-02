@@ -9,9 +9,9 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterModule,CommonModule], // Include necessary Angular modules here if needed
+  imports: [RouterModule,CommonModule],
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css'] // Corrected styleUrls
+  styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
 
