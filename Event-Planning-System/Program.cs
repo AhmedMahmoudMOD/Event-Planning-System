@@ -50,7 +50,7 @@ namespace Event_Planning_System
 			builder.Services.AddScoped<Iregestration, Register>();
 			builder.Services.AddScoped<IaccountServices, AccountServices>();
 			// Add services to the container.
-
+			builder.Services.AddScoped<IPDFService, PDFService>();
 			builder.Services.AddControllers();
 
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NCaF5cXmpCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWXlceXVWRGleWUF1W0o=");

@@ -53,12 +53,6 @@ export class EventListComponent implements OnInit {
     );
   }
 
-  // count the number of events in eventList
-  
-
-
-
-
 }
 
 
