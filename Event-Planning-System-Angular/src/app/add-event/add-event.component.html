@@ -50,8 +50,10 @@
           formControlName="eventDate"
           [showTime]="true"
           hourFormat="12"
+          hourFormat="12"
           [showIcon]="true"
           [minDate]="minDate"
+          (mousewheel)="onScroll($event)"
         ></p-calendar>
         <div *ngIf="addEventForm.get('eventDate')?.invalid && addEventForm.get('eventDate')?.touched" class="error-title">
           Start date is required.
@@ -63,15 +65,17 @@
         <p-calendar
           id="endDate"
           formControlName="endDate"
-          [showTime]="true"
           hourFormat="12"
           [showIcon]="true"
-          [minDate]="addEventForm.get('eventDate')?.value || minDate"
+          [showTime]="true"
+          [minDate]="minDate"
+          (mousewheel)="onScroll($event)"
         ></p-calendar>
-        <div *ngIf="addEventForm.get('endDate')?.invalid && addEventForm.get('endDate')?.touched" class="error-title">
-          End date is required and must be after the start date.
+        <div *ngIf="addEventForm.get('endDate')?.invalid && addEventForm.get('endDate')?.touched" class="p-error">
+          End date is required and must be at least one hour after the start date.
         </div>
       </div>
+      
 
       <div class="p-field">
         <label for="attendanceNumber">Attendance Number</label>
@@ -81,6 +85,7 @@
           class="p-inputtext p-component custom-input"
           formControlName="attendanceNumber"
           placeholder="Enter attendance number"
+          (mousewheel)="onScroll($event)"
         />
         <div *ngIf="addEventForm.get('attendanceNumber')?.invalid && addEventForm.get('attendanceNumber')?.touched" class="error-title">
           Attendance number is required and must be a non-negative number.
@@ -95,6 +100,7 @@
           class="p-inputtext p-component custom-input"
           formControlName="budget"
           placeholder="Enter event budget"
+          (mousewheel)="onScroll($event)"
         />
         <div *ngIf="addEventForm.get('budget')?.invalid && addEventForm.get('budget')?.touched" class="error-title">
           Budget is required.
@@ -105,7 +111,7 @@
         <label for="eventType">Event Type<span class="text-danger"> *</span></label>
         <select formControlName="eventType" class="form-select custom-select" name="Types" id="Type" required>
           <option value="">Select Event Type</option>
-          <option *ngFor="let event of Types" [value]="event.id | number">{{event.name}}</option>
+          <option *ngFor="let event of Types" [value]="event.id">{{event.name}}</option>
         </select>
         <div *ngIf="addEventForm.get('eventType')?.invalid && addEventForm.get('eventType')?.touched" class="error-title">
           Event Type is required.
@@ -148,8 +154,9 @@
         >Cancel <i class="pi pi-times ms-3"></i></button>
         <button
           type="submit"
+          [disabled]="addEventForm.invalid"
           class="custom-btn add-btn col mx-3"
-        >Add Event <i class="ms-3 pi pi-check"></i></button>
+        >Add Event</button>
       </div>
     </form>
   </ng-template>

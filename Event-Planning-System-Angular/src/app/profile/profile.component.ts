@@ -6,14 +6,16 @@ import { ProfileService } from '../shared/services/profile.service';
 import { Profile } from '../shared/models/profile';
 import { AccountService } from '../shared/services/account.service';
 import { finalize } from 'rxjs';
+import { ProfileUpdateComponent } from "../profile-update/profile-update.component";
+import { Event } from '../shared/models/event';
 
 
 @Component({
-  selector: 'app-profile',
-  standalone: true,
-  imports: [CommonModule, RouterModule, RouterLink, FormsModule],
-  templateUrl: './profile.component.html',
-  styleUrl: './profile.component.css'
+    selector: 'app-profile',
+    standalone: true,
+    templateUrl: './profile.component.html',
+    styleUrl: './profile.component.css',
+    imports: [CommonModule, RouterModule, RouterLink, FormsModule, ProfileUpdateComponent]
 })
 export class ProfileComponent implements OnInit{
   title = 'Profile';
@@ -39,3 +41,4 @@ export class ProfileComponent implements OnInit{
     });
   }
 }
+

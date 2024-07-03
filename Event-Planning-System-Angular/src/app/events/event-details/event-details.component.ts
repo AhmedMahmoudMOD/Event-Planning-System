@@ -13,7 +13,7 @@ import { ChipModule } from 'primeng/chip';
 import { GalleriaModule } from 'primeng/galleria';
 import { ImageModule } from 'primeng/image';
 import { SafePipe } from './safe.pipe';
-import { Subscription } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
 import { EventdetailsService } from '../../shared/services/events/eventdetails.service';
 import { eventTypeMapping } from '../../shared/enums/eventstype';
 import { AddEmailsComponent } from '../../add-emails/add-emails.component';
@@ -32,6 +32,8 @@ import { FileSelectEvent, FileSendEvent, FileUploadEvent, FileUploadHandlerEvent
 import { EventImage } from '../../shared/models/eventImage.model';
 import { AccountService } from '../../shared/services/account.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import swal from 'sweetalert';
+
 import { EventReqsComponent } from '../event-reqs/event-reqs.component';
 import { RequestService } from '../../shared/services/request.service';
 
@@ -124,14 +126,12 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
     //get event details
     this.getEventDetails();
     this.userId = this.accountService.extractUserID();
-    console.log(this.userId, this.id);
 
-    this.accountService
-      .checkOwnership(this.id, this.userId)
-      .subscribe((check) => {
-        console.log(check);
-        this.isOwner = check;
-      });
+    this.accountService.checkOwnership(this.id,this.userId).subscribe(check=>{
+      console.log(check);
+      this.isOwner = check;
+    });
+
   }
 
   ngOnDestroy(): void {
@@ -186,32 +186,29 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   //get event details
   getEventDetails() {
-    this.eventsubscription = this.eventDetailsServices
-      .getEventById(this.id)
-      .subscribe({
-        next: (res) => {
-          this.eventDetails = res;
-          this.isCanceled = this.eventDetails.isCanceled;
-          //console.log(this.eventDetails);
-          if (this.eventDetails.eventImages.length === 0) {
-            this.eventDetails.eventImages.push(this.defaultImage);
-          }
-          this.mapsURL = this.eventDetails.googleMapsLocation
-            ? this.eventDetails.googleMapsLocation
-            : null;
-          this.renderBackgroungImage();
-        },
-        error: (error) => {
-          // Handle error case
-          //console.error('Error fetching event details:', error);
-          if (error.status === 400) {
-            this.router.navigate(['/events']);
-          } else {
-            // Handle other status codes or errors if needed
-            this.router.navigate(['/error']);
-          }
-        },
-      });
+    this.eventsubscription = this.eventDetailsServices.getEventById(this.id).subscribe({
+      next: (res) => {
+        this.eventDetails = res;
+        this.isCanceled = this.eventDetails.isCanceled;
+        this.isCanceled = this.eventDetails.isCanceled;
+        //console.log(this.eventDetails);
+        if (this.eventDetails.eventImages.length === 0) {
+          this.eventDetails.eventImages.push(this.defaultImage);
+        }
+        this.mapsURL = this.eventDetails.googleMapsLocation ? this.eventDetails.googleMapsLocation : null;
+        this.renderBackgroungImage();
+      },
+      error: (error) => {
+        // Handle error case
+        //console.error('Error fetching event details:', error);
+        if (error.status === 400) {
+          this.router.navigate(['/events']);
+        } else {
+          // Handle other status codes or errors if needed
+          this.router.navigate(['/error']);
+        }
+      },
+    });
   }
 
   // heck the data
@@ -283,6 +280,9 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
     return eventTypeMapping[eventTypeInt];
   }
 
+
+
+  ///////////////////////////to do list////////////////////////
   getAllToDoList() {
     this.toDoListService.getToDoList(this.id).subscribe({
       next: (res: ToDoList[]) => {
@@ -293,7 +293,7 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
         console.error('Error fetching to-do list:', error);
       },
     });
-  }
+   }
   // loadToDoLists(event: any) {
   //   this.toDoList = event;
   //   this.toDoListService.getToDoList(this.id).subscribe({
@@ -347,7 +347,12 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
       .updateToDoListStatus(this.id, title, status)
       .subscribe({
         next: (res) => {
-          console.log(res);
+          if(res){
+            swal('Great Job!', 'To-do list accomplished successfully.', 'success',{timer: 3000});
+          }
+          else{
+            swal('pending!', 'To-do list is pending now.', 'success',{timer: 3000});
+          }
         },
         error: (error) => {
           console.error('Error updating to-do list status:', error);

@@ -81,13 +81,16 @@ public class ToDoListController : ControllerBase
 		}
 	}
 
-    [HttpPut("{eventId}/{name}/status")]
+    [HttpPut("{eventId}/{name}/{status}")]
     public async Task<IActionResult> UpdateToDoListStatus(int eventId, string name, bool status)
     {
         var result = await toDoListService.UpdateToDoListStatus(eventId, name, status);
         if (result.IsSuccess)
         {
-            return NoContent();
+            if(status)
+                return Ok(1);
+            else
+                return Ok(0);
         }
         else
         {

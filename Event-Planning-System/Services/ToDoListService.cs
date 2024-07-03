@@ -33,7 +33,7 @@ namespace Event_Planning_System.Services
             DateTime dateNow = DateTime.Now;
 			DateTime eventDeadline = eventExists.EndDate;
 			DateTime eventDate = eventExists.EventDate;
-            if (newToDoListDTO.DeadLineTime <= dateNow || newToDoListDTO.DeadLineTime > eventDeadline || newToDoListDTO.DeadLineTime < eventDate)
+            if (newToDoListDTO.DeadLineTime <= dateNow || newToDoListDTO.DeadLineTime > eventDeadline )
 			{
                 return Result.Failure(new Error("400", "Invalid Deadline, please Enter Valid Deadline"));
             }

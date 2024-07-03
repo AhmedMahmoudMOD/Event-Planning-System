@@ -76,7 +76,8 @@ namespace Event_Planning_System.Controllers
 
             if (ModelState.IsValid)
 			{
-				if (await eventService.CreateEvent(newEventDTO,id))
+				var res = await eventService.CreateEvent(newEventDTO, id);
+                if(res.IsSuccess)
 					return Created();
 				else
 					return BadRequest("Failed to create event. Invalid data or event date is in the past.");
@@ -130,7 +131,7 @@ namespace Event_Planning_System.Controllers
 			if (ModelState.IsValid)
 			{
 				var res = await eventService.AddGuests(eventId, newAttendancesDTO);
-				if (res.Success)
+				if (res == "true")
 					return Ok(res);
 				else 
 					return BadRequest(res);
