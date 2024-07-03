@@ -6,6 +6,7 @@ import { EventImage } from '../shared/models/eventImage.model';
 import { EventListService } from '../shared/services/event-list.service';
 import { AccountService } from '../shared/services/account.service';
 import { Event, EventType } from '../shared/models/eventsListRes.model';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-home',
@@ -19,7 +20,12 @@ export class HomeComponent implements OnInit {
     eventList: Event[] = [];
     responsiveOptions: any[] | undefined;
 
-    constructor(private eventlistImage: EventListService, private accountService: AccountService, private eventListService: EventListService) {}
+    constructor(
+        private eventlistImage: EventListService, 
+        private accountService: AccountService, 
+        private eventListService: EventListService,
+        private sanitizer: DomSanitizer
+    ) {}
 
     ngOnInit() {
       const userId = +this.accountService.extractUserID();
@@ -48,6 +54,10 @@ export class HomeComponent implements OnInit {
       ];
     }
 
+    getEventTypeLabel(type: EventType): string {
+        return EventType[type];
+    }
+
     getSeverity(eventType: EventType): "success" | "secondary" | "info" | "warning" | "danger" | "contrast" | undefined {
         switch (eventType) {
             case EventType.Wedding:
@@ -63,4 +73,12 @@ export class HomeComponent implements OnInit {
                 return undefined;
         }
     }
+
+    getEventImageUrl(eventImage: EventImage | null): SafeUrl {
+      if (eventImage && eventImage.image) {
+          return this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(eventImage.image));
+      } else {
+          return 'assets/images/software-developer-6521720_640.jpg'; // Path to your default image
+      }
+  }
 }
