@@ -8,13 +8,16 @@
     <div class="collapse navbar-collapse" id="navbarScroll">
       <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
         <li class="nav-item">
+          <a class="nav-link" routerLink="/home">Home</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link active" aria-current="page" [routerLink]="['/eventslist']">Events</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/profile/{{userId}}">Profile</a>
+          <a class="nav-link" routerLink="/events">Calender</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/events">Calender</a>
+          <a class="nav-link" routerLink="/profile/{{userId}}">Profile</a>
         </li>
 
 
