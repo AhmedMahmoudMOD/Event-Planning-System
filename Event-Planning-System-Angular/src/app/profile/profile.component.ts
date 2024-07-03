@@ -7,6 +7,7 @@ import { Profile } from '../shared/models/profile';
 import { AccountService } from '../shared/services/account.service';
 import { finalize } from 'rxjs';
 import { ProfileUpdateComponent } from "../profile-update/profile-update.component";
+import { Event } from '../shared/models/event';
 
 
 @Component({
@@ -40,3 +41,4 @@ export class ProfileComponent implements OnInit{
     });
   }
 }
+
