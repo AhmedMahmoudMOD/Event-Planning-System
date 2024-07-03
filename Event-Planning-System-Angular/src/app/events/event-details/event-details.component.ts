@@ -255,7 +255,7 @@ setActiveLink(link: string): void {
   getEventTypeString(eventTypeInt: number): string | undefined {
     return eventTypeMapping[eventTypeInt];
   }
-  
+
 
   ///////////////////////////to do list////////////////////////
   getAllToDoList() {
@@ -270,7 +270,7 @@ setActiveLink(link: string): void {
       }
     }
     );
-    
+
   }
   // loadToDoLists(event: any) {
   //   this.toDoList = event;
@@ -333,7 +333,7 @@ setActiveLink(link: string): void {
     this.todoTitle = title;
     this.displayEditModal = true;
   }
-  
+
   hideEditModal() {
     this.displayEditModal = false;
     this.todoTitle = '';

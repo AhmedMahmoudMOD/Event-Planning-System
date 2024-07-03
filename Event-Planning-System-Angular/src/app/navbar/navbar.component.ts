@@ -9,15 +9,16 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterModule,CommonModule], // Include necessary Angular modules here if needed
+  imports: [RouterModule,CommonModule],
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css'] // Corrected styleUrls
+  styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
 
   userId!: number;
   profile: Profile | any = {};
   defaultImage = "assets/images/default_Image.jpg";
+  logoImage = "assets/images/logo.png";
 
   constructor(private profileService: ProfileService, public accountService: AccountService, private route: ActivatedRoute, private router:Router) { }
 
