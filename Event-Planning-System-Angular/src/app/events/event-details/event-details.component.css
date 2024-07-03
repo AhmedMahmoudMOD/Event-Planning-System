@@ -248,4 +248,28 @@
     text-align: center;
     display: block;
   }
+.req-btn {
+    background-color: gray;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
 
+.req-btn:hover {
+    background-color: darkgray;
+}
+
+.req-btn {
+  background-color: gray;
+  color: white;
+}
+
+.btn-pending {
+  background-color: orange;
+}
+
+.btn-accepted {
+  background-color: green;
+}

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, Type, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -33,31 +33,58 @@ import { EventImage } from '../../shared/models/eventImage.model';
 import { AccountService } from '../../shared/services/account.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { EventReqsComponent } from '../event-reqs/event-reqs.component';
+import { RequestService } from '../../shared/services/request.service';
 
 
 
 @Component({
   selector: 'app-event-details',
   standalone: true,
-  imports: [FormsModule, GalleriaModule, SafePipe, ImageModule, ChipModule, CardModule, CheckboxModule, ButtonModule, TabViewModule, SelectButtonModule, RouterLink, ScrollPanelModule, ScrollerModule, TabViewModule, ButtonModule, TagModule, AddEmailsComponent,EditEventComponent,DataViewModule,EventsScheduleComponent,TableModule,AddtoDoListComponent,EdittoDoListComponent,FileUploadModule,ProgressSpinnerModule,EventReqsComponent],
+  imports: [
+    FormsModule,
+    GalleriaModule,
+    SafePipe,
+    ImageModule,
+    ChipModule,
+    CardModule,
+    CheckboxModule,
+    ButtonModule,
+    TabViewModule,
+    SelectButtonModule,
+    RouterLink,
+    ScrollPanelModule,
+    ScrollerModule,
+    TabViewModule,
+    ButtonModule,
+    TagModule,
+    AddEmailsComponent,
+    EditEventComponent,
+    DataViewModule,
+    EventsScheduleComponent,
+    TableModule,
+    AddtoDoListComponent,
+    EdittoDoListComponent,
+    FileUploadModule,
+    ProgressSpinnerModule,
+    EventReqsComponent,
+  ],
   templateUrl: './event-details.component.html',
-  styleUrls: ['./event-details.component.css']
+  styleUrls: ['./event-details.component.css'],
 })
-
 export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
-// loadToDoList($event: TableLazyLoadEvent) {
-// throw new Error('Method not implemented.');
-// }
+  // loadToDoList($event: TableLazyLoadEvent) {
+  // throw new Error('Method not implemented.');
+  // }
 
   // declration of variables
   checked: boolean = false;
-  seeMoreLink = document.getElementById("seeMoreLink") as HTMLAnchorElement;
-  text = document.getElementById("text") as HTMLPreElement;
+  seeMoreLink = document.getElementById('seeMoreLink') as HTMLAnchorElement;
+  text = document.getElementById('text') as HTMLPreElement;
   idsubscripe: Subscription = new Subscription();
   eventsubscription: Subscription = new Subscription();
   id: any | number;
-  userId:number|any;
-  isOwner:boolean = false;
+  userId: number | any;
+  isOwner: boolean = false;
   isCanceled: boolean = false;
   loading: boolean = false;
   eventDetails: Event | any = {};
@@ -66,28 +93,32 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   // map?: google.maps.Map;
   activeLink: string = 'about';
   toDoLists: ToDoList[] = [];
-toDoList: any;
-selectionMode: any;
-displayEditModal: boolean = false;
-todoTitle:string = '';
+  toDoList: any;
+  selectionMode: any;
+  displayEditModal: boolean = false;
+  todoTitle: string = '';
+  requestStatus: 'none' | 'pending' | 'accepted' = 'none';
+  
   // constructors
-  constructor(private ActivatedRoute: ActivatedRoute,
+  constructor(
+    private ActivatedRoute: ActivatedRoute,
     private eventDetailsServices: EventdetailsService,
-    private el: ElementRef, private renderer: Renderer2,
-
+    private el: ElementRef,
+    private renderer: Renderer2,
+    private requestService: RequestService,
     private router: Router,
-    private toDoListService: ToDoListService,public accountService:AccountService
-  ) { }
+    private toDoListService: ToDoListService,
+    public accountService: AccountService
+  ) {}
 
   ngAfterViewInit() {
-   // console.log(this.eventDetails);
+    // console.log(this.eventDetails);
     // this.initMap();
   }
 
-
   //oninit
   ngOnInit(): void {
-    this.idsubscripe = this.ActivatedRoute.params.subscribe(params => {
+    this.idsubscripe = this.ActivatedRoute.params.subscribe((params) => {
       this.id = params['id'];
     });
     //get event details
@@ -95,22 +126,23 @@ todoTitle:string = '';
     this.userId = this.accountService.extractUserID();
     console.log(this.userId, this.id);
 
-    this.accountService.checkOwnership(this.id,this.userId).subscribe(check=>{
-      console.log(check);
-      this.isOwner = check;
-    });
+    this.accountService
+      .checkOwnership(this.id, this.userId)
+      .subscribe((check) => {
+        console.log(check);
+        this.isOwner = check;
+      });
   }
-
 
   ngOnDestroy(): void {
     this.idsubscripe.unsubscribe();
     this.eventsubscription.unsubscribe();
   }
 
-
-
   renderBackgroungImage() {
-    const backgroundStyle = `linear-gradient(rgba(0, 0, 0, 0), rgba(250, 250, 250, 1)), url('${this.eventDetails?.eventImages[0] ?? this.defaultImage}')`;
+    const backgroundStyle = `linear-gradient(rgba(0, 0, 0, 0), rgba(250, 250, 250, 1)), url('${
+      this.eventDetails?.eventImages[0] ?? this.defaultImage
+    }')`;
     const background_size = 'cover';
     const background_position = 'center';
     const elements = this.el.nativeElement.querySelectorAll('.blur-bg-card');
@@ -118,60 +150,68 @@ todoTitle:string = '';
     elements.forEach((element: any) => {
       this.renderer.setStyle(element, 'background', backgroundStyle);
       this.renderer.setStyle(element, 'background-size', background_size);
-      this.renderer.setStyle(element, 'background-position', background_position);
+      this.renderer.setStyle(
+        element,
+        'background-position',
+        background_position
+      );
     });
   }
 
-  stateOptions: any[] = [{ label: 'About', value: 'About' }, { label: 'Discussion', value: 'Discussion' }];
+  stateOptions: any[] = [
+    { label: 'About', value: 'About' },
+    { label: 'Discussion', value: 'Discussion' },
+  ];
 
   value: string = 'off';
-
 
   //delete event
   deleteEvent() {
     Swal.fire({
       title: 'Are you sure You want to delete this?',
-      text: 'You won\'t be able to revert this!',
+      text: "You won't be able to revert this!",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
-
         this.eventDetailsServices.removeEventById(this.id).subscribe((res) => {
           this.router.navigate(['/events']);
         });
       }
     });
-
   }
 
   //get event details
   getEventDetails() {
-    this.eventsubscription = this.eventDetailsServices.getEventById(this.id).subscribe({
-      next: (res) => {
-        this.eventDetails = res;
-        this.isCanceled = this.eventDetails.isCanceled;
-        //console.log(this.eventDetails);
-        if (this.eventDetails.eventImages.length === 0) {
-          this.eventDetails.eventImages.push(this.defaultImage);
-        }
-        this.mapsURL = this.eventDetails.googleMapsLocation ? this.eventDetails.googleMapsLocation : null;
-        this.renderBackgroungImage();
-      },
-      error: (error) => {
-        // Handle error case
-        //console.error('Error fetching event details:', error);
-        if (error.status === 400) {
-          this.router.navigate(['/events']);
-        } else {
-          // Handle other status codes or errors if needed
-          this.router.navigate(['/error']);
-        }
-      },
-    });
+    this.eventsubscription = this.eventDetailsServices
+      .getEventById(this.id)
+      .subscribe({
+        next: (res) => {
+          this.eventDetails = res;
+          this.isCanceled = this.eventDetails.isCanceled;
+          //console.log(this.eventDetails);
+          if (this.eventDetails.eventImages.length === 0) {
+            this.eventDetails.eventImages.push(this.defaultImage);
+          }
+          this.mapsURL = this.eventDetails.googleMapsLocation
+            ? this.eventDetails.googleMapsLocation
+            : null;
+          this.renderBackgroungImage();
+        },
+        error: (error) => {
+          // Handle error case
+          //console.error('Error fetching event details:', error);
+          if (error.status === 400) {
+            this.router.navigate(['/events']);
+          } else {
+            // Handle other status codes or errors if needed
+            this.router.navigate(['/error']);
+          }
+        },
+      });
   }
 
   // heck the data
@@ -202,9 +242,9 @@ todoTitle:string = '';
         return 'danger';
     }
   }
-setActiveLink(link: string): void {
+  setActiveLink(link: string): void {
     this.activeLink = link;
-    if(link === 'todolist' && this.id !== undefined){
+    if (link === 'todolist' && this.id !== undefined) {
       this.getAllToDoList();
     }
   }
@@ -212,28 +252,25 @@ setActiveLink(link: string): void {
   responsiveOptions: any[] = [
     {
       breakpoint: '1024px',
-      numVisible: 5
+      numVisible: 5,
     },
     {
       breakpoint: '768px',
-      numVisible: 3
+      numVisible: 3,
     },
     {
       breakpoint: '560px',
-      numVisible: 1
-    }
+      numVisible: 1,
+    },
   ];
 
   //end of carsol related code
 
-
-
-
   //iFrame related code
   positionMap = {
-    street: "Brookline",
-    num: "123",
-    city: "NewYork"
+    street: 'Brookline',
+    num: '123',
+    city: 'NewYork',
   };
 
   //end of iFrame related code
@@ -245,19 +282,17 @@ setActiveLink(link: string): void {
   getEventTypeString(eventTypeInt: number): string | undefined {
     return eventTypeMapping[eventTypeInt];
   }
-  
+
   getAllToDoList() {
     this.toDoListService.getToDoList(this.id).subscribe({
-      next: (res:ToDoList[]) => {
+      next: (res: ToDoList[]) => {
         this.toDoLists = res;
         console.log(this.toDoLists);
-
       },
       error: (error) => {
         console.error('Error fetching to-do list:', error);
-      }
-    }
-    );
+      },
+    });
   }
   // loadToDoLists(event: any) {
   //   this.toDoList = event;
@@ -281,41 +316,49 @@ setActiveLink(link: string): void {
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6', // Customize confirm button color (optional)
-      cancelButtonColor: '#d33',     // Customize cancel button color (optional)
-      confirmButtonText: 'Yes, delete'
+      cancelButtonColor: '#d33', // Customize cancel button color (optional)
+      confirmButtonText: 'Yes, delete',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.toDoListService.deleteToDoList(eventId, name)
-          .subscribe({
-            next: (res) => {
-              Swal.fire('Deleted!', 'The to-do list has been successfully deleted.', 'success');
-              this.getAllToDoList();
-            },
-            error: (error) => {
-              console.error('Error deleting to-do list:', error);
-              Swal.fire('Error!', 'An error occurred while deleting the to-do list.', 'error');
-            }
-          });
+        this.toDoListService.deleteToDoList(eventId, name).subscribe({
+          next: (res) => {
+            Swal.fire(
+              'Deleted!',
+              'The to-do list has been successfully deleted.',
+              'success'
+            );
+            this.getAllToDoList();
+          },
+          error: (error) => {
+            console.error('Error deleting to-do list:', error);
+            Swal.fire(
+              'Error!',
+              'An error occurred while deleting the to-do list.',
+              'error'
+            );
+          },
+        });
       }
     });
   }
   //change status of to do list
-  onCheckboxChange(title: string,status:boolean): void {
-    this.toDoListService.updateToDoListStatus(this.id, title, status)
+  onCheckboxChange(title: string, status: boolean): void {
+    this.toDoListService
+      .updateToDoListStatus(this.id, title, status)
       .subscribe({
         next: (res) => {
           console.log(res);
         },
         error: (error) => {
           console.error('Error updating to-do list status:', error);
-        }
+        },
       });
   }
-  openEditModal(eventId: number ,title: string) {
+  openEditModal(eventId: number, title: string) {
     this.todoTitle = title;
     this.displayEditModal = true;
   }
-  
+
   hideEditModal() {
     this.displayEditModal = false;
     this.todoTitle = '';
@@ -324,22 +367,25 @@ setActiveLink(link: string): void {
   getEventDuration(): string {
     const startDate = new Date(this.eventDetails.eventDate);
     const endDate = new Date(this.eventDetails.endDate);
-    const options : any = { year: 'numeric', month: 'long', day: 'numeric' };
-    return `${startDate.toLocaleDateString('en-US', options)} - ${endDate.toLocaleDateString('en-US', options)}`;
+    const options: any = { year: 'numeric', month: 'long', day: 'numeric' };
+    return `${startDate.toLocaleDateString(
+      'en-US',
+      options
+    )} - ${endDate.toLocaleDateString('en-US', options)}`;
   }
 
   selectImage(event: FileSelectEvent): void {
     let EventImage: EventImage = {
       image: event.files[0],
-      id:this.id
-    }
+      id: this.id,
+    };
   }
 
   onUpload(event: FileUploadHandlerEvent): void {
     let EventImage: EventImage = {
       image: event.files[0],
-      id:this.id
-    }
+      id: this.id,
+    };
 
     this.loading = true;
 
@@ -351,7 +397,63 @@ setActiveLink(link: string): void {
       },
       error: (error) => {
         console.log(error);
+      },
+    });
+  }
+  /////////////////////////////////////create req//////////////////////////
+  createrequest(): void {
+    const userId = this.accountService.extractUserID();
+    const eventId = this.id;
+    console.log(userId, eventId); // Ensure these values are correct
+    this.requestService.createreq(userId, eventId).subscribe({
+      next: (res) => {
+        Swal.fire(
+          'Request Created',
+          'Your request has been created successfully.',
+          'success'
+        );
+      },
+      error: (error) => {
+        console.error('Error creating request:', error);
+        Swal.fire(
+          'Error',
+          'There was an error creating your request. Please try again.',
+          'error'
+        );
+      },
+    });
+  }
+  checkRequestStatus(): void {
+    this.requestService.getPendingReqs(this.userId).subscribe((requests) => {
+      if (requests.some((req) => req.id === this.id)) {
+        this.requestStatus = 'pending';
       }
+    });
+    this.requestService.getAcceptedReqs(this.userId).subscribe((requests) => {
+      if (requests.some((req) => req.id === this.id)) {
+        this.requestStatus = 'accepted';
+      }
+    });
+  }
+
+  deleteRequest(): void {
+    this.requestService.deleteRequest(this.userId, this.id).subscribe({
+      next: (res) => {
+        this.requestStatus = 'none';
+        Swal.fire(
+          'Request Deleted',
+          'Your request has been deleted successfully.',
+          'success'
+        );
+      },
+      error: (error) => {
+        console.error('Error deleting request:', error);
+        Swal.fire(
+          'Error',
+          'There was an error deleting your request. Please try again.',
+          'error'
+        );
+      },
     });
   }
 
