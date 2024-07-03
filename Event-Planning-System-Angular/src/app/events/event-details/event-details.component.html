@@ -1,14 +1,21 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css"
+/>
 <div class="event-details-comp">
   <div class="event-container">
     <div class="event-details">
       <p-card class="blur-bg-card">
         <div class="p-card-body">
-          <img [src]="
+          <img
+            [src]="
               eventDetails?.eventImages?.length > 0
                 ? eventDetails.eventImages[0]
                 : defaultImage
-            " alt="Card" class="card-image" />
+            "
+            alt="Card"
+            class="card-image"
+          />
         </div>
       </p-card>
       <div class="box-parent mt-1 p-2">
@@ -17,13 +24,17 @@
           <p>{{ eventDetails.eventDate | date : "dd" }}</p>
         </div>
         <div class="text-start p-2 pt-0 text-wrap">
-          <p style="color: #f3425f; font-size: 1.1rem; font-weight: bold" class="mt-3 mb-0">
+          <p
+            style="color: #f3425f; font-size: 1.1rem; font-weight: bold"
+            class="mt-3 mb-0"
+          >
             {{ eventDetails.eventDate | date : "EEEE YYYY-MM-dd hh:mm OOOO" }}
           </p>
           <p class="mt-2 fw-bold text-secondary mb-0">
             {{ eventDetails.name }} - {{ eventDetails.location }}
           </p>
-          <span class="text-secondary fw-light">{{ eventDetails.location }}
+          <span class="text-secondary fw-light"
+            >{{ eventDetails.location }}
           </span>
         </div>
         <hr class="mb-2" />
@@ -31,24 +42,34 @@
           <div class="">
             <!-- <p-selectButton [options]="stateOptions" [(ngModel)]="value" optionLabel="label"
                         optionValue="value" /> -->
-                        <a class="link-tab fw-bold"
-                        [ngClass]="{'text-info blue-nav': activeLink === 'about'}"
-                        (click)="setActiveLink('about')">About</a>
-                        <a class="link-tab fw-bold"
-                        [ngClass]="{'text-info blue-nav': activeLink === 'todolist'}"
-                        (click)="setActiveLink('todolist')"
-                        (click)="getAllToDoList()" *ngIf="isOwner">ToDo List</a>
-                        <a class="link-tab fw-bold"
-                        [ngClass]="{'text-info blue-nav': activeLink === 'schedule'}"
-                        (click)="setActiveLink('schedule')"
-                        >Schedule</a>
-                        <a class="link-tab fw-bold"
-                        [ngClass]="{'text-info blue-nav': activeLink === 'reqs'}"
-                        (click)="setActiveLink('reqs')"
-                        >Reqs</a>
-
+            <a
+              class="link-tab fw-bold"
+              [ngClass]="{ 'text-info blue-nav': activeLink === 'about' }"
+              (click)="setActiveLink('about')"
+              >About</a
+            >
+            <a
+              class="link-tab fw-bold"
+              [ngClass]="{ 'text-info blue-nav': activeLink === 'todolist' }"
+              (click)="setActiveLink('todolist')"
+              (click)="getAllToDoList()"
+              *ngIf="isOwner"
+              >ToDo List</a
+            >
+            <a
+              class="link-tab fw-bold"
+              [ngClass]="{ 'text-info blue-nav': activeLink === 'schedule' }"
+              (click)="setActiveLink('schedule')"
+              >Schedule</a
+            >
+            <a
+              class="link-tab fw-bold"
+              [ngClass]="{ 'text-info blue-nav': activeLink === 'reqs' }"
+              (click)="setActiveLink('reqs')"
+              >Reqs</a
+            >
           </div>
-          @if(checkdate()&&isOwner&&!isCanceled){
+          <!-- @if(checkdate()&&isOwner&&!isCanceled){ -->
           <div class="">
             <!-- <p-button
               label="Edit"
@@ -56,10 +77,42 @@
               severity="help"
               [raised]="true"
             /> -->
+
+            <button class="req-btn col-auto mx-2" (click)="createrequest()">
+              request
+            </button>
             <app-edit-event></app-edit-event>
-            <button severity="danger" class="custom-btn delete-btn col-auto mx-2" (onClick)="deleteEvent()">Cancel</button>
+            <div *ngIf="!isOwner">
+              <button
+                class="req-btn col-auto mx-2"
+                [ngClass]="{
+                  
+                }"
+                *ngIf="requestStatus === 'none'"
+                (click)="createrequest()"
+              >
+                Request
+              </button>
+
+              <!-- Cancel Request button only shown when status is pending -->
+              <button
+                class="req-btn col-auto mx-2 btn-cancel"
+                *ngIf="requestStatus === 'pending'"
+                (click)="deleteRequest()"
+              >
+                Cancel Request
+              </button>
+            </div>
+
+            <button
+              severity="danger"
+              class="custom-btn delete-btn col-auto mx-2"
+              (onClick)="deleteEvent()"
+            >
+              Cancel
+            </button>
           </div>
-          }
+          <!-- } -->
         </div>
       </div>
     </div>
@@ -84,7 +137,7 @@
             Event Type :
             <a class="craeted-by-link">{{
               getEventTypeString(eventDetails.eventType)
-              }}</a>
+            }}</a>
           </p>
           <!-- location -->
           <p style="font-size: 0.9rem">
@@ -103,7 +156,10 @@
             Public: Anyone on or off Our App
           </p>
           <div class="contain">
-            <p-scrollPanel class="description" [style]="{ width: '100%', height: '120px' }">
+            <p-scrollPanel
+              class="description"
+              [style]="{ width: '100%', height: '120px' }"
+            >
               <p class="fw-light">
                 {{ eventDetails.description }}
               </p>
@@ -113,34 +169,54 @@
         <!-- end of the first block -->
         <div class="block">
           <div>
-            <p-galleria [value]="eventDetails.eventImages" [showItemNavigators]="true" [autoPlay]="true"
-              [circular]="true" [responsiveOptions]="responsiveOptions" [numVisible]="5" [showIndicators]="true"
-              [changeItemOnIndicatorHover]="true" [showThumbnails]="false" [containerStyle]="{ 'max-width': 'auto' }">
+            <p-galleria
+              [value]="eventDetails.eventImages"
+              [showItemNavigators]="true"
+              [autoPlay]="true"
+              [circular]="true"
+              [responsiveOptions]="responsiveOptions"
+              [numVisible]="5"
+              [showIndicators]="true"
+              [changeItemOnIndicatorHover]="true"
+              [showThumbnails]="false"
+              [containerStyle]="{ 'max-width': 'auto' }"
+            >
               <ng-template pTemplate="item" let-item>
-                <p-image [src]="item" alt="Image" width="500" height="300" [preview]="true" />
+                <p-image
+                  [src]="item"
+                  alt="Image"
+                  width="500"
+                  height="300"
+                  [preview]="true"
+                />
               </ng-template>
             </p-galleria>
             @if(checkdate()&&isOwner&&!isCanceled){
             <small class="fw-light fst-italic">
-              <div class="mt-1"> Formats Premitied are .jpg , .png or .jpeg (Max Size : 1 MB) </div>
-          </small>
-          <p-fileUpload
-          chooseLabel="Choose"
-          chooseIcon="pi pi-upload"
-          mode="advanced"
-          name="image"
-          uploadLabel="Upload"
-          cancelLabel="Clear"
-          accept=".jpg,.png,.jpeg"
-          maxFileSize="1000000"
-           [customUpload]="true"
-            (uploadHandler)="onUpload($event)"
-          >
-           <ng-template pTemplate="content">
-            <p-progressSpinner *ngIf="loading" styleClass="custom-spinner"></p-progressSpinner>
-        </ng-template>
-          </p-fileUpload>
-        }
+              <div class="mt-1">
+                Formats Premitied are .jpg , .png or .jpeg (Max Size : 1 MB)
+              </div>
+            </small>
+            <p-fileUpload
+              chooseLabel="Choose"
+              chooseIcon="pi pi-upload"
+              mode="advanced"
+              name="image"
+              uploadLabel="Upload"
+              cancelLabel="Clear"
+              accept=".jpg,.png,.jpeg"
+              maxFileSize="1000000"
+              [customUpload]="true"
+              (uploadHandler)="onUpload($event)"
+            >
+              <ng-template pTemplate="content">
+                <p-progressSpinner
+                  *ngIf="loading"
+                  styleClass="custom-spinner"
+                ></p-progressSpinner>
+              </ng-template>
+            </p-fileUpload>
+            }
           </div>
         </div>
         <!-- end the carsol block -->
@@ -153,13 +229,13 @@
             <div class="status-item">
               <span class="status-count text-info">{{
                 eventDetails.attendanceNumber
-                }}</span>
+              }}</span>
               <span class="status-label">Capacity</span>
             </div>
             <div class="status-item">
               <span class="status-count text-success">{{
                 eventDetails?.emails?.length
-                }}</span>
+              }}</span>
               <span class="status-label">Email Sent</span>
             </div>
           </div>
@@ -182,8 +258,15 @@
         <!-- new block Location -->
         <div class="block" (click)="log()">
           <div *ngIf="eventDetails.googleMapsLocation != null">
-            <iframe [src]="mapsURL | safe" width="100%" height="315" frameborder="0" allowfullscreen
-              webkitallowfullscreen mozallowfullscreen>
+            <iframe
+              [src]="mapsURL | safe"
+              width="100%"
+              height="315"
+              frameborder="0"
+              allowfullscreen
+              webkitallowfullscreen
+              mozallowfullscreen
+            >
             </iframe>
             <!-- <div id="map" style="width: 100%; height: 315px"></div> -->
           </div>
@@ -231,19 +314,32 @@
                 <ng-template pTemplate="body" let-toDoList>
                   <tr>
                     <td>
-                      <input type="checkbox" [(ngModel)]="toDoList.isDone" (change)="onCheckboxChange(toDoList.title,toDoList.isDone)" />
+                      <input
+                        type="checkbox"
+                        [(ngModel)]="toDoList.isDone"
+                        (change)="
+                          onCheckboxChange(toDoList.title, toDoList.isDone)
+                        "
+                      />
                     </td>
                     <td>{{ toDoList.title }}</td>
                     <td>{{ toDoList.description }}</td>
+
                     <td>{{ toDoList.deadLineTime | date: 'medium' }}</td>
                     <td>{{ toDoList.toDoListBudget }}</td>
                     <td [style.color]="toDoList.isDone ? '#22c55e' : '#f3425f'">
-                      {{ toDoList.isDone ? 'Done' : 'Pending' }}
-                      <i [class]="toDoList.isDone ? 'bi bi-check-circle' : 'bi bi-clock'"></i>
+                      {{ toDoList.isDone ? "Done" : "Pending" }}
+                      <i
+                        [class]="
+                          toDoList.isDone ? 'bi bi-check-circle' : 'bi bi-clock'
+                        "
+                      ></i>
                     </td>
                     <td>
-                      <app-editto-do-list [toDoList]="toDoList"></app-editto-do-list>
-                     
+                      <app-editto-do-list
+                        [toDoList]="toDoList"
+                      ></app-editto-do-list>
+
                       <button
                         (click)="deleteToDoList(toDoList.eventId, toDoList.title)"
                         class="btn-danger btn-sm me-2"
@@ -263,25 +359,20 @@
     </div>
   </div>
 
-
-
-@if (activeLink=="schedule"){
-  <app-events-schedule [readonly]="checkEndDate()||!isOwner"></app-events-schedule>
-}
-
-
-
-  @if (activeLink=="reqs"){
-    <div class="d-flex justify-content-between">
-      <div class="two-col">
-        <div class="block">
-          <div class="mt-3">
-            <app-event-reqs [eventId]="this.id"></app-event-reqs>
-          </div>
-          </div>
+  @if (activeLink=="schedule"){
+  <app-events-schedule
+    [readonly]="checkEndDate() || !isOwner"
+  ></app-events-schedule>
+  } @if (activeLink=="reqs"){
+  <div class="d-flex justify-content-between">
+    <div class="two-col">
+      <div class="block">
+        <div class="mt-3">
+          <app-event-reqs [eventId]="this.id"></app-event-reqs>
         </div>
       </div>
-    
-  }
+    </div>
+  </div>
 
+  }
 </div>

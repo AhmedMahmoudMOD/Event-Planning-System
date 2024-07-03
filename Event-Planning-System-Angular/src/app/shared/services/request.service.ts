@@ -31,4 +31,11 @@ getRejectedReqs(id: number) {
   rejectReq(userId:string,eventId:string){
     return this.http.put(this.baseUrl + 'UsersRequests',{userId:userId,eventId:eventId,requestStatus:2});
   }
+  createreq(userId:string,eventId:string){
+    console.log("from services:",userId,eventId);
+    return this.http.post(this.baseUrl + 'UsersRequests',{userId:userId,eventId:eventId,requestStatus:0});
+  }
+   deleteRequest(userId: string, eventId: string) {
+    return this.http.delete(this.baseUrl + `UsersRequests/${userId}/${eventId}`);
+}
 }
