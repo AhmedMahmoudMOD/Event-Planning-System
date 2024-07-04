@@ -7,11 +7,15 @@ import { EventListService } from '../shared/services/event-list.service';
 import { AccountService } from '../shared/services/account.service';
 import { Event, EventType } from '../shared/models/eventsListRes.model';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { ActivatedRoute, RouterLink, RouterModule } from '@angular/router';
+import { TooltipModule } from 'primeng/tooltip';
+import { AddEventComponent } from '../add-event/add-event.component';
+
 
 @Component({
     selector: 'app-home',
     standalone: true,
-    imports: [CarouselModule, ButtonModule, TagModule],
+    imports: [CarouselModule, ButtonModule, TagModule, RouterModule, RouterLink, TooltipModule, AddEventComponent],
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.css']
 })
@@ -21,8 +25,8 @@ export class HomeComponent implements OnInit {
     responsiveOptions: any[] | undefined;
 
     constructor(
-        private eventlistImage: EventListService, 
-        private accountService: AccountService, 
+        private eventlistImage: EventListService,
+        private accountService: AccountService,
         private eventListService: EventListService,
         private sanitizer: DomSanitizer
     ) {}
@@ -78,7 +82,7 @@ export class HomeComponent implements OnInit {
       if (eventImage && eventImage.image) {
           return this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(eventImage.image));
       } else {
-          return 'assets/images/software-developer-6521720_640.jpg'; // Path to your default image
+          return 'assets/images/home/gallery/3.jpg'; // Path to your default image
       }
   }
 }
