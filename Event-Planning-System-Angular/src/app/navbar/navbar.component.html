@@ -1,4 +1,6 @@
-<nav class="navbar custom-navbar navbar-expand-lg">
+<!-- navbar.component.html -->
+
+<nav class="navbar custom-navbar navbar-expand-lg" [ngClass]="{'fixed': isFixed}">
   <div class="container-fluid ps-5 pe-5">
     <!-- <a class="navbar-brand" routerLink="/events">EPP</a> -->
     <img [src]="logoImage" alt="logo" class="logo">
@@ -14,40 +16,29 @@
           <a class="nav-link active" aria-current="page" [routerLink]="['/eventslist']">Events</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/events">Calender</a>
+          <a class="nav-link" routerLink="/events">Calendar</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/profile/{{userId}}">Profile</a>
         </li>
-
-
       </ul>
-      @if(accountService.LoggedIn()){
-      <img [src]="profile.image ? profile.image : defaultImage" alt="Profile Picture" class="profile-picture">
-      <ul class="navbar-nav  my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
-        <li class="nav-item dropdown justify-content-end">
+      <ul class="navbar-nav my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+        <li *ngIf="accountService.LoggedIn()" class="nav-item dropdown justify-content-end">
           <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             {{ profile.fName + " " + profile.lName }}
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-            <!-- <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li> -->
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" (click)="logout()" href="#" >Logout</a></li>
+            <li><a class="dropdown-item" (click)="logout()" href="#">Logout</a></li>
           </ul>
         </li>
-      </ul>
-    }@else{
-      <ul class="navbar-nav  my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
-        <li class="nav-item">
+        <li *ngIf="!accountService.LoggedIn()" class="nav-item">
           <a class="nav-link" routerLink="/auth/login">Login</a>
         </li>
-        <li class="nav-item">
+        <li *ngIf="!accountService.LoggedIn()" class="nav-item">
           <a class="nav-link" routerLink="/auth/register">Register</a>
         </li>
       </ul>
-    }
     </div>
   </div>
 </nav>
-

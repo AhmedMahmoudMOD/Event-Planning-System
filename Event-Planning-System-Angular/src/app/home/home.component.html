@@ -22,18 +22,15 @@
         <div class="row">
           <div class="col-lg-6">
             <h2>About The Event</h2>
-            <p>Sed nam ut dolor qui repellendus iusto odit. Possimus inventore eveniet accusamus error amet eius aut
-              accusantium et. Non odit consequatur repudiandae sequi ea odio molestiae. Enim possimus sunt inventore in
-              est ut optio sequi unde.</p>
+            <p>Our event planning system is designed to streamline the organization of events, whether it's corporate functions, weddings, or social gatherings. With a focus on seamless coordination and meticulous attention to detail, we ensure that every aspect of your event—from venue selection to guest management and budgeting—is handled with precision. Our goal is to bring your vision to life effortlessly, allowing you to enjoy your event.</p>
           </div>
-          <div class="col-lg-3">
-            <h3>Where</h3>
-            <p>Downtown Conference Center, New York</p>
+          <div class="col-lg-6">
+            <img src="assets/images/event-planner.jpg" alt="Home Page Img" class="w-100 border-round "  />
           </div>
-          <div class="col-lg-3">
+          <!-- <div class="col-lg-3">
             <h3>When</h3>
             <p>Monday to Wednesday<br>10-12 December</p>
-          </div>
+          </div> -->
         </div>
       </div>
     </section>
@@ -76,7 +73,7 @@
                 <span>
                   <p-button icon="pi pi-heart" severity="secondary" [outlined]="true" />
                   <!-- <p-button icon="pi pi-shopping-cart" styleClass="ml-2" /> -->
-                  <p-button icon="pi pi-info-circle" routerLink="/planner/eventdetails/{{event.id}}" styleClass="ml-2" pTooltip="View event details"/>
+                  <p-button icon="pi pi-info-circle" routerLink="/planner/eventdetails/{{event.id}}" styleClass="ml-2" title="View event details"/>
                 </span>
               </div>
             </div>
@@ -225,10 +222,10 @@
             <h4>Useful Links</h4>
             <ul>
               <li><i class="fa fa-angle-right"></i> <a routerLink="/home">Home</a></li>
-              <li><i class="fa fa-angle-right"></i> <a href="#">About us</a></li>
-              <li><i class="fa fa-angle-right"></i> <a href="#">Events</a></li>
-              <li><i class="fa fa-angle-right"></i> <a href="#">Calender</a></li>
-              <li><i class="fa fa-angle-right"></i> <a href="#">Profile</a></li>
+              <li><i class="fa fa-angle-right"></i> <a href="#about">About us</a></li>
+              <li><i class="fa fa-angle-right"></i> <a [routerLink]="['/eventslist']">Events</a></li>
+              <li><i class="fa fa-angle-right"></i> <a routerLink="/events">Calender</a></li>
+              <li><i class="fa fa-angle-right"></i> <a routerLink="/profile/{{userId}}">Profile</a></li>
             </ul>
           </div>
 
@@ -254,11 +251,11 @@
             </p>
 
             <div class="social-links">
-              <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
-              <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
-              <a href="#" class="instagram"><i class="fa fa-instagram"></i></a>
-              <a href="#" class="google-plus"><i class="fa fa-google-plus"></i></a>
-              <a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a>
+              <a href="#" class="twitter" title="twitter"><i class="fa fa-twitter"></i></a>
+              <a href="#" class="facebook" title="facebook"><i class="fa fa-facebook"></i></a>
+              <a href="#" class="instagram" title="instagram"><i class="fa fa-instagram"></i></a>
+              <a href="#" class="google-plus" title="google-plus"><i class="fa fa-google-plus"></i></a>
+              <a href="#" class="linkedin" title="linkedin"><i class="fa fa-linkedin"></i></a>
             </div>
 
           </div>

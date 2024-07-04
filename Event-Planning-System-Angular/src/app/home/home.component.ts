@@ -23,6 +23,7 @@ export class HomeComponent implements OnInit {
     eventImages: EventImage[] = [];
     eventList: Event[] = [];
     responsiveOptions: any[] | undefined;
+    userId = +this.accountService.extractUserID()
 
     constructor(
         private eventlistImage: EventListService,

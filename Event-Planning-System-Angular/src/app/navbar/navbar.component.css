@@ -8,3 +8,15 @@
 .logo{
   margin-right: 30px;
 }
+
+.navbar {
+  position: relative; /* Ensure the navbar can move in the document flow */
+  transition: top 0.3s; /* Smooth transition when changing top position */
+}
+
+.navbar.fixed {
+  position: fixed;
+  top: 0;
+  width: 100%; /* Make the navbar take full width when fixed */
+  z-index: 1000; /* Ensure it appears above other content */
+}
