@@ -126,7 +126,7 @@ body {
   background-color: var(--main-color);
   color: white;
   padding: 10px 20px;
-  border-radius: var(--border-radius);
+  /* border-radius: var(--border-radius); */
 }
 
 .custom-navbar .navbar-brand {

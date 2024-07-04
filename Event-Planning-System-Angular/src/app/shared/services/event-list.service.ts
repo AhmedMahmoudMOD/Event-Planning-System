@@ -15,5 +15,4 @@ export class EventListService {
   getAll(userId: number) {
     return this.http.get<Event[]>(this.baseUrl + userId);
   }
-
 }

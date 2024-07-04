@@ -27,6 +27,7 @@ import { canLoginGuard } from './shared/guards/can-login.guard';
 import { logGuardGuard } from './shared/guards/log-guard.guard';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ProfileUpdateComponent } from './profile-update/profile-update.component';
+import { HomeComponent } from './home/home.component';
 
 
 
@@ -56,7 +57,8 @@ export const routes: Routes = [
 
     {path: 'profile/:id', component: ProfileComponent},
     {path: 'update-profile/:id', component: ProfileUpdateComponent},
-    
+
+    {path: 'home', component: HomeComponent},
 
     { path: 'edit-event', component: EditEventComponent },
 
