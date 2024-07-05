@@ -36,6 +36,7 @@ import swal from 'sweetalert';
 
 import { EventReqsComponent } from '../event-reqs/event-reqs.component';
 import { RequestService } from '../../shared/services/request.service';
+import { event } from 'jquery';
 
 
 
@@ -95,7 +96,7 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   // map?: google.maps.Map;
   activeLink: string = 'about';
   toDoLists: ToDoList[] = [];
-  toDoList: any;
+  toDoList: ToDoList | any = {};
   selectionMode: any;
   displayEditModal: boolean = false;
   todoTitle: string = '';
@@ -310,6 +311,7 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   //   this.router.navigate(['/addto-do-list', this.id, title]);
   // }
   deleteToDoList(eventId: number, name: string) {
+    const deadline = new Date();
     Swal.fire({
       title: 'Are you sure you want to delete this to-do list?',
       text: `This action cannot be undone. The list named "${name}" will be permanently removed.`,

@@ -62,6 +62,11 @@ export class EdittoDoListComponent implements OnInit {
     event.preventDefault();
   }
   displayEditModal() {
+    const deadline = new Date(this.toDoList.deadLineTime);
+    if( deadline < new Date()) {
+      swal.fire('Error', 'Cannot edit To-Do List after deadline', 'error');
+      return;
+    }
     this.display = true;
   }
 
