@@ -19,8 +19,11 @@ import { Event } from '../shared/models/event';
 })
 export class ProfileComponent implements OnInit{
   title = 'Profile';
-  profile: Profile | any = {};
+  profile: Profile = {} as Profile;
   defaultImage = "assets/images/default_Image.jpg";
+
+  // profileId!: number;
+  profileId = + this.accountService.extractUserID();
 
   eventList: Event[] = [];
   // count the number of events in eventList array
@@ -32,13 +35,19 @@ export class ProfileComponent implements OnInit{
   constructor(private profileService: ProfileService, private accountService:AccountService, private route: ActivatedRoute) { }
     //get profile by user id
   ngOnInit(): void {
-    const id = + this.accountService.extractUserID();
+    this.profileId = + this.accountService.extractUserID();
     this.isLoading = true;
-    this.profileService.getProfile(id).pipe(finalize(()=> this.isLoading =false)).subscribe({
-      next: d => {
-        this.profile = d;
+    this.getProfile();
+  }
+
+  getProfile(){
+    this.profileService.getProfile(this.profileId).pipe(finalize(()=> this.isLoading =false)).subscribe({
+      next: (d:Profile) => {
+        this.profile = d as any;
       }
     });
   }
 }
+
+
 
