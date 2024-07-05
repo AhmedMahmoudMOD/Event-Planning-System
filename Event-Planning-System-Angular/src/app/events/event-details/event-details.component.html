@@ -81,7 +81,8 @@
             <!-- <button class="req-btn col-auto mx-2" (click)="createrequest()">
               request
             </button> -->
-            <app-edit-event  *ngIf="isOwner"></app-edit-event>
+            <app-edit-event *ngIf="isOwner && checkdate() && !isCanceled"
+            ></app-edit-event>
             <div *ngIf="!isOwner">
               <button
                 class="req-btn col-auto mx-2"
@@ -108,7 +109,7 @@
               severity="danger"
               class="custom-btn delete-btn col-auto mx-2"
               (click)="deleteEvent()"
-              *ngIf="isOwner"
+              *ngIf="isOwner && checkdate() && !isCanceled"
             >
               Cancel
             </button>
