@@ -14,6 +14,7 @@ export interface Event {
     eventImages: string[] | null;
     endDate: string;
     isDeleted: boolean;
+    isPrivate: boolean;
 
 }
 

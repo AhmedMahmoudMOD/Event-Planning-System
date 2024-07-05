@@ -1,7 +1,10 @@
 <div class="main-bg d-flex justify-content-center align-content-center py-3">
+
     <div class="d-flex justify-content-center align-items-center">
+        
         <form [formGroup]="registerForm" (ngSubmit)="reg()">
             <p-card header="Sign Up" subheader="Welcome to EPP 🎉" [style]="{width:'600px'}"> 
+                <img src="assets/images/logo.png" alt="Company Logo" class="logo">
                 <small class="fw-light fst-italic">
                     <div class="mb-4"> * <span class="text-dark">Required Field</span><span class="error-title"> (You must be over 18 to sign up) </span></div>
                 </small>

@@ -3,6 +3,7 @@ using Event_Planinng_System_DAL.Models;
 using Event_Planinng_System_DAL.Model_Validations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace Event_Planning_System.DTO
 {
@@ -27,6 +28,8 @@ namespace Event_Planning_System.DTO
         public string EndDate { get; set; }
 
         public bool? IsDeleted { get; set; }
+		[DefaultValue(true)]
+        public bool? IsPrivate { get; set; }
 
         public List<AttendanceDTO>? Emails { get; set; }
 		public List<string>? EventImages { get; set; }

@@ -1,3 +1,5 @@
+<!-- add-event.component.html -->
+
 <button class="custom-btn add-btn" (click)="showAddModal()">New Event</button>
 
 <p-dialog
@@ -30,6 +32,16 @@
       </div>
 
       <div class="p-field">
+        <label for="visibility">Visibility</label>
+        <div class="p-formgroup-inline">
+          <mat-radio-group formControlName="isPrivate">
+            <mat-radio-button value=0>Public</mat-radio-button>
+            <mat-radio-button value=1>Private</mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </div>
+
+      <div class="p-field">
         <label for="description">Description<span class="text-danger"> *</span></label>
         <textarea
           id="description"
@@ -49,7 +61,6 @@
           id="eventDate"
           formControlName="eventDate"
           [showTime]="true"
-          hourFormat="12"
           hourFormat="12"
           [showIcon]="true"
           [minDate]="minDate"
@@ -76,7 +87,6 @@
         </div>
       </div>
       
-
       <div class="p-field">
         <label for="attendanceNumber">Attendance Number</label>
         <input
@@ -111,7 +121,7 @@
         <label for="eventType">Event Type<span class="text-danger"> *</span></label>
         <select formControlName="eventType" class="form-select custom-select" name="Types" id="Type" required>
           <option value="">Select Event Type</option>
-          <option *ngFor="let event of Types" [value]="event.id">{{event.name}}</option>
+          <option *ngFor="let event of Types" [value]="event.id">{{ event.name }}</option>
         </select>
         <div *ngIf="addEventForm.get('eventType')?.invalid && addEventForm.get('eventType')?.touched" class="error-title">
           Event Type is required.

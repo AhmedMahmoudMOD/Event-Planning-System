@@ -7,4 +7,5 @@ export interface EditEvent {
   budget: number;
   eventDate: string;
   endDate: string;
+  isPrivate: boolean;
 }
