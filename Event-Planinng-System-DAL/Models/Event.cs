@@ -2,6 +2,7 @@
 using Event_Planinng_System_DAL.Model_Validations;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -33,6 +34,9 @@ namespace Event_Planinng_System_DAL.Models
         [FutureDate]
         public DateTime EndDate { get; set; }
         public DateOnly DateOfCreation { get; set;}
+
+        [DefaultValue(true)]
+        public bool IsPrivate { get; set; }
 
         public virtual User CreatorNavigation { get; set; }
         public virtual List<Comments> CommentsNavigation { get; set; } = new List<Comments>();

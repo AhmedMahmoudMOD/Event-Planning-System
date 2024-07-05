@@ -202,6 +202,7 @@ namespace Event_Planning_System.Services
             oldEvent.CreatorId = 1;
             oldEvent.AttendanceNumber = newEvent.AttendanceNumber;
             oldEvent.EndDate = newEvent.EndDate;
+            oldEvent.IsPrivate = newEvent.IsPrivate;
 
 
 

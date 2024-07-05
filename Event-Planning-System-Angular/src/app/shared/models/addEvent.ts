@@ -8,4 +8,5 @@ export interface AddEvent {
   eventType: number;
   eventDate: string;
   endDate: string;
+  isPrivate: boolean;
 }

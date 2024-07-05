@@ -3,6 +3,7 @@ using Event_Planinng_System_DAL.Models;
 using Event_Planinng_System_DAL.Model_Validations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace Event_Planning_System.DTO
 {
@@ -22,6 +23,9 @@ namespace Event_Planning_System.DTO
         public int? Budget { get; set; }
         public string EventDate { get; set; }
         public string EndDate { get; set; }
+
+        [DefaultValue(true)]
+        public bool IsPrivate { get; set; }
 
 
     }

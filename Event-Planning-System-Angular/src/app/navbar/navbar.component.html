@@ -2,13 +2,12 @@
 
 <nav class="navbar custom-navbar navbar-expand-lg" [ngClass]="{'fixed': isFixed}">
   <div class="container-fluid ps-5 pe-5">
-    <!-- <a class="navbar-brand" routerLink="/events">EPP</a> -->
-    <img [src]="logoImage" alt="logo" class="logo">
+    <a routerLink="home"><img [src]="logoImage" alt="logo" class="logo"></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarScroll">
-      <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+      <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll">
         <li class="nav-item">
           <a class="nav-link" routerLink="/home">Home</a>
         </li>
@@ -29,6 +28,7 @@
             {{ profile.fName + " " + profile.lName }}
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+            <li><a class="dropdown-item" routerLink="/profile/{{userId}}">My Profile</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" (click)="logout()" href="#">Logout</a></li>
           </ul>

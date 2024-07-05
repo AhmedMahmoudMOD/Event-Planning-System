@@ -7,6 +7,7 @@ import { EventService } from '../shared/services/event.service';
 import { ActivatedRoute } from '@angular/router';
 import { EditEvent } from '../shared/models/EditEvent';
 import { CalendarModule } from 'primeng/calendar';
+import { MatRadioModule } from '@angular/material/radio'; // Correct module import
 
 @Component({
   selector: 'app-edit-event',
@@ -16,7 +17,8 @@ import { CalendarModule } from 'primeng/calendar';
     DialogModule,
     CommonModule,
     ReactiveFormsModule,
-    CalendarModule
+    CalendarModule,
+    MatRadioModule // Correct module import
   ],
   templateUrl: './edit-event.component.html',
   styleUrls: ['./edit-event.component.css']  // Note the plural form here
@@ -29,6 +31,7 @@ export class EditEventComponent implements OnInit {
   MinDate: Date = new Date();
   initialStartDate: Date = new Date();
   initialEndDate: Date = new Date();
+  error = '';
 
   constructor(
     private eventService: EventService,
@@ -43,12 +46,13 @@ export class EditEventComponent implements OnInit {
       googleMapsLocation: [''],
       eventDate: [null, Validators.required],
       budget: [0, Validators.required],
-      endDate: [null, Validators.required]
+      endDate: [null, Validators.required],
+      isPrivate: [true, Validators.required] 
     });
   }
 
   ngOnInit(): void {
-    const id = (this.route.snapshot.paramMap.get('id'));
+    const id = this.route.snapshot.paramMap.get('id');
     this.eventId = id ? parseInt(id) : 0;
     if (this.eventId) {
       this.eventService.getEventById(this.eventId).subscribe((event: any) => {
@@ -63,18 +67,18 @@ export class EditEventComponent implements OnInit {
           googleMapsLocation: this.oldEvent.googleMapsLocation,
           eventDate: this.initialStartDate,
           budget: this.oldEvent.budget,
-          endDate: this.initialEndDate
+          endDate: this.initialEndDate,
+          isPrivate: this.oldEvent.isPrivate
         });
-        console.log(this.initialStartDate);
-        console.log(this.initialEndDate);
       });
     }
   }
 
-  //prevent changing with the mouse wheel
+  // Prevent changing with the mouse wheel
   onScroll(event: any) {
     event.preventDefault();
   }
+
   showEditModal() {
     this.display = true;
   }
@@ -84,15 +88,29 @@ export class EditEventComponent implements OnInit {
   }
 
   saveChanges() {
-    if (this.editForm.valid) {
+    if (this.editForm.invalid) {
+      return;
+    }
+
+    const event = this.editForm.value;
+    event.eventType = Number(event.eventType);
+    
+    // Ensure isPrivate is a boolean
+    event.isPrivate = event.isPrivate === 'true';
+
+    // Wrap the event object in the newEventDTO object if needed
+    const requestBody = { newEventDTO: event };
+
+    console.log(requestBody);
       this.eventService.editEvent(this.eventId, this.editForm.value).subscribe(
         () => {
           this.hideEditModal();
         },
         (error) => {
+          this.error = 'Error saving event data';
           console.error('Error saving event data:', error);
         }
       );
     }
   }
-}
+

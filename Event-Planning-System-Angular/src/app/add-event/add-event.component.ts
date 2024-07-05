@@ -15,8 +15,9 @@ import { DropdownModule } from 'primeng/dropdown';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatRadioModule } from '@angular/material/radio';
 import { of } from 'rxjs';
-import { catchError, debounceTime, switchMap } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-event',
@@ -35,6 +36,7 @@ import { catchError, debounceTime, switchMap } from 'rxjs/operators';
     MatFormFieldModule,
     MatInputModule,
     MatDatepickerModule,
+    MatRadioModule,
   ],
   providers: [DatePipe],
   templateUrl: './add-event.component.html',
@@ -73,7 +75,8 @@ export class AddEventComponent implements OnInit {
       budget: ['', Validators.required],
       eventType: ['', Validators.required],
       eventDate: ['', Validators.required],
-      endDate: ['', [Validators.required, this.checkDate.bind(this)]]
+      endDate: ['', [Validators.required, this.checkDate.bind(this)]],
+      isPrivate: [true]
     });
   }
 
@@ -115,8 +118,6 @@ export class AddEventComponent implements OnInit {
 
     // Check if the form is valid before proceeding
     if (this.addEventForm.invalid) {
-      console.log(this.addEventForm.value);
-      console.log('Form is invalid:', this.addEventForm.errors);
       return;
     }
 
@@ -125,11 +126,16 @@ export class AddEventComponent implements OnInit {
     // Ensure eventType is a number
     const event = this.addEventForm.value;
     event.eventType = Number(event.eventType);
-    console.log(event);
+    
+    // Ensure isPrivate is a boolean
+    event.isPrivate = event.isPrivate === 'true';
 
-    this.eventService.addEvent(event).pipe(
-      debounceTime(300),
-      switchMap(() => this.eventService.addEvent(event)),
+    // Wrap the event object in the newEventDTO object if needed
+    const requestBody = { newEventDTO: event };
+
+    console.log(requestBody);
+
+    this.eventService.addEvent(requestBody.newEventDTO).pipe(
       catchError(error => {
         console.error('Error adding event:', error);
         if (error.status === 400 && error.error) {
