@@ -22,7 +22,7 @@
   <div class="main-content">
     <div class="header">
       <input type="text" class="search-bar custom-input" placeholder="Start typing to search for an Event" [(ngModel)]="searchQuery" (input)="onSearch()">
-      <app-add-event></app-add-event>
+      <app-add-event (newEventAdded)="getAllEvents()"></app-add-event>
     </div>
     <div class="event-list">
       <div *ngFor="let item of filteredEventList; let i = index" class="event-item main-bg">

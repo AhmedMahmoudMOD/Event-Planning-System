@@ -41,7 +41,7 @@ export class NavbarComponent implements OnInit {
   @HostListener('window:scroll', ['$event'])
   onWindowScroll(event: Event) {
     const scrollOffset = window.pageYOffset;
-    // Set navbar fixed when scroll position is greater than 50px
-    this.isFixed = scrollOffset > 50;
+    // Set navbar fixed when scroll position is greater than 5px
+    this.isFixed = scrollOffset > 5;
   }
 }
