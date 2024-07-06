@@ -29,5 +29,8 @@ namespace Event_Planning_System.IServices
         Task<PaginatedList<EventDTO>> GetWithPagination(int pageNumber, int pageSize, string? search);
         Task<IdentityResult> AddImage(EventImageDTO imageDTO);
         Task<bool> isOwnEvent(int eventId, int userId);
+        Task<List<EventDTO>?> GetAllEventsExceptUserEvents(int id);
+
+
     }
 }
