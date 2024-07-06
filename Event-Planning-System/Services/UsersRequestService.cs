@@ -96,7 +96,7 @@ namespace Event_Planning_System.Services
                 var user = await unitOfWork.UserRepo.FindById(userRequest.UserId);
                 var emails = new List<AttendanceDTO>() { new AttendanceDTO { Email = user.Email } };
 
-                eventService.AddGuests(userRequest.EventId, emails);
+               await eventService.AddGuests(userRequest.EventId, emails);
                 return true;
             }catch (Exception e)
             {

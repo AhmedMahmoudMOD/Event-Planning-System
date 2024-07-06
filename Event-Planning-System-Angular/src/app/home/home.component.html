@@ -43,7 +43,7 @@
       <div *ngIf="eventList.length === 0" class="no-events-message">
         <h3>No events to display</h3>
         <p>There are currently no events available. Please check back later.</p>
-        <app-add-event></app-add-event>
+        <app-add-event *ngIf="accountService.LoggedIn()"></app-add-event>
       </div>
 
       <p-carousel

@@ -130,13 +130,14 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
     //get event details
     this.getEventDetails();
     this.userId = this.accountService.extractUserID();
-
+    if(this.userId != 0){
     this.accountService.checkOwnership(this.id,this.userId).subscribe(check=>{
       console.log(check);
       this.isOwner = check;
     });
     this.checkRequestStatus();
     console.log(this.requestStatus);
+  }
 
   }
 

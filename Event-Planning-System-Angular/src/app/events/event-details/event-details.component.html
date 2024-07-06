@@ -90,7 +90,7 @@
                 [ngClass]="{
                   
                 }"
-                *ngIf="requestStatus === 'none'"
+                *ngIf="requestStatus === 'none'&& accountService.LoggedIn() && checkdate()"
                 (click)="createrequest()"
               >
                 Request
@@ -99,7 +99,7 @@
               <!-- Cancel Request button only shown when status is pending -->
               <button
                 class="req-btn col-auto mx-2 btn-cancel"
-                *ngIf="requestStatus === 'pending'"
+                *ngIf="requestStatus === 'pending'&& accountService.LoggedIn() && checkdate()"
                 (click)="deleteRequest()"
               >
                 Cancel Request
