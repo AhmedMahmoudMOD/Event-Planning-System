@@ -170,6 +170,7 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   //delete event
   deleteEvent() {
+    console.log('A7A delete event');
     Swal.fire({
       title: 'Are you sure You want to delete this?',
       text: "You won't be able to revert this!",
@@ -181,7 +182,7 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.eventDetailsServices.removeEventById(this.id).subscribe((res) => {
-          this.router.navigate(['/events']);
+          this.router.navigate(['/eventslist']);
         });
       }
     });

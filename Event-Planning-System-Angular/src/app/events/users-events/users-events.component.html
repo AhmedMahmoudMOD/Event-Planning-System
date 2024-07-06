@@ -1,0 +1,46 @@
+<div class="container">
+  <div class="main-content">
+    <div class="header">
+      <input type="text" class="search-bar custom-input" placeholder="Start typing to search for an Event" [(ngModel)]="searchQuery" (input)="onSearch()">
+      <!-- <app-add-event (eventListUpdated)="onEventListUpdated()"></app-add-event> -->
+
+    </div>
+    <div class="event-list">
+      <div *ngFor="let item of filteredEventList; let i = index" class="event-item main-bg">
+        <!-- <div [ngClass]="{
+                      'approved': item.status === 'approved',
+                      'pending': item.status === 'pending',
+                      'canceled': item.status === 'canceled'
+                    }" class="event-status">
+          {{ item.status | titlecase }}
+        </div> -->
+        <div class="event-details">
+          <h3 class="subtitle">{{ item.name }}</h3>
+          <div class="eventLocation">
+            <img class="locationImg" src="assets/images/location.png" alt="Event Location">
+            <p>{{ item.location }}</p>
+          </div>
+          <div class="eventDate">
+            <div class="date">
+              <p>Event Date:</p>
+              <p>{{ item.eventDate.slice(0, 10) }}</p>
+            </div>
+            <div class="date">
+              <p>Event Time:</p>
+              <p>{{ item.eventDate.slice(11) }}</p>
+            </div>
+            <div class="date">
+              <p>Event Type:</p>
+              <p>{{ getEventTypeLabel(item.eventType) }}</p>
+            </div>
+          </div>
+        </div>
+        <button class="custom-btn btn-second h-25" routerLink="/planner/eventdetails/{{item.id}}">Details</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

@@ -28,6 +28,7 @@ import { logGuardGuard } from './shared/guards/log-guard.guard';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ProfileUpdateComponent } from './profile-update/profile-update.component';
 import { HomeComponent } from './home/home.component';
+import { UsersEventsComponent } from './events/users-events/users-events.component';
 
 
 
@@ -42,11 +43,12 @@ export const routes: Routes = [
     { path: 'auth/forgotpassword', component: ForgotPasswordComponent , canActivate:[logGuardGuard] },
     { path: 'events', component:EventCalenderComponent , canActivate:[canLoginGuard] },
     { path: 'eventslist', component:EventListComponent , canActivate:[canLoginGuard] },
+    { path: 'Events/usersEvents', component: UsersEventsComponent },
     { path: 'sidebar', component: SidebarComponent },
     //event details
     { path: 'planner/eventdetails/:id', component: EventDetailsComponent },
     { path: 'schedule/:id', component: EventsScheduleComponent },
-{path:'addto-do-list',component:AddtoDoListComponent},
+    {path:'addto-do-list',component:AddtoDoListComponent},
     //end of event details
     {path: 'planner/events', component : EventCalenderComponent},
 
