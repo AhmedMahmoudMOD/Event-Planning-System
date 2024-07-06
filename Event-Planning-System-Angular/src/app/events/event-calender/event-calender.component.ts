@@ -120,4 +120,7 @@ export class EventCalenderComponent implements OnInit, OnDestroy {
     console.log("Clicked"+ event.id);
     this.router.navigate(['/planner/eventdetails/',event.id]);
   }
+  onEventListUpdated(): void {
+    this.ngOnInit();
+  }
 }

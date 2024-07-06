@@ -36,6 +36,9 @@ getRejectedReqs(id: number) {
     return this.http.post(this.baseUrl + 'UsersRequests',{userId:userId,eventId:eventId,requestStatus:0});
   }
    deleteRequest(userId: string, eventId: string) {
-    return this.http.delete(this.baseUrl + `UsersRequests/${userId}/${eventId}`);
+    return this.http.delete(this.baseUrl + `UsersRequests`,{body:{userId:userId,eventId:eventId}});
 }
+  getReq(eventId : string, userId : string) {
+    return this.http.get<number>(this.baseUrl + `UsersRequests/${eventId}/${userId}`);
+  }
 }

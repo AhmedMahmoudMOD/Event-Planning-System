@@ -22,7 +22,7 @@ import { EditEventComponent } from '../../edit-event/edit-event.component';
 import { ToDoListService } from '../../shared/services/to-do-list.service';
 import { DataViewModule } from 'primeng/dataview';
 import { EventsScheduleComponent } from '../events-schedule/events-schedule.component';
-import { ToDoList } from '../../shared/models/ToDoList';
+import { ToDoList } from '../../shared/models/toDoList';
 import {Table, TableLazyLoadEvent, TableModule} from 'primeng/table';
 
 import { AddtoDoListComponent } from '../../addto-do-list/addto-do-list.component';
@@ -36,6 +36,7 @@ import swal from 'sweetalert';
 
 import { EventReqsComponent } from '../event-reqs/event-reqs.component';
 import { RequestService } from '../../shared/services/request.service';
+import { event } from 'jquery';
 
 
 
@@ -95,11 +96,11 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   // map?: google.maps.Map;
   activeLink: string = 'about';
   toDoLists: ToDoList[] = [];
-  toDoList: any;
+  toDoList: ToDoList | any = {};
   selectionMode: any;
   displayEditModal: boolean = false;
   todoTitle: string = '';
-  requestStatus: 'none' | 'pending' | 'accepted' = 'none';
+  requestStatus: 'none' | 'pending' | 'accepted' | 'rejected'= 'none';
   
   // constructors
   constructor(
@@ -131,6 +132,8 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
       console.log(check);
       this.isOwner = check;
     });
+    this.checkRequestStatus();
+    console.log(this.requestStatus);
 
   }
 
@@ -295,6 +298,10 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
       },
     });
    }
+   onToDoListUpdated() {
+    this.getAllToDoList();
+  }
+
   // loadToDoLists(event: any) {
   //   this.toDoList = event;
   //   this.toDoListService.getToDoList(this.id).subscribe({
@@ -311,6 +318,7 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   //   this.router.navigate(['/addto-do-list', this.id, title]);
   // }
   deleteToDoList(eventId: number, name: string) {
+    const deadline = new Date();
     Swal.fire({
       title: 'Are you sure you want to delete this to-do list?',
       text: `This action cannot be undone. The list named "${name}" will be permanently removed.`,
@@ -430,16 +438,34 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
   checkRequestStatus(): void {
-    this.requestService.getPendingReqs(this.userId).subscribe((requests) => {
-      if (requests.some((req) => req.id === this.id)) {
-        this.requestStatus = 'pending';
-      }
-    });
-    this.requestService.getAcceptedReqs(this.userId).subscribe((requests) => {
-      if (requests.some((req) => req.id === this.id)) {
-        this.requestStatus = 'accepted';
-      }
-    });
+    // this.requestService.getPendingReqs(this.userId).subscribe((requests) => {
+    //   if (requests.some((req) => req.id == this.id)) {
+    //     this.requestStatus = 'pending';
+    //   }
+    // });
+    // this.requestService.getAcceptedReqs(this.userId).subscribe((requests) => {
+    //   if (requests.some((req) => req.id == this.id)) {
+    //     this.requestStatus = 'accepted';
+    //   }
+    // });
+    this.requestService.getReq(this.id, this.userId).subscribe({
+      next: (res) => {
+        if (res==1) {
+          this.requestStatus = 'accepted';
+        }
+        else if (res==0) {
+          this.requestStatus = 'pending';
+        }
+        else if (res==2){
+          this.requestStatus = 'rejected';
+        }else{
+          this.requestStatus = 'none';
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching request:', error);
+      },
+    })
   }
 
   deleteRequest(): void {

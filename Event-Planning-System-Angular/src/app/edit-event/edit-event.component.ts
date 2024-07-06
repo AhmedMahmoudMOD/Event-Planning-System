@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { EditEvent } from '../shared/models/EditEvent';
 import { CalendarModule } from 'primeng/calendar';
 import { MatRadioModule } from '@angular/material/radio'; // Correct module import
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-edit-event',
@@ -80,6 +81,10 @@ export class EditEventComponent implements OnInit {
   }
 
   showEditModal() {
+    if(this.oldEvent.endDate < new Date().toISOString()) {
+      swal('Error', 'Cannot edit an event that has already ended', 'error');
+      return;
+    }
     this.display = true;
   }
 
