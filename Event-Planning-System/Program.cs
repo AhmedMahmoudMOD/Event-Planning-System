@@ -45,7 +45,7 @@ namespace Event_Planning_System
             builder.Services.AddScoped<IBlobServices, BlobService>();
             builder.Services.AddScoped<ISendEmailService, SendEmailService>();
             builder.Services.AddScoped<IEventScheduleService ,  EventScheduleService>();
-		builder.Services.AddScoped<IAuthService, AuthService>();
+			builder.Services.AddScoped<IAuthService, AuthService>();
 
 			builder.Services.AddScoped<Iregestration, Register>();
 			builder.Services.AddScoped<IaccountServices, AccountServices>();
