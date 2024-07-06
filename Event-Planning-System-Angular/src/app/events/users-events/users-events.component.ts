@@ -3,38 +3,36 @@ import { Component, OnInit } from '@angular/core';
 import { Event, EventType } from '../../shared/models/eventsListRes.model';
 import { ActivatedRoute, RouterLink, RouterModule } from '@angular/router';
 import { PaginatorModule } from 'primeng/paginator';
-import { EventListService } from '../../shared/services/event-list.service';
 import { FormsModule } from '@angular/forms';
-import { AddEventComponent } from '../../add-event/add-event.component';
-import { SidebarComponent } from '../../sidebar/sidebar.component';
 import { AccountService } from '../../shared/services/account.service';
+import { UsersEventsService } from '../../shared/services/users-events.service';
 
 
 @Component({
-  selector: 'app-event-list',
+  selector: 'app-users-events',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterLink, PaginatorModule, FormsModule,AddEventComponent,SidebarComponent],
-  templateUrl: './event-list.component.html',
-  styleUrls: ['./event-list.component.css']
+  imports: [CommonModule, RouterModule, RouterLink, PaginatorModule, FormsModule],
+  templateUrl: './users-events.component.html',
+  styleUrl: './users-events.component.css'
 })
-export class EventListComponent implements OnInit {
-  title = 'Events';
-  eventList: Event[] = [];
+export class UsersEventsComponent implements OnInit{
+  title = 'UsersEvents';
+  usersEventsList: Event[] = [];
   filteredEventList: Event[] = [];
   searchQuery: string = '';
 
-  constructor(private eventListService: EventListService, private route: ActivatedRoute,private accountService:AccountService) {}
+  constructor(private usersEventsService: UsersEventsService, private route: ActivatedRoute,private accountService:AccountService) {}
 
   ngOnInit(): void {
-    this.getAllEvents();
+    this.getAllUsersEvents();
     document.body.classList.add('event-list-body') // Add class to body
   }
 
-  getAllEvents() {
-    const id = + this.accountService.extractUserID();
-    this.eventListService.getAll(id).subscribe({
+  getAllUsersEvents() {
+    const userId = + this.accountService.extractUserID();
+    this.usersEventsService.getAllUsersEvents(userId).subscribe({
       next: d => {
-        this.eventList = d;
+        this.usersEventsList = d;
         this.filteredEventList = d; // Initialize filtered list
       }
     });
@@ -51,7 +49,7 @@ export class EventListComponent implements OnInit {
   // Event Search
   onSearch() {
     const query = this.searchQuery.toLowerCase();
-    this.filteredEventList = this.eventList.filter(event =>
+    this.filteredEventList = this.usersEventsList.filter(event =>
       event.name.toLowerCase().includes(query) ||
       event.location.toLowerCase().includes(query)
     );
@@ -60,6 +58,10 @@ export class EventListComponent implements OnInit {
     this.ngOnInit();
   }
 
+    // heck the data
+    // checkdate() {
+    //   const currentDate = new Date();
+    //   const eventDate = new Date(this.usersEventsList.endDate);
+    //   return eventDate >= currentDate;
+    // }
 }
-
-

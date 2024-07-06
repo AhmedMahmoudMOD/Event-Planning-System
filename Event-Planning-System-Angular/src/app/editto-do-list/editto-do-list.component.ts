@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ToDoList } from '../shared/models/ToDoList';
+import { ToDoList } from '../shared/models/toDoList';
 import { HttpClient } from '@angular/common/http';
 import { ToDoListService } from '../shared/services/to-do-list.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -62,6 +62,11 @@ export class EdittoDoListComponent implements OnInit {
     event.preventDefault();
   }
   displayEditModal() {
+    const deadline = new Date(this.toDoList.deadLineTime);
+    if( deadline < new Date()) {
+      swal.fire('Error', 'Cannot edit To-Do List after deadline', 'error');
+      return;
+    }
     this.display = true;
   }
 

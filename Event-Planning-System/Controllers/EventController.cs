@@ -231,7 +231,32 @@ namespace Event_Planning_System.Controllers
 
 		}
 
+        /* Get All Events except user events */
 
-	}
+        [SwaggerOperation(Summary = "Get all events except user Events", Description = "Get all events except user Events")]
+        [SwaggerResponse(200, "Retrieved successfully", typeof(List<EventDTO>))]
+        [SwaggerResponse(400, "Failed to retrieve events. Invalid Id.")]
+        [SwaggerResponse(404, "User not found or no events available.")]
+        [HttpGet("UsersEvents/{id:int}")]
+        public async Task<IActionResult> GetAllEventsExceptUserEvents([FromRoute] int id)
+        {
+            if (id <= 0)
+            {
+                return BadRequest("Invalid ID.");
+            }
+
+            var requiredEvents = await eventService.GetAllEventsExceptUserEvents(id);
+
+            if (requiredEvents == null || !requiredEvents.Any())
+            {
+                return NotFound("User not found or no events available.");
+            }
+
+            return Ok(requiredEvents);
+        }
+
+
+
+    }
 
 }

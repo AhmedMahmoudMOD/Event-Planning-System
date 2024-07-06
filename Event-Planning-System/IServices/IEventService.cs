@@ -28,8 +28,11 @@ namespace Event_Planning_System.IServices
 		public Task<bool> DeleteGuest(int eventId, string email);
 		public Task<Result> UpdateEvent(int id, EditEventDTO newEvent);
 
-		Task<PaginatedList<EventDTO>> GetWithPagination(int pageNumber, int pageSize, string? search);
-		Task<IdentityResult> AddImage(EventImageDTO imageDTO);
-		Task<bool> isOwnEvent(int eventId, int userId);
-	}
+        Task<PaginatedList<EventDTO>> GetWithPagination(int pageNumber, int pageSize, string? search);
+        Task<IdentityResult> AddImage(EventImageDTO imageDTO);
+        Task<bool> isOwnEvent(int eventId, int userId);
+        Task<List<EventDTO>?> GetAllEventsExceptUserEvents(int id);
+
+
+    }
 }

@@ -1,4 +1,5 @@
 ﻿using Event_Planinng_System_DAL.Models;
+using Event_Planinng_System_DAL.Unit_Of_Work;
 using Event_Planning_System.IServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
@@ -12,11 +13,13 @@ namespace Event_Planning_System.Services
     {
         private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
-        public AccountServices(UserManager<User> userManager, IConfiguration configuration)
+        private readonly UnitOfWork unitOfWork;
+
+        public AccountServices(UserManager<User> userManager, IConfiguration configuration,UnitOfWork unitOfWork)
         {
             _userManager = userManager;
             _configuration = configuration;
-
+            this.unitOfWork = unitOfWork;
         }
         public async Task<string> GenerateToken(User user)
         {
@@ -43,6 +46,11 @@ namespace Event_Planning_System.Services
 
             return new JwtSecurityTokenHandler().WriteToken(token);
 
+        }
+
+        public async Task<User> GetUserByID(int id)
+        {
+            return await unitOfWork.UserRepo.FindById(id);
         }
     }
 }

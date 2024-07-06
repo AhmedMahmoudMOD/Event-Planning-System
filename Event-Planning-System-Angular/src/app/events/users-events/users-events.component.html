@@ -1,37 +1,11 @@
-<!-- <p-table [value]="eventList" [paginator]="true" [rows]="3" [lazy]="true" [totalRecords]="total" (onLazyLoad)="loadEvents($event)">
-    <ng-template pTemplate="header">
-        <tr>
-            <th>Event Name</th>
-            <th>Event Desc</th>
-            <th>Event Budget</th>
-            <th>Location</th>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-event>
-        <tr>
-            <td>{{event.name}}</td>
-            <td>{{event.description}}</td>
-            <td>{{event.budget}}</td>
-            <td>{{event.location}}</td>
-        </tr>
-    </ng-template>
-</p-table> -->
-
-
 <div class="container">
   <div class="main-content">
     <div class="header">
       <input type="text" class="search-bar custom-input" placeholder="Start typing to search for an Event" [(ngModel)]="searchQuery" (input)="onSearch()">
-      <app-add-event (eventListUpdated)="onEventListUpdated()"></app-add-event>
+      <!-- <app-add-event (eventListUpdated)="onEventListUpdated()"></app-add-event> -->
 
     </div>
     <div class="event-list">
-      <!-- If there is No Event -->
-      <div *ngIf="eventList.length === 0" class="no-events-message">
-        <h3>No events to display</h3>
-        <p>There are currently no events available. Please check back later.</p>
-      </div>
-
       <div *ngFor="let item of filteredEventList; let i = index" class="event-item main-bg">
         <div class="event-details">
           <h3 class="subtitle">{{ item.name }}</h3>
