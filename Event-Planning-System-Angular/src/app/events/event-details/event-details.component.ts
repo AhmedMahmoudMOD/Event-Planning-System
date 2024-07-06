@@ -99,7 +99,7 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   selectionMode: any;
   displayEditModal: boolean = false;
   todoTitle: string = '';
-  requestStatus: 'none' | 'pending' | 'accepted' = 'none';
+  requestStatus: 'none' | 'pending' | 'accepted' | 'rejected'= 'none';
   
   // constructors
   constructor(
@@ -131,6 +131,8 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
       console.log(check);
       this.isOwner = check;
     });
+    this.checkRequestStatus();
+    console.log(this.requestStatus);
 
   }
 
@@ -429,16 +431,34 @@ export class EventDetailsComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
   checkRequestStatus(): void {
-    this.requestService.getPendingReqs(this.userId).subscribe((requests) => {
-      if (requests.some((req) => req.id === this.id)) {
-        this.requestStatus = 'pending';
-      }
-    });
-    this.requestService.getAcceptedReqs(this.userId).subscribe((requests) => {
-      if (requests.some((req) => req.id === this.id)) {
-        this.requestStatus = 'accepted';
-      }
-    });
+    // this.requestService.getPendingReqs(this.userId).subscribe((requests) => {
+    //   if (requests.some((req) => req.id == this.id)) {
+    //     this.requestStatus = 'pending';
+    //   }
+    // });
+    // this.requestService.getAcceptedReqs(this.userId).subscribe((requests) => {
+    //   if (requests.some((req) => req.id == this.id)) {
+    //     this.requestStatus = 'accepted';
+    //   }
+    // });
+    this.requestService.getReq(this.id, this.userId).subscribe({
+      next: (res) => {
+        if (res==1) {
+          this.requestStatus = 'accepted';
+        }
+        else if (res==0) {
+          this.requestStatus = 'pending';
+        }
+        else if (res==2){
+          this.requestStatus = 'rejected';
+        }else{
+          this.requestStatus = 'none';
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching request:', error);
+      },
+    })
   }
 
   deleteRequest(): void {
