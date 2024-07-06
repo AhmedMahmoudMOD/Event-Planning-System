@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { ToDoListService } from '../shared/services/to-do-list.service';
 import { HttpClient } from '@angular/common/http';
@@ -11,7 +11,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import Swal from 'sweetalert2';
 import { EventService } from '../shared/services/event.service';
 import { Event } from '../shared/models/event';
-import { ToDoList } from '../shared/models/ToDoList';
+import { ToDoList } from '../shared/models/toDoList';
 
 @Component({
   selector: 'app-addto-do-list',
@@ -23,6 +23,7 @@ import { ToDoList } from '../shared/models/ToDoList';
   styleUrls: ['./addto-do-list.component.css']
 })
 export class AddtoDoListComponent implements OnInit {
+  @Output() toDoListUpdate = new EventEmitter<void>();
   display: boolean = false;
   addToDoList: FormGroup = new FormGroup({});
   submitted: boolean = false;
@@ -116,7 +117,6 @@ export class AddtoDoListComponent implements OnInit {
     var todo = this.addToDoList.value;
     this.todoService.addToDo(todo).subscribe({
       next: d => {
-        this.toDoLists.push(d);
         this.hideAddModal();
         Swal.fire({
           title: 'Success!',
@@ -124,6 +124,9 @@ export class AddtoDoListComponent implements OnInit {
           icon: 'success',
           confirmButtonText: 'Ok'
         });
+        this.getAllToDoList();
+        this.toDoListUpdate.emit();
+
       },
       error: e => {
         console.log(e);
@@ -132,4 +135,5 @@ export class AddtoDoListComponent implements OnInit {
       }
     });
   }
+  
 }
