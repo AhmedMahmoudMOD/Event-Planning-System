@@ -26,6 +26,11 @@ export class EventListComponent implements OnInit {
   constructor(private eventListService: EventListService, private route: ActivatedRoute,private accountService:AccountService) {}
 
   ngOnInit(): void {
+    this.getAllEvents();
+    document.body.classList.add('event-list-body') // Add class to body
+  }
+
+  getAllEvents() {
     const id = + this.accountService.extractUserID();
     this.eventListService.getAll(id).subscribe({
       next: d => {
@@ -33,7 +38,6 @@ export class EventListComponent implements OnInit {
         this.filteredEventList = d; // Initialize filtered list
       }
     });
-    document.body.classList.add('event-list-body') // Add class to body
   }
 
   ngOnDestroy(): void {

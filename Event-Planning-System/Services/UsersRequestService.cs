@@ -2,6 +2,7 @@
 using Event_Planinng_System_DAL.Enums;
 using Event_Planinng_System_DAL.Models;
 using Event_Planinng_System_DAL.Unit_Of_Work;
+using Event_Planning_System.DTO;
 using Event_Planning_System.DTO.UserRequset;
 using Event_Planning_System.IServices;
 using MimeKit.Tnef;
@@ -13,11 +14,13 @@ namespace Event_Planning_System.Services
     public class UsersRequestService : IUserRequestService
     {
         private readonly IMapper mapper;
+        private readonly IEventService eventService;
         private readonly UnitOfWork unitOfWork;
-        public UsersRequestService(UnitOfWork _unit , IMapper _mapper)
+        public UsersRequestService(UnitOfWork _unit , IMapper _mapper,IEventService eventService)
         {
             this.unitOfWork = _unit;
             this.mapper = _mapper;
+            this.eventService = eventService;
         }
 
         public async Task<UserRequestDTO?> CreateRequest(int userid , int eventid)
@@ -84,6 +87,35 @@ namespace Event_Planning_System.Services
             await unitOfWork.saveAsync();
 
             return true;
+        }
+
+        public async Task<bool> SendInviteEmail(UserRequestDTO userRequest)
+        {
+            try
+            {
+                var user = await unitOfWork.UserRepo.FindById(userRequest.UserId);
+                var emails = new List<AttendanceDTO>() { new AttendanceDTO { Email = user.Email } };
+
+                eventService.AddGuests(userRequest.EventId, emails);
+                return true;
+            }catch (Exception e)
+            {
+                return false;
+            }
+
+        }
+
+        public async Task<UserRequestDTO> GetSpecificUserRequest(int eventid, int userid)
+        {
+            var UserRequest = (await unitOfWork.UserRequests.GetAll()).FirstOrDefault(x => x.EventId == eventid && x.UserId == userid);
+
+            if(UserRequest == null)
+            {
+                return null;
+            }
+            var model = mapper.Map<UserRequestDTO>(UserRequest);
+
+            return model;
         }
     }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output,EventEmitter } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProfileService } from '../shared/services/profile.service';
 import { AccountService } from '../shared/services/account.service';
@@ -15,6 +15,7 @@ import { RouterModule } from '@angular/router';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { catchError, of } from 'rxjs';
+
 
 @Component({
   selector: 'app-profile-update',
@@ -38,6 +39,8 @@ export class ProfileUpdateComponent implements OnInit {
   profile: Profile | any = {};
   displayEditModal = false;
   id = +this.accountService.extractUserID();
+
+  @Output() profileUpdated: EventEmitter<void> = new EventEmitter();
 
   constructor(
     private profileService: ProfileService,
@@ -99,7 +102,7 @@ export class ProfileUpdateComponent implements OnInit {
         }, 1000);
 
         // get updated profile
-        this.getProfile();
+        this.profileUpdated.emit()
 
       },
       (error) => {

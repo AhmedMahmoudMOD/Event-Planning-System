@@ -1,3 +1,4 @@
+
 import { Component, EventEmitter, OnInit, Output, output } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
@@ -57,6 +58,8 @@ export class AddEventComponent implements OnInit {
     { id: 3, name: 'Social' },
     { id: 4, name: 'Other' }
   ];
+
+  @Output() newEventAdded: EventEmitter<void> = new EventEmitter();
 
   constructor(
     private fb: FormBuilder,
@@ -146,6 +149,7 @@ export class AddEventComponent implements OnInit {
     ).subscribe({
       next: (response: any) => {
         this.hideAddModal();
+        this.newEventAdded.emit()
         this.loading = false;
         this.eventListUpdated.emit();
       },

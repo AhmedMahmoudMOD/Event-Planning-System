@@ -21,8 +21,9 @@
           <a class="nav-link" routerLink="/profile/{{userId}}">Profile</a>
         </li>
       </ul>
-      <ul class="navbar-nav my-2 my-lg-0 navbar-nav-scroll">
-        <li *ngIf="accountService.LoggedIn()" class="nav-item dropdown justify-content-end">
+      <ul class="navbar-nav my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+        <li *ngIf="accountService.LoggedIn()" class="nav-item dropdown d-flex justify-content-end align-items-center">
+          <img [src]="profile.image ? profile.image : defaultImage" alt="Profile Picture" class="profile-picture">
           <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             {{ profile.fName + " " + profile.lName }}
           </a>
