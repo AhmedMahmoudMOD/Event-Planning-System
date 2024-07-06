@@ -10,5 +10,9 @@ namespace Event_Planning_System.IServices
         public Task<List<UserRequestDeatilsDTO>> GetAllUsersRequests(int eventid, RequestStatus status);
         public Task<bool> ChangeStatus(UserRequestDTO userDTO);
 
+        Task<bool> SendInviteEmail(UserRequestDTO userRequest);
+
+        Task<UserRequestDTO> GetSpecificUserRequest(int eventid, int userid);
+
     }
 }
