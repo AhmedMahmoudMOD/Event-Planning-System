@@ -27,19 +27,22 @@ export class HomeComponent implements OnInit {
 
     constructor(
         private eventlistImage: EventListService,
-        private accountService: AccountService,
+        public accountService: AccountService,
         private eventListService: EventListService,
         private sanitizer: DomSanitizer
     ) {}
 
     ngOnInit() {
       const userId = +this.accountService.extractUserID();
+      if (userId == 0) {
+        return;
+      }else{
       this.eventListService.getAll(userId).subscribe({
         next: d => {
           this.eventList = d;
         }
       });
-
+    }
       this.responsiveOptions = [
           {
               breakpoint: '1199px',

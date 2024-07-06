@@ -12,16 +12,16 @@
           <a class="nav-link" routerLink="/home">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" [routerLink]="['/Events/usersEvents']">Events</a>
+          <a class="nav-link active" aria-current="page"  [routerLink]="['/Events/usersEvents']">Events</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" [routerLink]="['/eventslist']">My Events</a>
+          <a class="nav-link active" aria-current="page" *ngIf="accountService.LoggedIn()" [routerLink]="['/eventslist']">My Events</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/events">Calendar</a>
+          <a class="nav-link" *ngIf="accountService.LoggedIn()" routerLink="/events">Calendar</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/profile/{{userId}}">Profile</a>
+          <a class="nav-link" *ngIf="accountService.LoggedIn()" routerLink="/profile/{{userId}}">Profile</a>
         </li>
       </ul>
       <ul class="navbar-nav my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
