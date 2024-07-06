@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, output } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { CommonModule, DatePipe } from '@angular/common';
@@ -43,6 +43,7 @@ import { catchError } from 'rxjs/operators';
   styleUrls: ['./add-event.component.css']
 })
 export class AddEventComponent implements OnInit {
+  @Output() eventListUpdated = new EventEmitter<void>();
   display: boolean = false;
   addEventForm: FormGroup;
   submitted: boolean = false;
@@ -146,6 +147,7 @@ export class AddEventComponent implements OnInit {
       next: (response: any) => {
         this.hideAddModal();
         this.loading = false;
+        this.eventListUpdated.emit();
       },
       error: () => {
         this.loading = false;

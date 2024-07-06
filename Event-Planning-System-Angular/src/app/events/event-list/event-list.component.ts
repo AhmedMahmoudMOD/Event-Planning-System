@@ -52,6 +52,9 @@ export class EventListComponent implements OnInit {
       event.location.toLowerCase().includes(query)
     );
   }
+  onEventListUpdated(){
+    this.ngOnInit();
+  }
 
 }
 
