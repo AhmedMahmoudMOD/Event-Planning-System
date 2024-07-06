@@ -26,14 +26,13 @@
 
     </div>
     <div class="event-list">
+      <!-- If there is No Event -->
+      <div *ngIf="eventList.length === 0" class="no-events-message">
+        <h3>No events to display</h3>
+        <p>There are currently no events available. Please check back later.</p>
+      </div>
+
       <div *ngFor="let item of filteredEventList; let i = index" class="event-item main-bg">
-        <!-- <div [ngClass]="{
-                      'approved': item.status === 'approved',
-                      'pending': item.status === 'pending',
-                      'canceled': item.status === 'canceled'
-                    }" class="event-status">
-          {{ item.status | titlecase }}
-        </div> -->
         <div class="event-details">
           <h3 class="subtitle">{{ item.name }}</h3>
           <div class="eventLocation">

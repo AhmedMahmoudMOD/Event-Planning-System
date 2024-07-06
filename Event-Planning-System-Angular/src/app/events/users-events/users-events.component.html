@@ -7,13 +7,6 @@
     </div>
     <div class="event-list">
       <div *ngFor="let item of filteredEventList; let i = index" class="event-item main-bg">
-        <!-- <div [ngClass]="{
-                      'approved': item.status === 'approved',
-                      'pending': item.status === 'pending',
-                      'canceled': item.status === 'canceled'
-                    }" class="event-status">
-          {{ item.status | titlecase }}
-        </div> -->
         <div class="event-details">
           <h3 class="subtitle">{{ item.name }}</h3>
           <div class="eventLocation">
