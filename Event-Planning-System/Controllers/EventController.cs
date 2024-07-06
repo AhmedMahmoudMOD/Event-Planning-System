@@ -18,13 +18,13 @@ namespace Event_Planning_System.Controllers
 	public class EventController : ControllerBase
 	{
 		private readonly IEventService eventService;
-        private readonly IPDFService pDFService;
+		private readonly IPDFService pDFService;
 
-        public EventController(IEventService _eventService, IMapper _mapper,IPDFService PDFService)
+		public EventController(IEventService _eventService, IMapper _mapper, IPDFService PDFService)
 		{
 			eventService = _eventService;
-            pDFService = PDFService;
-        }
+			pDFService = PDFService;
+		}
 
 		// Get All Event for a user
 		[SwaggerOperation(Summary = "Get all events", Description = "Get all events by user's ID.")]
@@ -65,19 +65,19 @@ namespace Event_Planning_System.Controllers
 		[HttpPost]
 		public async Task<IActionResult> CreateEvent(EventDTO newEventDTO)
 		{
-            var sid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+			var sid = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            if (sid == null)
-            {
-                return Unauthorized();
-            }
+			if (sid == null)
+			{
+				return Unauthorized();
+			}
 
-            int id = int.Parse(sid);
+			int id = int.Parse(sid);
 
-            if (ModelState.IsValid)
+			if (ModelState.IsValid)
 			{
 				var res = await eventService.CreateEvent(newEventDTO, id);
-                if(res.IsSuccess)
+				if (res.IsSuccess)
 					return Created();
 				else
 					return BadRequest("Failed to create event. Invalid data or event date is in the past.");
@@ -94,25 +94,25 @@ namespace Event_Planning_System.Controllers
 				return Created();
 			return BadRequest();
 		}
-        // Update Event
-        [SwaggerOperation(Summary = "Update Event", Description = "Update Event with new details.")]
-        [SwaggerResponse(200, "Event updated successfully")]
-        [HttpPut("{id:int}")]
-        public async Task<IActionResult> UpdateEvent(int id, EditEventDTO newEvent)
-        {
-            if (ModelState.IsValid)
-            {
-                var res = await eventService.UpdateEvent(id, newEvent);
-                if (res.IsSuccess)
-                    return Ok();  // Return Ok instead of Created for updates
-                else
-                    return BadRequest(new { error = res.Error.Description });
-            }
-            return BadRequest(ModelState);
-        }
+		// Update Event
+		[SwaggerOperation(Summary = "Update Event", Description = "Update Event with new details.")]
+		[SwaggerResponse(200, "Event updated successfully")]
+		[HttpPut("{id:int}")]
+		public async Task<IActionResult> UpdateEvent(int id, EditEventDTO newEvent)
+		{
+			if (ModelState.IsValid)
+			{
+				var res = await eventService.UpdateEvent(id, newEvent);
+				if (res.IsSuccess)
+					return Ok();  // Return Ok instead of Created for updates
+				else
+					return BadRequest(new { error = res.Error.Description });
+			}
+			return BadRequest(ModelState);
+		}
 
-        // Get Event Attendance
-        [SwaggerOperation(Summary = "Get the Event's Attendance", Description = "Get a list of all Attendees' mails.")]
+		// Get Event Attendance
+		[SwaggerOperation(Summary = "Get the Event's Attendance", Description = "Get a list of all Attendees' mails.")]
 		[SwaggerResponse(200, "Retrieved all mails successfully")]
 		[HttpGet("Attendance")]
 		public async Task<IActionResult> GetAttendance(int id)
@@ -126,18 +126,38 @@ namespace Event_Planning_System.Controllers
 		[SwaggerOperation(Summary = "Add list of attendees", Description = "Add new list of attendees to the Event.")]
 		[SwaggerResponse(200, "Attendance was added successfully")]
 		[HttpPost("Attendance/{eventId:int}")]
-		public async Task<IActionResult> AddAttendace(int eventId,[FromBodyAttribute] List<AttendanceDTO> newAttendancesDTO)
+		public async Task<IActionResult> AddAttendace(int eventId, [FromBodyAttribute] List<AttendanceDTO> newAttendancesDTO)
 		{
 			if (ModelState.IsValid)
 			{
 				var res = await eventService.AddGuests(eventId, newAttendancesDTO);
-				if (res == "true")
+				if (res.Success)
 					return Ok(res);
-				else 
+				else
 					return BadRequest(res);
 			}
 			return BadRequest(ModelState);
 		}
+
+		[SwaggerOperation(Summary = "Add list of attendees from Excel sheet", Description = "Add new list of attendees to the Event.")]
+		[SwaggerResponse(200, "Attendance was added successfully")]
+		[HttpPost("Attendance/upload/{eventId:int}")]
+		public async Task<IActionResult> AddAttendaceFromExcel(int eventId, [FromBody] IFormFile attendanceSheet)
+		{
+			if (ModelState.IsValid)
+			{
+				if (attendanceSheet == null || attendanceSheet.Length == 0)
+				{
+					return BadRequest("No file uploaded.");
+				}
+				else
+				{
+					return Ok(await eventService.UploadEmailsFromExcel(eventId, attendanceSheet));
+				}
+			}
+			return BadRequest(ModelState);
+		}
+
 		// Remove attendance from an event
 		[SwaggerOperation(Summary = "Remove Attendance from the Event", Description = "Delete an existing attendees.")]
 		[SwaggerResponse(200, "Event created successfully", typeof(EventDTO))]
@@ -174,44 +194,44 @@ namespace Event_Planning_System.Controllers
 		}
 
 		[HttpPost("addImage")]
-        public async Task<IActionResult> AddImage([FromForm] EventImageDTO imageDTO)
-        {
-            if (imageDTO.Image == null)
-            {
-                return BadRequest("No image provided");
-            }
-            try
-            {
-                var result = await eventService.AddImage(imageDTO);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpGet("check/{eventId:int}/{userId:int}")]
-        public async Task<IActionResult> IsOwnEvent(int eventId,int userId)
+		public async Task<IActionResult> AddImage([FromForm] EventImageDTO imageDTO)
 		{
-            var result = await eventService.isOwnEvent(eventId, userId);
+			if (imageDTO.Image == null)
+			{
+				return BadRequest("No image provided");
+			}
+			try
+			{
+				var result = await eventService.AddImage(imageDTO);
+				return Ok(result);
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
+		}
+
+		[HttpGet("check/{eventId:int}/{userId:int}")]
+		public async Task<IActionResult> IsOwnEvent(int eventId, int userId)
+		{
+			var result = await eventService.isOwnEvent(eventId, userId);
 			if (!result)
 				return Ok(false);
-            return Ok(true);
+			return Ok(true);
 
-        }
+		}
 
-        [HttpGet("print/{eventId:int}")]
-        public async Task<IActionResult> PrintEvent(int eventId)
-        {
-            var result = await pDFService.PrintPDF(eventId);
-            if (result != null)
-                return result;
-            return BadRequest();
+		[HttpGet("print/{eventId:int}")]
+		public async Task<IActionResult> PrintEvent(int eventId)
+		{
+			var result = await pDFService.PrintPDF(eventId);
+			if (result != null)
+				return result;
+			return BadRequest();
 
-        }
+		}
 
 
-    }
+	}
 
 }

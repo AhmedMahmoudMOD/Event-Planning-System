@@ -36,6 +36,7 @@ import swal from 'sweetalert';
 
 import { EventReqsComponent } from '../event-reqs/event-reqs.component';
 import { RequestService } from '../../shared/services/request.service';
+import { UploadEmailsFromExcelComponent } from '../upload-emails-from-excel/upload-emails-from-excel.component';
 
 
 
@@ -69,6 +70,7 @@ import { RequestService } from '../../shared/services/request.service';
     FileUploadModule,
     ProgressSpinnerModule,
     EventReqsComponent,
+    UploadEmailsFromExcelComponent,
   ],
   templateUrl: './event-details.component.html',
   styleUrls: ['./event-details.component.css'],

@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { Event, EventListRes } from '../models/eventsListRes.model';
 import { calenderEvent } from '../models/calenderEvent';
+import { NumericContainer } from '@syncfusion/ej2-angular-grids';
 
 @Injectable({
   providedIn: 'root',
@@ -58,5 +59,13 @@ export class EventService {
     return this.httpclient.get<calenderEvent[]>(
       environment.apiUrl + '/api/Event/user/' + id
     );
+  }
+  uploadEmailsSheet(eventId:number,file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+
+    return this.httpclient.post(environment.apiUrl + `/api/Event/Attendance/upload/${eventId}`,
+       formData, {headers: new HttpHeaders({ 'Accept': 'application/json'})
+    });
   }
 }
