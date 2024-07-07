@@ -142,7 +142,7 @@ namespace Event_Planning_System.Controllers
 		[SwaggerOperation(Summary = "Add list of attendees from Excel sheet", Description = "Add new list of attendees to the Event.")]
 		[SwaggerResponse(200, "Attendance was added successfully")]
 		[HttpPost("Attendance/upload/{eventId:int}")]
-		public async Task<IActionResult> AddAttendaceFromExcel(int eventId, [FromBody] IFormFile attendanceSheet)
+		public async Task<IActionResult> AddAttendaceFromExcel(int eventId, IFormFile attendanceSheet)
 		{
 			if (ModelState.IsValid)
 			{
@@ -152,7 +152,7 @@ namespace Event_Planning_System.Controllers
 				}
 				else
 				{
-					return Ok(await eventService.UploadEmailsFromExcel(eventId, attendanceSheet));
+						return Ok(await eventService.UploadEmailsFromExcel(eventId, attendanceSheet));
 				}
 			}
 			return BadRequest(ModelState);

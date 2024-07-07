@@ -9,7 +9,8 @@
         <input type="file" (change)="onFileSelected($event)" />
         <p-progressSpinner *ngIf="loading" styleClass="custom-spinner text-center col-12"></p-progressSpinner>
         <br />
-        <p-message styleClass="alert alert-danger" *ngIf="errorMessage != null" severity="danger" [text]="errorMessage"></p-message>
+        <p-message styleClass="alert alert-info my-2" *ngIf="responseMessage != null" severity="danger" [text]="responseMessage"></p-message>
+        <p-message styleClass="alert alert-danger my-2" *ngIf="errorMessage != null" severity="danger" [text]="errorMessage"></p-message>
         <table *ngIf="errorMessage || successMessage" class="table table-primary w-75 mx-auto table-hover table-borderless table-responsive mt-3">
           <thead class="">
             <tr>
