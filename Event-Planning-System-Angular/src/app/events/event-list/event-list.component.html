@@ -32,7 +32,7 @@
         <p>There are currently no events available. Please check back later.</p>
       </div>
 
-      <div *ngFor="let item of filteredEventList; let i = index" class="event-item main-bg">
+      <div *ngFor="let item of paginatedEventList; let i = index" class="event-item main-bg">
         <div class="event-details">
           <h3 class="subtitle">{{ item.name }}</h3>
           <div class="eventLocation">
@@ -57,6 +57,14 @@
         <button class="custom-btn btn-second h-25" routerLink="/planner/eventdetails/{{item.id}}">Details</button>
       </div>
     </div>
+    <div class="flex justify-content-center">
+      <p-paginator 
+          (onPageChange)="onPageChange($event)" 
+          [first]="first" 
+          [rows]="rows" 
+          [totalRecords]="filteredEventList.length" 
+          />
+  </div>
   </div>
 </div>
 
