@@ -77,18 +77,17 @@ export class PrivateLoginGuard implements CanActivate {
       console.log(owner, "before");
 
       this.eventservce.getEventById(linkId).subscribe((res) => {
+
         if (res.isPrivate && !owner) {
-          console.log(false);
           this.router.navigate(['/home']);
           return false;
         }
         else {
-          console.log(owner, "after");
           return true;
         }
       });
 
-
+      //console.log(owner, "after");
       return true;
     } else {
       this.router.navigate(['/homee']);
