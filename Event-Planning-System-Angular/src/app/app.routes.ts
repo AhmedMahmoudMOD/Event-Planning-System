@@ -43,7 +43,7 @@ export const routes: Routes = [
     { path: 'auth/forgotpassword', component: ForgotPasswordComponent , canActivate:[logGuardGuard] },
     { path: 'events', component:EventCalenderComponent , canActivate:[canLoginGuard] },
     { path: 'eventslist', component:EventListComponent , canActivate:[canLoginGuard] },
-    { path: 'Events/usersEvents', component: UsersEventsComponent , canActivate:[canLoginGuard] },
+    { path: 'Events/usersEvents', component: UsersEventsComponent   },
     { path: 'sidebar', component: SidebarComponent },
     //event details
     { path: 'planner/eventdetails/:id', component: EventDetailsComponent },
