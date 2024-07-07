@@ -9,6 +9,7 @@ export interface Event {
     budget: number;
     eventType: EventType;
     eventDate: string;
+    endDate: string;
     id: number;
   }
 

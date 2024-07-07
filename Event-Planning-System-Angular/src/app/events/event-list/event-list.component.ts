@@ -8,12 +8,13 @@ import { FormsModule } from '@angular/forms';
 import { AddEventComponent } from '../../add-event/add-event.component';
 import { SidebarComponent } from '../../sidebar/sidebar.component';
 import { AccountService } from '../../shared/services/account.service';
+import { TagModule } from 'primeng/tag';
 
 
 @Component({
   selector: 'app-event-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterLink, PaginatorModule, FormsModule,AddEventComponent,SidebarComponent,PaginatorModule],
+  imports: [CommonModule, RouterModule, RouterLink, PaginatorModule, FormsModule,AddEventComponent,SidebarComponent,PaginatorModule,TagModule],
   templateUrl: './event-list.component.html',
   styleUrls: ['./event-list.component.css']
 })
@@ -75,6 +76,38 @@ export class EventListComponent implements OnInit {
       console.log(this.first, this.rows);
       
       this.paginatedEventList = this.filteredEventList.slice(this.first, this.first + this.rows);
+    }
+
+    getStatus(event: Event): string | undefined {
+      const currentDate = new Date();
+      const eventDate = new Date(event.eventDate);
+      const endDate = new Date(event.endDate);
+  
+      if (eventDate > currentDate) {
+        return 'Upcoming'; // Event is upcoming
+      } else if (currentDate >= eventDate && currentDate <= endDate) {
+        return 'Ongoing'; // Event is ongoing
+      } else if (currentDate > endDate) {
+        return 'Finished'; // Event is finished
+      } else {
+        return undefined;
+      }
+    }
+
+    getSeverity(event: Event){
+      const currentDate = new Date();
+      const eventDate = new Date(event.eventDate);
+      const endDate = new Date(event.endDate);
+  
+      if (eventDate > currentDate) {
+        return 'info'; // Event is upcoming
+      } else if (currentDate >= eventDate && currentDate <= endDate) {
+        return 'success'; // Event is ongoing
+      } else if (currentDate > endDate) {
+        return 'danger'; // Event is finished
+      } else {
+        return undefined;
+      }
     }
 
 
