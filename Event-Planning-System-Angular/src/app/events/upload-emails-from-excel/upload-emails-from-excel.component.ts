@@ -39,6 +39,7 @@ export class UploadEmailsFromExcelComponent implements OnInit, OnDestroy {
   fileSub: Subscription | null = null;
   displayModal: boolean = false;
   selectedFile: File | null = null;
+  responseMessage: string | null = null;
 
   constructor(
     private eventService: EventService,
@@ -67,6 +68,8 @@ export class UploadEmailsFromExcelComponent implements OnInit, OnDestroy {
     this.duplicateEmails = [];
     this.errorMessage = null;
     this.successMessage = null;
+    this.selectedFile = null;
+    this.responseMessage = null;
   }
 
   onFileSelected(event: any): void {
@@ -83,6 +86,7 @@ export class UploadEmailsFromExcelComponent implements OnInit, OnDestroy {
         .uploadEmailsSheet(this.eventId, this.selectedFile)
         .subscribe({
           next: (response) => {
+            this.responseMessage = response.message;
             console.log('response', response);
             this.invitedEmails = response.successfulEmails || [];
             this.invalidEmails = response.invalidEmails || [];

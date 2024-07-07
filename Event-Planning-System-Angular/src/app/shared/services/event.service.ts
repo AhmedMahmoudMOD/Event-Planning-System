@@ -60,9 +60,9 @@ export class EventService {
       environment.apiUrl + '/api/Event/user/' + id
     );
   }
-  uploadEmailsSheet(eventId:number,file: File): Observable<any> {
+  uploadEmailsSheet(eventId:number,attendanceSheet : File): Observable<any> {
     const formData = new FormData();
-    formData.append('file', file, file.name);
+    formData.append('attendanceSheet', attendanceSheet , attendanceSheet .name);
 
     return this.httpclient.post(environment.apiUrl + `/api/Event/Attendance/upload/${eventId}`,
        formData, {headers: new HttpHeaders({ 'Accept': 'application/json'})
