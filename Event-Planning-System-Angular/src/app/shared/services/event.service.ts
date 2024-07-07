@@ -11,7 +11,7 @@ import { NumericContainer } from '@syncfusion/ej2-angular-grids';
   providedIn: 'root',
 })
 export class EventService {
-  constructor(private httpclient: HttpClient) {}
+  constructor(private httpclient: HttpClient) { }
   addEvent(event: AddEvent): Observable<AddEvent> {
     return this.httpclient.post<AddEvent>(
       `${environment.apiUrl}/api/Event`,
@@ -60,12 +60,13 @@ export class EventService {
       environment.apiUrl + '/api/Event/user/' + id
     );
   }
-  uploadEmailsSheet(eventId:number,attendanceSheet : File): Observable<any> {
+  uploadEmailsSheet(eventId: number, attendanceSheet: File): Observable<any> {
     const formData = new FormData();
-    formData.append('attendanceSheet', attendanceSheet , attendanceSheet .name);
+    formData.append('attendanceSheet', attendanceSheet, attendanceSheet.name);
 
     return this.httpclient.post(environment.apiUrl + `/api/Event/Attendance/upload/${eventId}`,
-       formData, {headers: new HttpHeaders({ 'Accept': 'application/json'})
+      formData, {
+        headers: new HttpHeaders({ 'Accept': 'application/json' })
     });
   }
 }
