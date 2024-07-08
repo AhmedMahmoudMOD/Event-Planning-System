@@ -178,7 +178,7 @@ namespace Event_Planning_System.Services
 			catch { return false; }
 		}
 		//edit event
-		public async Task<Result> UpdateEvent(int id, EditEventDTO newEventDTO)
+		public async Task<Result> UpdateEvent(int id, int uid, EditEventDTO newEventDTO)
 		{
 			var oldEvent = await unitOfWork.EventRepo.FindById(id);
 			if (oldEvent == null)
@@ -202,7 +202,7 @@ namespace Event_Planning_System.Services
 			oldEvent.Location = newEvent.Location;
 			oldEvent.GoogleMapsLocation = newEvent.GoogleMapsLocation;
 			oldEvent.Budget = newEvent.Budget;
-			oldEvent.CreatorId = 1;
+			oldEvent.CreatorId = uid;
 			oldEvent.AttendanceNumber = newEvent.AttendanceNumber;
 			oldEvent.EndDate = newEvent.EndDate;
 			oldEvent.IsPrivate = newEvent.IsPrivate;

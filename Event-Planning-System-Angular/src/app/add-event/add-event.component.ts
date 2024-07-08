@@ -128,9 +128,15 @@ export class AddEventComponent implements OnInit {
     // Ensure eventType is a number
     const event = this.addEventForm.value;
     event.eventType = Number(event.eventType);
-    
+    console.log(event.isPrivate);
     // Ensure isPrivate is a boolean
-    event.isPrivate = event.isPrivate === 'true';
+    // event.isPrivate = event.isPrivate === 'true';
+
+    if(event.isPrivate === 'true'){
+      event.isPrivate = true;
+    }else{
+      event.isPrivate = false;
+    }
 
     // Wrap the event object in the newEventDTO object if needed
     const requestBody = { newEventDTO: event };

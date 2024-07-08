@@ -100,9 +100,17 @@ namespace Event_Planning_System.Controllers
 		[HttpPut("{id:int}")]
 		public async Task<IActionResult> UpdateEvent(int id, EditEventDTO newEvent)
 		{
-			if (ModelState.IsValid)
+            var sid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (sid == null)
+            {
+                return Unauthorized();
+            }
+
+            int uid = int.Parse(sid);
+            if (ModelState.IsValid)
 			{
-				var res = await eventService.UpdateEvent(id, newEvent);
+				var res = await eventService.UpdateEvent(id,uid, newEvent);
 				if (res.IsSuccess)
 					return Ok();  // Return Ok instead of Created for updates
 				else

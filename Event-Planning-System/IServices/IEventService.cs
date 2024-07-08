@@ -26,7 +26,7 @@ namespace Event_Planning_System.IServices
 		public Task<AddGuestsResponseModelView> UploadEmailsFromExcel(int EventId, IFormFile file);
 		public Task<bool> SendEventMail(int EventId, EmailType type);
 		public Task<bool> DeleteGuest(int eventId, string email);
-		public Task<Result> UpdateEvent(int id, EditEventDTO newEvent);
+		Task<Result> UpdateEvent(int id, int uid, EditEventDTO newEventDTO);
 
         Task<PaginatedList<EventDTO>> GetWithPagination(int pageNumber, int pageSize, string? search);
         Task<IdentityResult> AddImage(EventImageDTO imageDTO);

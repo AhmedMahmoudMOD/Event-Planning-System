@@ -101,7 +101,13 @@ export class EditEventComponent implements OnInit {
     event.eventType = Number(event.eventType);
     
     // Ensure isPrivate is a boolean
-    event.isPrivate = event.isPrivate === 'true';
+    // event.isPrivate = event.isPrivate === 'true';
+    
+    if(event.isPrivate === 'true'){
+      event.isPrivate = true;
+    }else{
+      event.isPrivate = false;
+    }
 
     // Wrap the event object in the newEventDTO object if needed
     const requestBody = { newEventDTO: event };
