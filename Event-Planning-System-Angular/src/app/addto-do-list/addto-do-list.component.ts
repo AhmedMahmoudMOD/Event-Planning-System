@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { ToDoListService } from '../shared/services/to-do-list.service';
 import { HttpClient } from '@angular/common/http';
@@ -135,5 +135,4 @@ export class AddtoDoListComponent implements OnInit {
       }
     });
   }
-  
 }

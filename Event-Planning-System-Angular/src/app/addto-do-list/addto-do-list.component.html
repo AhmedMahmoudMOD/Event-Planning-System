@@ -13,7 +13,7 @@
       <div class="p-fluid">
         <div class="p-field p-centre">
           <div *ngIf="err" class="p-error error-title">
-            {{ err || 'An error occurred while adding the to-do item. Please try again.' }}
+            {{err ||'An error occurred while adding the to-do item. Please try again.' }}
           </div>
         </div>
         <div class="p-field">
@@ -70,11 +70,13 @@
             formControlName="toDoListBudget" 
             placeholder="Enter To-Do List budget"
           />
-          <span class="error-title" *ngIf="submitted && addToDoList.get('toDoListBudget')?.hasError('required')">Budget is required</span>
           <span class="error-title" *ngIf="addToDoList.get('toDoListBudget')?.errors?.['budgetExceeded']">The to-do list budget is higher than the event budget. Please enter a lower budget.</span>
+          <div *ngIf="submitted && addToDoList.get('toDoListBudget')?.invalid" class="p-error">
+            Budget is required and must be a positive number.
+          </div>
         </div>
         <hr>
-        <div class=" d-flex justify-content-between">
+        <div class="d-flex justify-content-between">
           <button 
             type="submit"  
             class="p-button-success custom-btn add-btn col mx-3"

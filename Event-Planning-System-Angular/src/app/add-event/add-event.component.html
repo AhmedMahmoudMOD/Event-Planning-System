@@ -98,7 +98,7 @@
           (mousewheel)="onScroll($event)"
         />
         <div *ngIf="addEventForm.get('attendanceNumber')?.invalid && addEventForm.get('attendanceNumber')?.touched" class="error-title">
-          Attendance number is required and must be a non-negative number.
+          Attendance number is required and must be positive number.
         </div>
       </div>
 
@@ -111,9 +111,13 @@
           formControlName="budget"
           placeholder="Enter event budget"
           (mousewheel)="onScroll($event)"
+          min=0
         />
         <div *ngIf="addEventForm.get('budget')?.invalid && addEventForm.get('budget')?.touched" class="error-title">
           Budget is required.
+        </div>
+        <div *ngIf="addEventForm.get('attendanceNumber')?.invalid && addEventForm.get('attendanceNumber')?.touched" class="error-title">
+         Budget is required and must be a positive number.
         </div>
       </div>
 

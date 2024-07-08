@@ -56,7 +56,7 @@ export class EventsScheduleComponent implements OnInit, OnDestroy {
     isAllDay: { name: 'isAllDay' },
     startTime: { name: 'startTime', validation: { required: true } },
     endTime: { name: 'endTime', validation: { required: true } },
-    description: { name: 'description', validation: { required: true, minLength: [this.minValidation, 'Need atleast 5 letters to be entered'] } }
+    description: { name: 'description', validation: {  minLength: [this.minValidation, 'Need atleast 5 letters to be entered'] } }
   }
   public eventSettings: EventSettingsModel = {
     dataSource: this.eventScheduledata,

@@ -39,7 +39,7 @@ export class EdittoDoListComponent implements OnInit {
   ) { 
     this.editToDoList = this.formBuilder.group({
       title: ['', Validators.required],
-      toDoListBudget: ['', Validators.required],
+      toDoListBudget: ['', Validators.required, Validators.min(1)],
       description: ['', Validators.required],
       deadLineTime: ['', Validators.required],
       eventId: ['']

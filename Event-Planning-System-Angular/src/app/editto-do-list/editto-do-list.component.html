@@ -46,7 +46,7 @@
           (mousewheel)="onMouseWheel($event)"
           />
           <div *ngIf="submitted && editToDoList.get('toDoListBudget')?.invalid" class="p-error">
-            Budget is required.
+            Budget is required and must be a positive number.
           </div>
         </div>
       </div>
