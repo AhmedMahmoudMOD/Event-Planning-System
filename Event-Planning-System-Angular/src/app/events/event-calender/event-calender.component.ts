@@ -112,7 +112,6 @@ export class EventCalenderComponent implements OnInit, OnDestroy {
                             &&(!this.endDate || (event.end && new Date(event.end).getDate() <= new Date(this.endDate).getDate()))
                             &&(!this.startDate || (event.start && new Date(event.start).getMonth() == new Date(this.startDate).getMonth()))
                             &&(!this.endDate || (event.end && new Date(event.end).getMonth() == new Date(this.endDate).getMonth()));
-
       return matchesKeyword && matchesType && matchesDateRange;
     });
   }
