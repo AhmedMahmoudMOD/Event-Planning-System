@@ -53,7 +53,7 @@ namespace Event_Planning_System.Services
 				else if (type == EmailType.Cancel)
 				{
 					emailAdresses = allAttendees.Where(a => a.EventId == EventId && a.IsSent == true).ToList();
-					mailbody = $"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\r\n        <tr>\r\n            <td align=\"center\" style=\"padding: 10px 0 30px 0;\">\r\n                <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\">\r\n                    <tr>\r\n                        <td align=\"center\" bgcolor=\"#ff6b6b\" style=\"padding: 40px 0 30px 0;\">\r\n                            <h1 style=\"color: white;\">Event Cancellation Notice</h1>\r\n                        </td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td bgcolor=\"#ffffff\" style=\"padding: 40px 30px 40px 30px;\">\r\n                            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\r\n                                <tr>\r\n                                    <td>\r\n                                        <h2>Greetings, </h2>\r\n                                        <p>We regret to inform you that the following event has been cancelled:</p>\r\n                                        <p><strong>Event:</strong> {myEvent.Name}</p>\r\n                                        <p><strong>Original Date:</strong> {myEvent.EventDate.Date}</p>\r\n                                        <p>We apologize for any inconvenience this may cause. If you have any questions or need further information, please do not hesitate to contact us at {myEvent.CreatorNavigation.Email}.</p>\r\n                                        <p>Thank you for your understanding.</p>\r\n                                        <p>Best regards,</p>\r\n                                        <p>{myEvent.CreatorNavigation.FName} {myEvent.CreatorNavigation.LName}</p>\r\n                                        <p>Event Planning System</p>\r\n                                    </td>\r\n                                </tr>\r\n                                <tr>\r\n                                    <td align=\"center\" style=\"padding: 20px 0 30px 0;\">\r\n                                        <a href=\"#\" style=\"padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none;\">Contact Us</a>\r\n                                    </td>\r\n                                </tr>\r\n                            </table>\r\n                        </td>\r\n                    </tr><tr><td bgcolor=\"#ff6b6b\" style=\"padding: 30px 30px 30px 30px;\"><table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td align=\"center\" style=\"color: white;\">                         <p>&copy; 2024 Event Planning Company. All rights reserved.</p>\r\n                                    </td>\r\n                                </tr>\r\n                            </table>\r\n                        </td>\r\n                    </tr>\r\n                </table>\r\n            </td>\r\n        </tr>\r\n    </table>";
+					mailbody = $"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\r\n    <tr>\r\n        <td align=\"center\" style=\"padding: 10px 0 30px 0;\">\r\n            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\">\r\n                <tr>\r\n                    <td align=\"center\" bgcolor=\"#ff3b3b\" style=\"padding: 40px 0 30px 0;\">\r\n                        <h1 style=\"color: white;\">Event Cancellation Notice</h1>\r\n                    </td>\r\n                </tr>\r\n                <tr>\r\n                    <td bgcolor=\"#ffffff\" style=\"padding: 40px 30px 40px 30px;\">\r\n                        <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\r\n                            <tr>\r\n                                <td>\r\n                                    <h2>Greetings,</h2>\r\n                                    <p>We regret to inform you that the following event has been cancelled:</p>\r\n                                    <p><strong>Event:</strong> {myEvent.Name}</p>\r\n                                    <p><strong>Original Date:</strong> {myEvent.EventDate.Date}</p>\r\n                                    <p>We apologize for any inconvenience this may cause. If you have any questions or need further information, please do not hesitate to contact us at {myEvent.CreatorNavigation.Email}.</p>\r\n                                    <p>Thank you for your understanding.</p>\r\n                                    <p>Best regards,</p>\r\n                                    <p>{myEvent.CreatorNavigation.FName} {myEvent.CreatorNavigation.LName}</p>\r\n                                    <p>Event Planning System</p>\r\n                                </td>\r\n                            </tr>\r\n                            <tr>\r\n                                <td align=\"center\" style=\"padding: 20px 0 30px 0;\">\r\n                                    <a href=\"#\" style=\"padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none;\">Contact Us</a>\r\n                                </td>\r\n                            </tr>\r\n                        </table>\r\n                    </td>\r\n                </tr>\r\n                <tr>\r\n                    <td bgcolor=\"#ff3b3b\" style=\"padding: 30px 30px 30px 30px;\">\r\n                        <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\r\n                            <tr>\r\n                                <td align=\"center\" style=\"color: white;\">\r\n                                    <p>&copy; 2024 Event Planning Company. All rights reserved.</p>\r\n                                </td>\r\n                            </tr>\r\n                        </table>\r\n                    </td>\r\n                </tr>\r\n            </table>\r\n        </td>\r\n    </tr>\r\n</table>\r\n";
 					mailSubject = "Event Cancellation.";
 				}
 				else if (type == EmailType.ThankYou)
@@ -415,18 +415,28 @@ namespace Event_Planning_System.Services
 		/* Get All Events except user events */
 		public async Task<List<EventDTO>?> GetAllEventsExceptUserEvents(int id)
 		{
-			try
+			if (id != 0)
 			{
-				User userToSearch = await unitOfWork.UserRepo.FindById(id);
-				if (userToSearch == null)
-					return null;
-				List<Event> userEvents = (await unitOfWork.EventRepo.GetAll())
-					.Where(a => a.CreatorId != id && !a.IsDeleted && !a.IsPrivate)
-					.ToList();
-				return mapper.Map<List<EventDTO>>(userEvents);
-			}
-			catch { return null; }
-		}
+				try
+				{
+					User userToSearch = await unitOfWork.UserRepo.FindById(id);
+					if (userToSearch == null)
+						return null;
+					List<Event> userEvents = (await unitOfWork.EventRepo.GetAll())
+						.Where(a => a.CreatorId != id && !a.IsDeleted && !a.IsPrivate)
+						.ToList();
+					return mapper.Map<List<EventDTO>>(userEvents);
+				}
+				catch { return null; }
+            }
+            else
+            {
+                List<Event> userEvents = (await unitOfWork.EventRepo.GetAll())
+                        .Where(a =>  !a.IsDeleted && !a.IsPrivate)
+                        .ToList();
+                return mapper.Map<List<EventDTO>>(userEvents);
+            }
+        }
 	}
 
 }

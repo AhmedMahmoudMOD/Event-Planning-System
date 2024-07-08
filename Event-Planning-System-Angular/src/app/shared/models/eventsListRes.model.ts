@@ -10,6 +10,7 @@ export interface Event {
   eventType: EventType;
   eventDate: string;
   id: number;
+  endDate: string;
   isDeleted: boolean;
   isPrivate: boolean;
 }

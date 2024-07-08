@@ -6,9 +6,10 @@
 
     </div>
     <div class="event-list">
-      <div *ngFor="let item of filteredEventList; let i = index" class="event-item main-bg">
+      <div *ngFor="let item of paginatedEventList; let i = index" class="event-item main-bg">
         <div class="event-details">
           <h3 class="subtitle">{{ item.name }}</h3>
+          <p-tag [value]="getStatus(item)" [severity]="getSeverity(item)||'info'||'danger'||'contrast'||'warning'"  />
           <div class="eventLocation">
             <img class="locationImg" src="assets/images/location.png" alt="Event Location">
             <p>{{ item.location }}</p>
@@ -31,6 +32,14 @@
         <button class="custom-btn btn-second h-25" routerLink="/planner/eventdetails/{{item.id}}">Details</button>
       </div>
     </div>
+    <div class="flex justify-content-center">
+      <p-paginator 
+          (onPageChange)="onPageChange($event)" 
+          [first]="first" 
+          [rows]="rows" 
+          [totalRecords]="filteredEventList.length" 
+          />
+  </div>
   </div>
 </div>
 

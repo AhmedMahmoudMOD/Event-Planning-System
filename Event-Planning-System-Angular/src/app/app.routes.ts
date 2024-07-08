@@ -40,11 +40,12 @@ export const routes: Routes = [
     { path: 'auth/register', component: RegisterComponent, canActivate: [logGuardGuard] },
     { path: 'addevent', component: AddEventComponent, canActivate: [canLoginGuard] },
 
-    { path: 'auth/confirmemail', component: EmailconfirmComponent, canActivate: [logGuardGuard] },
-    { path: 'auth/forgotpassword', component: ForgotPasswordComponent, canActivate: [logGuardGuard] },
-    { path: 'events', component: EventCalenderComponent, canActivate: [canLoginGuard] },
-    { path: 'eventslist', component: EventListComponent, canActivate: [canLoginGuard] },
-    { path: 'Events/usersEvents', component: UsersEventsComponent, canActivate: [canLoginGuard] },
+
+    { path: 'auth/confirmemail', component: EmailconfirmComponent , canActivate:[logGuardGuard] },
+    { path: 'auth/forgotpassword', component: ForgotPasswordComponent , canActivate:[logGuardGuard] },
+    { path: 'events', component:EventCalenderComponent , canActivate:[canLoginGuard] },
+    { path: 'eventslist', component:EventListComponent , canActivate:[canLoginGuard] },
+    { path: 'Events/usersEvents', component: UsersEventsComponent   },
     { path: 'sidebar', component: SidebarComponent },
     //event details
     { path: 'planner/eventdetails/:id', component: EventDetailsComponent, canActivate: [PrivateLoginGuard] },

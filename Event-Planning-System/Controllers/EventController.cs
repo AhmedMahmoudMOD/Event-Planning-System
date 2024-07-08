@@ -240,7 +240,7 @@ namespace Event_Planning_System.Controllers
         [HttpGet("UsersEvents/{id:int}")]
         public async Task<IActionResult> GetAllEventsExceptUserEvents([FromRoute] int id)
         {
-            if (id <= 0)
+            if (id < 0)
             {
                 return BadRequest("Invalid ID.");
             }
