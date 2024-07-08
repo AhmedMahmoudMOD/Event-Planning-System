@@ -24,6 +24,7 @@ export class EventReqsComponent implements OnInit{
   reqs: Req[] = [];
   filters!: SelectItem[];
   selectedFilter!: SelectItem;
+  defaultImage = "assets/images/default_Image.jpg";
   @Input() eventId!: number;
 
   constructor(private requestService : RequestService) { }

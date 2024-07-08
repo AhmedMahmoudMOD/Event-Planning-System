@@ -104,6 +104,8 @@
               >
                 Cancel Request
               </button>
+              <p-tag value="Accepted" *ngIf="requestStatus==='accepted'&& accountService.LoggedIn() && checkdate()" severity="success"></p-tag>
+              <p-tag value="Rejected" *ngIf="requestStatus==='rejected'&& accountService.LoggedIn() && checkdate()" severity="danger"></p-tag>
             </div>
 
             <button
