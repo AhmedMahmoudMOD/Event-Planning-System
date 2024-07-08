@@ -29,15 +29,17 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { ProfileUpdateComponent } from './profile-update/profile-update.component';
 import { HomeComponent } from './home/home.component';
 import { UsersEventsComponent } from './events/users-events/users-events.component';
+import { PrivateLoginGuard } from './shared/guards/private-login.guard';
 
 
 
 
 export const routes: Routes = [
 
-    { path: 'auth/login', component: LoginComponent , canActivate:[logGuardGuard]  },
-    { path: 'auth/register', component: RegisterComponent , canActivate:[logGuardGuard]},
-    { path: 'addevent', component: AddEventComponent , canActivate:[canLoginGuard] },
+    { path: 'auth/login', component: LoginComponent, canActivate: [logGuardGuard] },
+    { path: 'auth/register', component: RegisterComponent, canActivate: [logGuardGuard] },
+    { path: 'addevent', component: AddEventComponent, canActivate: [canLoginGuard] },
+
 
     { path: 'auth/confirmemail', component: EmailconfirmComponent , canActivate:[logGuardGuard] },
     { path: 'auth/forgotpassword', component: ForgotPasswordComponent , canActivate:[logGuardGuard] },
@@ -46,24 +48,24 @@ export const routes: Routes = [
     { path: 'Events/usersEvents', component: UsersEventsComponent   },
     { path: 'sidebar', component: SidebarComponent },
     //event details
-    { path: 'planner/eventdetails/:id', component: EventDetailsComponent },
+    { path: 'planner/eventdetails/:id', component: EventDetailsComponent, canActivate: [PrivateLoginGuard] },
     { path: 'schedule/:id', component: EventsScheduleComponent },
-    {path:'addto-do-list',component:AddtoDoListComponent},
+    { path: 'addto-do-list', component: AddtoDoListComponent },
     //end of event details
-    {path: 'planner/events', component : EventCalenderComponent , canActivate:[canLoginGuard]},
+    { path: 'planner/events', component: EventCalenderComponent, canActivate: [canLoginGuard] },
 
-    { path: 'auth/resetpassword', component: ResetPasswordComponent , canActivate:[logGuardGuard] },
+    { path: 'auth/resetpassword', component: ResetPasswordComponent, canActivate: [logGuardGuard] },
 
-    { path: 'auth/validateemail', component: EmailConfirmCheckComponent , canActivate:[logGuardGuard] },
-    { path: 'event/addEmails', component: AddEmailsComponent , canActivate:[canLoginGuard] },
+    { path: 'auth/validateemail', component: EmailConfirmCheckComponent, canActivate: [logGuardGuard] },
+    { path: 'event/addEmails', component: AddEmailsComponent, canActivate: [canLoginGuard] },
 
-    {path: 'profile/:id', component: ProfileComponent , canActivate:[canLoginGuard]},
-    {path: 'update-profile/:id', component: ProfileUpdateComponent},
+    { path: 'profile/:id', component: ProfileComponent, canActivate: [canLoginGuard] },
+    { path: 'update-profile/:id', component: ProfileUpdateComponent },
 
-    {path: 'home', component: HomeComponent},
+    { path: 'home', component: HomeComponent },
 
     { path: 'edit-event', component: EditEventComponent },
 
     { path: '', redirectTo: 'home', pathMatch: 'full' },
-    {path:'**',component:NotFoundComponent}
+    { path: '**', component: NotFoundComponent }
 ];
