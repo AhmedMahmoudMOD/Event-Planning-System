@@ -36,7 +36,7 @@ export class ResetPasswordComponent {
   confirmPasswordControl = this.resetPasswordForm.controls['confirmPassword'];
 
   constructor(private messageService:MessageService,private AccoutnService:AccountService,private router:Router,private ActivatedRoue:ActivatedRoute,private modalService:ModalService) { 
-    document.body.style.background = 'linear-gradient(to right, #f0f2f0, #000c40)';
+    // document.body.style.background = 'linear-gradient(to right, #f0f2f0, #000c40)';
   }
 
   resetPassword(){

@@ -26,7 +26,7 @@ export class ForgotPasswordComponent {
   emailControl = this.fogrotPasswordForm.controls['email'];
 
   constructor(private accountService:AccountService,private router:Router,private messageService:MessageService) { 
-    document.body.style.background = 'linear-gradient(to right, #f0f2f0, #000c40)';
+    // document.body.style.background = 'linear-gradient(to right, #f0f2f0, #000c40)';
   }
 
   submitEmail(){

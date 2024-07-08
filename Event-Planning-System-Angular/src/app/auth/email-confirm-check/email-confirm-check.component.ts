@@ -16,7 +16,7 @@ export class EmailConfirmCheckComponent implements OnInit{
   isSuccessful = true;
 
   constructor(private accountService: AccountService, private router: Router,private ActivatedRoute:ActivatedRoute) { 
-    document.body.style.background = 'linear-gradient(to right, #f0f2f0, #000c40)';
+    // document.body.style.background = 'linear-gradient(to right, #f0f2f0, #000c40)';
   }
 
   ngOnInit(): void {

@@ -38,7 +38,7 @@ export class LoginComponent {
 background: any;
 
   constructor(private accountService:AccountService,private router:Router,private messageService:MessageService) { 
-    document.body.style.background = 'linear-gradient(to right, #f0f2f0, #000c40)';
+    // document.body.style.background = 'linear-gradient(to right, #f0f2f0, #000c40)';
 
   }
 

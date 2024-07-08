@@ -62,7 +62,7 @@ export class RegisterComponent {
   eighteenYearsAgo  : Date = new Date(new Date().setFullYear(new Date().getFullYear()-18));
 
   constructor(private accountService:AccountService,private router:Router,private messageService:MessageService) { 
-    document.body.style.background = 'linear-gradient(to right, #f0f2f0, #000c40)';
+    // document.body.style.background = 'linear-gradient(to right, #f0f2f0, #000c40)';
   }
 
   selectImage(event:FileSelectEvent){
